@@ -35,6 +35,8 @@ class BooksApp extends React.Component {
     // pull only the data I need into state.books, and
     //   reformat into easy to access "variables"/properties
     const filteredBookData = booksAllData.map((bookAllData) => ({
+      id: bookAllData.id,
+      shelf: bookAllData.shelf,
       title: bookAllData.title,
       authors: bookAllData.authors,
       bookCoverURL: bookAllData.imageLinks.thumbnail
@@ -82,8 +84,9 @@ class BooksApp extends React.Component {
 
                         {/*
                         Delay rendering of <Book/> until state.books has data (from Ajax request)
-                        Why: Can't access 0th index of an empty array !
-                        TODO: render a placeholder book instead
+                          Why: Can't access 0th index of an empty array !
+                          TODO: render a placeholder book instead
+                        TODO: replace hard-coded array index
                          */}
                         {this.state.books.length > 0 &&
                           <Book book={this.state.books[0]}
