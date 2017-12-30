@@ -57,7 +57,7 @@ class BooksApp extends React.Component {
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
+                                <option value="haveRead">Have Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
@@ -75,7 +75,7 @@ class BooksApp extends React.Component {
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
+                                <option value="haveRead">Have Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
@@ -100,7 +100,7 @@ class BooksApp extends React.Component {
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
+                                <option value="haveRead">Have Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
@@ -118,7 +118,7 @@ class BooksApp extends React.Component {
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
+                                <option value="haveRead">Have Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
@@ -131,7 +131,7 @@ class BooksApp extends React.Component {
                   </div>
                 </div>
                 <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
+                  <h2 className="bookshelf-title">Have Read</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       <li>
@@ -143,7 +143,7 @@ class BooksApp extends React.Component {
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
+                                <option value="haveRead">Have Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
@@ -161,7 +161,7 @@ class BooksApp extends React.Component {
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
+                                <option value="haveRead">Have Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
@@ -179,7 +179,7 @@ class BooksApp extends React.Component {
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
+                                <option value="haveRead">Have Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
