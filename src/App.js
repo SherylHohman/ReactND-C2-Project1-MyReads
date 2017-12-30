@@ -36,7 +36,7 @@ class BooksApp extends React.Component {
     const filteredBookData = booksAllData.map((bookAllData) => ({
       title: bookAllData.title,
       authors: bookAllData.authors,
-      frontCoverURL: bookAllData.imageLinks.thumbnail
+      bookCoverURL: bookAllData.imageLinks.thumbnail
     }));
     console.log('filtered book data [0]: ', filteredBookData[0]);
     return filteredBookData
@@ -90,7 +90,7 @@ class BooksApp extends React.Component {
                           <div className="book-authors">Harper Lee</div>
                         </div>
                       */}
-                      <Book book={{title: 'aTitle', authors:['anAuthor'], frontCoverURL: 'http://books.google.com/books/content?id=nggnmAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'}} />
+                      <Book book={{title: 'aTitle', authors:['anAuthor'], bookCoverURL: 'http://books.google.com/books/content?id=nggnmAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'}} />
                       </li>
                       <li>
                       {/*}  */} 
