@@ -18,7 +18,8 @@ const Bookshelf = function(props){
               Lack of books can no longer break our app.
               Conditional JSX rendering can thus be removed!
           */}
-          {books.map((book) => (
+          {books.filter((book) => (book.shelf === shelf))
+                .map((book) => (
             <li key={book.id}><Book book={book}/></li>
           ))}
 
