@@ -1,6 +1,5 @@
 import React from 'react'
 import Bookshelf from './Bookshelf';
-import Book from './Book';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
 
@@ -48,11 +47,12 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Bookshelf/>
         {this.state.showSearchPage ? (
+
           <div className="search-books">
             <div className="search-books-bar">
               <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
+
               <div className="search-books-input-wrapper">
                 {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -63,101 +63,51 @@ class BooksApp extends React.Component {
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
                 <input type="text" placeholder="Search by title or author"/>
+              </div> {/* search-books-input-wrapper */}
 
-              </div>
-            </div>
+            </div> {/* search-books-bar */}
+
             <div className="search-books-results">
               <ol className="books-grid"></ol>
-            </div>
+            </div> {/* search-books-results */}
+
           </div>
+
         ) : (
           <div className="list-books">
+
             <div className="list-books-title">
               <h1>MyReads</h1>
-            </div>
+            </div> {/* list-books-title */}
+
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      <li>
 
-                        {/*
-                        Delay rendering of <Book/> until state.books has data (from Ajax request)
-                          Why: Can't access 0th index of an empty array !
-                          TODO: render a placeholder book instead
-                        TODO: replace hard-coded array index
-                         */}
-                        {this.state.books.length > 0 &&
-                          <Book book={this.state.books[0]}
-                        />}
+                <Bookshelf
+                  books={this.state.books}
+                  shelfTitle = "Currently Reading"
+                  shelf = "currentlyReadign"
+                />
 
-                      </li>
-                      <li>
+                <Bookshelf
+                  books={this.state.books}
+                  shelfTitle = "Want to Read"
+                  shelf = "wantToRead"
+                />
 
-                        {this.state.books.length > 0 &&
-                          <Book book={this.state.books[0]}
-                        />}
+                <Bookshelf
+                  books={this.state.books}
+                  shelfTitle = "Have Read"
+                  shelf = "read"
+                />
 
-                      </li>
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      <li>
-
-                        {this.state.books.length > 1 &&
-                          <Book book={this.state.books[1]}
-                        />}
-
-                      </li>
-                      <li>
-
-                        {this.state.books.length > 2 &&
-                          <Book book={this.state.books[2]}
-                        />}
-
-                      </li>
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Have Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      <li>
-
-                        {this.state.books.length > 0 &&
-                          <Book book={this.state.books[0]}
-                        />}
-
-                      </li>
-                      <li>
-
-                        {this.state.books.length > 0 &&
-                          <Book book={this.state.books[0]}
-                        />}
-
-                      </li>
-                      <li>
-
-                        {this.state.books.length > 0 &&
-                          <Book book={this.state.books[0]}
-                        />}
-
-                      </li>
-                    </ol>
-                  </div>
-                </div>
               </div>
-            </div>
+            </div> {/* list-books-content */}
+
             <div className="open-search">
               <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-            </div>
+            </div> {/* open-search */}
+
           </div>
         )}
       </div>
