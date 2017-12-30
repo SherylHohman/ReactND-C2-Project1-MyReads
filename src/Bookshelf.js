@@ -19,19 +19,12 @@ const Bookshelf = function(props){
                 TODO: render a placeholder book instead
               TODO: replace hard-coded array index
             */}
-            {props.books.length > 0 &&
-              <Book book={props.books[0]}
+            {books.length > 0 &&
+              <Book book={books[0]}
             />}
 
           </li>
 
-          <li>
-
-            {props.books.length > 1 &&
-              <Book book={props.books[1]}
-            />}
-
-          </li>
         </ol>
       </div>
     </div>
