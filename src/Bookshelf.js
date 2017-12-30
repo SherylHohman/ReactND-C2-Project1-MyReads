@@ -19,8 +19,7 @@ const Bookshelf = function(props){
               Conditional JSX rendering can thus be removed!
           */}
           {books.filter((book) => (book.shelf === shelf))
-                .map((book) => (
-            <li key={book.id}><Book book={book}/></li>
+                .map((book) => (<li key={book.id}><Book book={book}/></li>
           ))}
 
           {books.length === 0 && (

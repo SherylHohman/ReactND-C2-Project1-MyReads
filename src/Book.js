@@ -1,9 +1,8 @@
 import React from 'react';
 import BookshelfChanger from './BookshelfChanger';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 const Book = function(props){
-
   // convenience variables
   const {title, authors, bookCoverURL} = props.book;
 
@@ -23,11 +22,10 @@ const Book = function(props){
       <div className="book-authors">{authors}</div>
     </div>
   )
-
-}
+};
 
 Book.propTypes = {
   book: PropTypes.object.isRequired
-}
+};
 
 export default Book;

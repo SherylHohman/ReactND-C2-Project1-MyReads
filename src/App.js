@@ -16,17 +16,15 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
+
     // fetch all books from Database
     BooksAPI.getAll().then((booksAllData) => {
       console.log('fetched', booksAllData);
 
       // filter out and reformat data before storing it into state
       const books = this.filterBookData(booksAllData)
-      // console.log('filtered data', books);
-
       this.setState({ books });
-      // console.log('after setState books   :', this.state.books);
-      // console.log('after setState books[0]:, this.state.books[0]');
+
     })
   }
 
@@ -40,7 +38,7 @@ class BooksApp extends React.Component {
       authors: bookAllData.authors,
       bookCoverURL: bookAllData.imageLinks.thumbnail
     }));
-    console.log('filtered book data [0]: ', filteredBookData[0]);
+
     return filteredBookData
   }
 
