@@ -22,7 +22,7 @@ class BooksApp extends React.Component {
 
       // filter out and reformat data before storing it into state
       const books = this.filterBookData(booksAllData)
-      console.log('filtered data', books);
+      // console.log('filtered data', books);
 
       this.setState({ books });
       // console.log('after setState books   :', this.state.books);
@@ -97,7 +97,7 @@ class BooksApp extends React.Component {
 
                 <Bookshelf
                   books={this.state.books}
-                  shelfTitl="Have Read"
+                  shelfTitle="Have Read"
                   shelf="read"
                 />
 
