@@ -23,6 +23,11 @@ const Bookshelf = function(props){
             <li key={book.id}><Book book={book}/></li>
           ))}
 
+          {books.length === 0 && (
+            /* TODO: make this prettier :-)*/
+            <p>Get Comfy while we Retrieve your books.. </p>
+          )}
+
         </ol>
       </div>
     </div>
