@@ -13,8 +13,14 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    books : []
+    books : [],
+
+    // dummyBook : this.state.books[0],
+      thisStateDumbBook : {title: 'aTitle', authors:['anAuthor'], bookCoverURL: 'http://books.google.com/books/content?id=nggnmAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'},
   }
+
+  // thisZerothBook = this.state.books[0];
+  // thisDumbBook = {title: 'aTitle', authors:['anAuthor'], bookCoverURL: 'http://books.google.com/books/content?id=nggnmAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'};
 
   componentDidMount() {
     // fetch all books from Database
@@ -26,7 +32,13 @@ class BooksApp extends React.Component {
       console.log('filtered data', books);
 
       this.setState({ books });
-      console.log('after setState', this.state.books);
+      console.log('after setState books   :', this.state.books);
+      console.log('after setState books[0]:, this.state.books[0]');
+      // console.log('thisZerothBook',this.thisZerothBook);
+      // console.log('this.thisDumbBook  ',this.thisDumbBook);
+
+      // console.log('this.thisStateZerothBook',this.state.thisStateDumbBook);
+      // console.log('this.thisStateDUMB  ', this.thisStatedumbBook);
     })
   }
 
@@ -78,22 +90,20 @@ class BooksApp extends React.Component {
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       <li>
-                      {/*}
-                        <div className="book">
-                          <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")' }}></div>
 
-                            <BookshelfChanger />
+                      {/* Render Book only AFTER data has been received from API}, as this.state.books[0] will be undefined until we get the request back.  Therefore props.book will fail inside <Book/> componenet.  Once data has been received, THIS render() statement will be called.  It will see that the conditional render has Changed: triggering a re-render of this block, which will THEN render Book, which will then be passed a valid value !
+                      Whew! Only a Great portion of the day trouble shooting That !! */}
+                      {this.state.books.length > 0 &&
+                        <Book
+                        /*/book_inline={{title: 'aTitle', authors:['anAuthor'], bookCoverURL: 'http://books.google.com/books/content?id=nggnmAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'}}
+                        books={this.state.books}
+                        */
+                        book={this.state.books[0]}
+                      />}
 
-                          </div>
-                          <div className="book-title">To Kill a Mockingbird</div>
-                          <div className="book-authors">Harper Lee</div>
-                        </div>
-                      */}
-                      <Book book={{title: 'aTitle', authors:['anAuthor'], bookCoverURL: 'http://books.google.com/books/content?id=nggnmAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'}} />
                       </li>
                       <li>
-                      {/*}  */} 
+                      {/*}  */}
                         <div className="book">
                           <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: 'url("http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api")' }}></div>
