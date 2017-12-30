@@ -18,12 +18,28 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     // fetch all books from Database
-    console.log('beforeFetch', this.state.books);
-    BooksAPI.getAll().then((books) => {
-      console.log('fetched', books);
-      this.setState({books});
-      console.log('afterFetch', this.state.books);
+    BooksAPI.getAll().then((booksAllData) => {
+      console.log('fetched', booksAllData);
+
+      // filter out and reformat data before storing it into state
+      const books = this.filterBookData(booksAllData)
+      console.log('filtered data', books);
+
+      this.setState({ books });
+      console.log('after setState', this.state.books);
     })
+  }
+
+  filterBookData(booksAllData) {
+    // pull only the properties I'm interested in into state.books
+    //   and reformat into easy to access variables
+    const filteredBookData = booksAllData.map((bookAllData) => ({
+      title: bookAllData.title,
+      authors: bookAllData.authors,
+      frontCoverURL: bookAllData.imageLinks.thumbnail
+    }));
+    console.log('filtered book data [0]: ', filteredBookData[0]);
+    return filteredBookData
   }
 
   render() {
@@ -74,7 +90,7 @@ class BooksApp extends React.Component {
                           <div className="book-authors">Harper Lee</div>
                         </div>
                       */}
-                      <Book book={this.state.books[0]} />
+                      <Book book={{title: 'aTitle', authors:['anAuthor'], frontCoverURL: 'http://books.google.com/books/content?id=nggnmAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'}} />
                       </li>
                       <li>
                       {/*}  */} 
