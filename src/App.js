@@ -1,5 +1,4 @@
 import React from 'react'
-import BookshelfChanger from './BookshelfChanger';
 import Book from './Book';
 import * as BooksAPI from './BooksAPI'
 import './App.css'
@@ -95,11 +94,6 @@ class BooksApp extends React.Component {
                       </li>
                       <li>
 
-                        {/*
-                        Delay rendering of <Book/> until state.books has data (from Ajax request)
-                        Why: Can't access 0th index of an empty array !
-                        TODO: render a placeholder book instead
-                         */}
                         {this.state.books.length > 0 &&
                           <Book book={this.state.books[0]}
                         />}
@@ -114,11 +108,6 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       <li>
 
-                        {/*
-                        Delay rendering of <Book/> until state.books has data (from Ajax request)
-                        Why: Can't access 0th index of an empty array !
-                        TODO: render a placeholder book instead
-                         */}
                         {this.state.books.length > 1 &&
                           <Book book={this.state.books[1]}
                         />}
