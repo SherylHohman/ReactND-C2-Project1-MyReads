@@ -12,26 +12,21 @@ const Bookshelf = function(props){
       <div className="bookshelf-books">
         <ol className="books-grid">
 
-            {/*
-              Delay rendering of <Book/> until books has data (from Ajax request)
-                B/C: Can't access 0th index of an empty array !
-                TODO: render a placeholder book instead
-            */}
-            {books.length > 0 && (
-              books.map((book) => (
-                <li key={book.id}><Book book={book}/></li>
-              ))
-            )}
+          {/* mapping over an empty array, simply returns an empty array
+              So, we can never try accessing an index that doesn't exist
+              Therefore, we needn't wait until Ajax request returns us data
+              Lack of books can no longer break our app.
+              Conditional JSX rendering can thus be removed!
+          */}
+          {books.map((book) => (
+            <li key={book.id}><Book book={book}/></li>
+          ))}
 
         </ol>
       </div>
     </div>
   );
 };
-
-// TODO: can use this for placeholder book "image" while waiting for fetched data
-//      <Book book={books.map(() => {})}
-//      aaccompanied by "Loading Books" text
 
 Bookshelf.propTypes = {
   books: PropTypes.array.isRequired,
