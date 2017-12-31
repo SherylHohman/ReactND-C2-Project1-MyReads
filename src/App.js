@@ -1,5 +1,4 @@
 import React from 'react'
-import Bookshelf from './Bookshelf';
 import ListBooks from './ListBooks';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
@@ -49,8 +48,10 @@ class BooksApp extends React.Component {
         {this.state.showSearchPage ? (
 
           <div className="search-books">
+
             <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
+              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close
+              </a>
 
               <div className="search-books-input-wrapper">
                 {/*
@@ -67,52 +68,19 @@ class BooksApp extends React.Component {
             </div> {/* search-books-bar */}
 
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+              </ol>
             </div> {/* search-books-results */}
 
-          </div>
+          </div> /* search-books */
 
         ) : (
 
+          <ListBooks books={this.state.books}/>
 
-          <div className="list-books">
-            <ListBooks />
-
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div> {/* list-books-title */}
-
-            <div className="list-books-content">
-              <div>
-
-                <Bookshelf
-                  books={this.state.books}
-                  shelfTitle="Currently Reading"
-                  shelf="currentlyReading"
-                />
-
-                <Bookshelf
-                  books={this.state.books}
-                  shelfTitle="Want to Read"
-                  shelf="wantToRead"
-                />
-
-                <Bookshelf
-                  books={this.state.books}
-                  shelfTitle="Have Read"
-                  shelf="read"
-                />
-
-              </div>
-            </div> {/* list-books-content */}
-
-            <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-            </div> {/* open-search */}
-
-          </div>
         )}
-      </div>
+
+      </div> /* app */
     )
   }
 }
