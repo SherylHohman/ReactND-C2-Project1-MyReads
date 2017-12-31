@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Bookshelf from './Bookshelf';
 
 const ListBooks = function(props){
@@ -30,9 +31,9 @@ const ListBooks = function(props){
             </div> {/* list-books-content */}
 
             <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>
+              <Link to="/search">
                  Add a book
-              </a>
+              </Link>
             </div> {/* open-search */}
 
           </div> /* list-books */
