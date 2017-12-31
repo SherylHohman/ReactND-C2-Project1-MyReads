@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 
 class BookshelfChanger extends Component {
 
+state = {
+  shelf: this.props.shelf
+}
+
 render() {
+
+    console.log("BookshelfChanger, shelf:", this.state.shelf,
+                "\nbook.shelf:", this.props.book.shelf,
+                "\nbook:", this.props.book)
+
     return (
 
       <div className="book-shelf-changer">

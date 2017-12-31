@@ -16,7 +16,7 @@ const Book = function(props){
             }}
         >
         </div>
-        <BookshelfChanger />
+        <BookshelfChanger book={props.book}/>
       </div>
       <div className="book-title">{title}</div>
       <div className="book-authors">{authors}</div>
