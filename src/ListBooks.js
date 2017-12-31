@@ -3,8 +3,11 @@ import Bookshelf from './Bookshelf';
 
 const ListBooks = function(props){
 
-  // TODO: refactor to use an array of bookhelf {Shelf, shelfTitle}
-  //   and map through them as an list of li's
+  const bookshelves = [
+    {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
+    {shelf: "wantToRead",       shelfTitle: "Want To Read"},
+    {shelf: "read",             shelfTitle: "Did Read"}
+  ];
 
   return (
 
@@ -15,27 +18,15 @@ const ListBooks = function(props){
             </div> {/* list-books-title */}
 
             <div className="list-books-content">
-              <div>
-
-                <Bookshelf
-                  books={props.books}
-                  shelfTitle="Currently Reading"
-                  shelf="currentlyReading"
-                />
-
-                <Bookshelf
-                  books={props.books}
-                  shelfTitle="Want to Read"
-                  shelf="wantToRead"
-                />
-
-                <Bookshelf
-                  books={props.books}
-                  shelfTitle="Have Read"
-                  shelf="read"
-                />
-
-              </div>
+              {bookshelves.map((bookshelf) => (
+                <li key={bookshelf.shelf}>
+                  <Bookshelf
+                    books={props.books}
+                    shelfTitle={bookshelf.shelfTitle}
+                    shelf={bookshelf.shelf}
+                  />
+                </li>
+              ))}
             </div> {/* list-books-content */}
 
             <div className="open-search">
