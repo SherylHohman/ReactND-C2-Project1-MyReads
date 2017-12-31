@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SearchBooks = function(props) {
   return (
@@ -6,13 +7,9 @@ const SearchBooks = function(props) {
           <div className="search-books">
 
             <div className="search-books-bar">
-
-              {/* TODO: Route or history, (don't even have "state" here) */}
-              <a className="close-search"
-                  onClick={() => this.setState(
-                    { showSearchPage: false }
-                  )}>Close
-              </a>
+              <Link to="/" className="close-search">
+                Close
+              </Link>
 
               <div className="search-books-input-wrapper">
                 <input
@@ -20,7 +17,6 @@ const SearchBooks = function(props) {
                   placeholder="Search by title or author"
                 />
               </div> {/* search-books-input-wrapper */}
-
             </div> {/* search-books-bar */}
 
             <div className="search-books-results">
