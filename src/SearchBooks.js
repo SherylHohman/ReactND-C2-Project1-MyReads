@@ -7,17 +7,25 @@ const SearchBooks = function(props) {
 
             <div className="search-books-bar">
 
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close
+              {/* TODO: Route or history, (don't even have "state" here) */}
+              <a className="close-search"
+                  onClick={() => this.setState(
+                    { showSearchPage: false }
+                  )}>Close
               </a>
 
               <div className="search-books-input-wrapper">
-                <input type="text" placeholder="Search by title or author"/>
+                <input
+                  type="text"
+                  placeholder="Search by title or author"
+                />
               </div> {/* search-books-input-wrapper */}
 
             </div> {/* search-books-bar */}
 
             <div className="search-books-results">
               <ol className="books-grid">
+                {/* TODO: Show Results of search */}
               </ol>
             </div> {/* search-books-results */}
 

@@ -39,7 +39,8 @@ const ListBooks = function(props){
             </div> {/* list-books-content */}
 
             <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book
+              <a onClick={() => this.setState({ showSearchPage: true })}>
+                 Add a book
               </a>
             </div> {/* open-search */}
 

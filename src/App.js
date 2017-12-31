@@ -11,7 +11,6 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-
     // fetch all books from Database
     BooksAPI.getAll().then((booksAllData) => {
       console.log('fetched', booksAllData);
@@ -19,7 +18,6 @@ class BooksApp extends React.Component {
       // filter out and reformat data before storing it into state
       const books = this.filterBookData(booksAllData)
       this.setState({ books });
-
     })
   }
 
@@ -33,7 +31,6 @@ class BooksApp extends React.Component {
       authors: bookAllData.authors,
       bookCoverURL: bookAllData.imageLinks.thumbnail
     }));
-
     return filteredBookData
   }
 
