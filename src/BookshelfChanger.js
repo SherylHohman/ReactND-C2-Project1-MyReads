@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 class BookshelfChanger extends Component {
 
+  // now has access to bookshelves from ListBooks component via props
+
 state = {
   shelf: this.props.shelf
 }
@@ -17,9 +19,9 @@ render() {
       <div className="book-shelf-changer">
         <select>
           <option value="none" disabled>Move to...</option>
-          <option value="currentlyReading">Currently Reading</option>
-          <option value="wantToRead">Want to Read</option>
-          <option value="haveRead">Have Read</option>
+          {this.props.bookshelves.map( (bookshelf) => (
+            <option key={bookshelf.shelf} value={bookshelf.shelf}>{bookshelf.shelfTitle}</option>
+          ) )}
           <option value="none">None</option>
         </select>
       </div>
