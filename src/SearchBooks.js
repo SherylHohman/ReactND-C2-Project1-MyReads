@@ -1,33 +1,36 @@
-import React from 'react';
+import React, {Component } from 'react';
 import { Link } from 'react-router-dom';
 
-const SearchBooks = function(props) {
-  return (
+class SearchBooks extends Component {
 
-          <div className="search-books">
+  render() {
+    return (
 
-            <div className="search-books-bar">
-              <Link to="/" className="close-search">
-                Close
-              </Link>
+      <div className="search-books">
 
-              <div className="search-books-input-wrapper">
-                <input
-                  type="text"
-                  placeholder="Search by title or author"
-                />
-              </div> {/* search-books-input-wrapper */}
-            </div> {/* search-books-bar */}
+        <div className="search-books-bar">
+          <Link to="/" className="close-search">
+            Close
+          </Link>
 
-            <div className="search-books-results">
-              <ol className="books-grid">
-                {/* TODO: Show Results of search */}
-              </ol>
-            </div> {/* search-books-results */}
+          <div className="search-books-input-wrapper">
+            <input
+              type="text"
+              placeholder="Search by title or author"
+            />
+          </div> {/* search-books-input-wrapper */}
+        </div> {/* search-books-bar */}
 
-          </div> /* search-books */
+        <div className="search-books-results">
+          <ol className="books-grid">
+            {/* TODO: Show Results of search */}
+          </ol>
+        </div> {/* search-books-results */}
 
-  );
+      </div> /* search-books */
+
+    );
+  }
 };
 
 export default SearchBooks;
