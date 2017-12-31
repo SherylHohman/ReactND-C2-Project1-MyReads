@@ -1,37 +1,46 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class BookshelfChanger extends Component {
+const BookshelfChanger = function(props) {
 
   // now has access to bookshelves from ListBooks component via props
 
-state = {
-  shelf: this.props.shelf
-}
+  return (
 
-render() {
-
-    console.log("BookshelfChanger, shelf:", this.state.shelf,
-                "\nbook.shelf:", this.props.book.shelf,
-                "\nbook:", this.props.book)
-
-    return (
-
-      <div className="book-shelf-changer">
-        <select>
-          <option value="none" disabled>Move to...</option>
-          {this.props.bookshelves.map( (bookshelf) => (
+    <div className="book-shelf-changer">
+      <select>
+        <option value="none" disabled>Move to...</option>
+        {props.bookshelves.map( (bookshelf) => (
             <option key={bookshelf.shelf} value={bookshelf.shelf}>{bookshelf.shelfTitle}</option>
-          ) )}
-          <option value="none">None</option>
-        </select>
-      </div>
+        ) )}
+        <option value="none">None</option>
+      </select>
+    </div>
 
-    );
-  }
-
+  );
 }
+
 
 export default BookshelfChanger;
+
+// Pretty sure I won't need a Controlled component afterall.
+// possibly not even a class component
+// I'll nust need to call an eventHandler of some sort, that will be defined
+//    in BooksApp, the owner of the state I need to change.
+//  .. and passed down to me via props.
+// Yea, thinking on how a select thingy works - and that it's a "modal" type thing.
+//   this component probably doesn't need state of it's own.
+//   - as soon as a user selects, it goes away.
+//  And state (of BooksApp) is changed.  Re-render will show everything in the new shelf..
+//... Ok, Yes, as suspected while refactoring to use bookshelves,
+//  I don't even need a class component.
+//  WANTED to revert back to Functional.. at that time, since that refactor
+//    *definitely* didn't need class, and nothing to date did.
+//    - it was looking "ugly" and in the way do me.. ha.
+//  ... but also only wanted to change one thing at a time.  So didn't
+//    remove it while also changing how the component was rendered.
+//  So here we are, an out of order commit to remove "class" refactor, and all references to this uneeded state variable.
+
+
 
 /*
   Thinking of how to approach this:
