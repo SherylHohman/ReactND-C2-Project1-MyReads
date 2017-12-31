@@ -16,7 +16,7 @@ const ListBooks = function(props){
 
             <div className="list-books-title">
               <h1>MyReads</h1>
-            </div> {/* list-books-title */}
+            </div>
 
             <div className="list-books-content">
               {bookshelves.map((bookshelf) => (
@@ -28,13 +28,13 @@ const ListBooks = function(props){
                   />
                 </li>
               ))}
-            </div> {/* list-books-content */}
+            </div>
 
             <div className="open-search">
               <Link to="/search">
                  Add a book
               </Link>
-            </div> {/* open-search */}
+            </div>
 
           </div> /* list-books */
 
