@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 
 class SearchBooks extends Component {
 
+  state = {
+    query: ''
+  }
+
+  updateQuery(query) {
+    this.setState( {query: query.trim()} );
+  }
+
   render() {
     return (
 
@@ -17,7 +25,10 @@ class SearchBooks extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
+              value={this.state.query}
+              onChange={ (event) => {this.updateQuery(event.target.value)}}
             />
+
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
 
