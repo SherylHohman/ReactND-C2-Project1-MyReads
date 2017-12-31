@@ -10,14 +10,14 @@ class BookshelfChanger extends Component {
   }
 
   state = {
-    shelf: ''//this.props.book.shelf
+    shelf: this.props.book.shelf
   }
 
-  componentDidMount() {
-    console.log("entering didMount", this.state);
-    this.setState( {shelf: this.props.book.shelf} );
-    console.log("exiting  didMount", this.state);
-  }
+  // componentDidMount() {
+  //   console.log("entering didMount", this.state);
+  //   this.setState( {shelf: this.props.book.shelf} );
+  //   console.log("exiting  didMount", this.state);
+  // }
 
   // changeShelf(newShelf){
   //   this.setState({ shelf: newShelf });

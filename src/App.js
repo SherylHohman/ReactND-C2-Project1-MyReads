@@ -39,6 +39,7 @@ class BooksApp extends React.Component {
     //  update its "shelf" field to the newly selected bookshelf
     //  books[myBook].shelf: shelf
     console.log("I'm here..!", shelf, book.title);
+    console.log("INTTRO ", this.state.books);
     console.log("I'm still here..!", book.id);
     // // const indexOfBook = this.books.indexOf(book);
     // console.log(indexOfBook);
@@ -57,7 +58,7 @@ class BooksApp extends React.Component {
       {books: prevState.books.filter((aBook) => (aBook.id !== book.id)).push(book)}
     ));
 
-
+    console.log(this.state.books.filter((aBook) => (aBook.id !== book.id)).concat(book));
     console.log("OUTTRO", this.state.books);
     // console.log("outtro", this.state.books[-1].shelf, this.state.books[-1].title);
       // this.state.books[indexOfBook].shelf, this.state.books[indexOfBook].title
@@ -67,8 +68,23 @@ class BooksApp extends React.Component {
     // this.setState({books[indexOfMybook].shelf: shelf});
   }
 
+  dumb(){
+    let dummy='';
+    console.log(dummy)
+    if (this.state.books.length>0) {
+      dummy="not yet"
+    } else {
+      dummy=this.state.books[0].title
+    }
+    console.log(dummy, dummy)
+    return dummy
+// <h3>this.dumb()</h3>
+  }
+
   render() {
+
     return (
+
       <div className="app">
 
         <Route path="/search" render={() => (
