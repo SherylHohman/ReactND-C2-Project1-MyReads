@@ -38,10 +38,29 @@ class BooksApp extends React.Component {
     // find this particular book in books
     //  update its "shelf" field to the newly selected bookshelf
     //  books[myBook].shelf: shelf
-    const indexOfBook = this.books.indexOf(book);
-    console.log("index, title, shelf:", indexOfBook,
-                this.books[indexOfBook].title,
-                this.books[indexOfBook].shelf);
+    console.log("I'm here..!", shelf, book.title);
+    console.log("I'm still here..!", book.id);
+    // // const indexOfBook = this.books.indexOf(book);
+    // console.log(indexOfBook);
+    // console.log("index, title, shelf:", indexOfBook)//,
+                // this.books[indexOfBook].title,
+                // this.books[indexOfBook].shelf);
+    book.shelf = shelf;
+    // this.setState( {books[indexOfBook].shelf: shelf} );
+    // this.setState((prevState) => (
+    //   {books: prevState.books.filter((aBook) => (aBook.id !== book.id))
+    //                  .push(book)}
+    //                     // .concat([ book ])
+    // ));
+
+    this.setState((prevState) => (
+      {books: prevState.books.filter((aBook) => (aBook.id !== book.id)).push(book)}
+    ));
+
+
+    console.log("OUTTRO", this.state.books);
+    // console.log("outtro", this.state.books[-1].shelf, this.state.books[-1].title);
+      // this.state.books[indexOfBook].shelf, this.state.books[indexOfBook].title
 
     // this.setState((prev) => ({}));
     // or can I use
@@ -59,7 +78,7 @@ class BooksApp extends React.Component {
         <Route exact path="/" render={() => (
           <ListBooks
             books={this.state.books}
-            onChangeBookshelf={this.changeBookshelf}
+            onChangeBookshelf={ (aBook, newShelf) => {this.changeBookshelf(aBook, newShelf)} }
           />
         )} />
 
