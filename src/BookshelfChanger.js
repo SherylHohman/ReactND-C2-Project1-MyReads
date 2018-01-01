@@ -3,14 +3,31 @@ import React from 'react';
 const BookshelfChanger = function(props) {
 
   // now has access to bookshelves from ListBooks component via props
+  const onChangeBookshelf = function(e){
+    const newShelf = e.target.value;
+    e.preventDefault;
+    props.onChangeBookshelf(props.book, newShelf);
+    console.log(`Changed ${props.book.title} to ${newShelf}`);
+  }
+
+  // now has access to bookshelves from ListBooks component via props
+  const handleSubmit = function(e){
+    e.preventDefault();
+    const newShelf = e.target.value;
+    props.onChangeBookshelf(props.book, newShelf);
+    console.log(`Changed ${props.book.title} to ${newShelf}`);
+  }
 
   return (
 
     <div className="book-shelf-changer">
-      <select>
+      {/*<select onChange={(event) => onChangeBookshelf(event)}>*/}
+      {/*<select onChange={(e) => onChangeBookshelf(e.target.value)}>*/}
+      <select ref={(select) => onChangeBookshelf}>
         <option value="none" disabled>Move to...</option>
         {props.bookshelves.map( (bookshelf) => (
-            <option key={bookshelf.shelf} value={bookshelf.shelf}>{bookshelf.shelfTitle}</option>
+            <option key={bookshelf.shelf} value={bookshelf.shelf}>
+              {bookshelf.shelfTitle}</option>
         ) )}
         <option value="none">None</option>
       </select>
@@ -21,6 +38,13 @@ const BookshelfChanger = function(props) {
 
 
 export default BookshelfChanger;
+
+// looks like onchange is only accessible to Controlled Components
+// And I cannot seem to trigger
+
+// onChange won't work unless I convert this (back again) class component
+//  ..and select back to a Controlled Component
+//  However, for cases like this, I *can* use (DOM attribute) in it's stead.
 
 // Pretty sure I won't need a Controlled component afterall.
 // possibly not even a class component
