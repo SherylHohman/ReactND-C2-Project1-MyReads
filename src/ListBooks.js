@@ -25,7 +25,7 @@ const ListBooks = function(props){
                     books={props.books}
                     shelfTitle={bookshelf.shelfTitle}
                     shelf={bookshelf.shelf}
-                    bookshelves = {bookshelves}
+                    bookshelves={bookshelves}
                     onChangeBookshelf={props.onChangeBookshelf}/>
                 </li>
               ))}
@@ -40,7 +40,7 @@ const ListBooks = function(props){
           </div> /* list-books */
 
   );
-}
+};
 
 export default ListBooks;
 
