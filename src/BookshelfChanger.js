@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class BookshelfChanger extends Component {
 
-  // now has access to bookshelves from ListBooks component via props
+  static propTypes = {
+    book: PropTypes.object.isRequired,
+    bookshelves: PropTypes.array.isRequired,
+    onChangeBookshelf: PropTypes.func.isRequired
+  }
 
   onChangeBookshelf(e) {
     // e.preventDefault();

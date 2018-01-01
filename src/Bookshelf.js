@@ -43,7 +43,9 @@ const Bookshelf = function(props){
 Bookshelf.propTypes = {
   books: PropTypes.array.isRequired,
   shelfTitle: PropTypes.string.isRequired,
-  shelf: PropTypes.string.isRequired
+  shelf: PropTypes.string.isRequired,
+  bookshelves: PropTypes.array.isRequired,
+  onChangeBookshelf: PropTypes.func.isRequired
 };
 
 export default Bookshelf;

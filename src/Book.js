@@ -34,7 +34,9 @@ const Book = function(props){
 };
 
 Book.propTypes = {
-  book: PropTypes.object.isRequired
+  book: PropTypes.object.isRequired,
+  bookshelves: PropTypes.array.isRequired,
+  onChangeBookshelf: PropTypes.func.isRequired
 };
 
 export default Book;

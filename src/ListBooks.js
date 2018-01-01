@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Bookshelf from './Bookshelf';
+import propTypes from 'prop-types';
 
 const ListBooks = function(props){
 
@@ -41,6 +42,11 @@ const ListBooks = function(props){
 
   );
 };
+
+ListBooks.propTypes = {
+  books: propTypes.array.isRequired,
+  onChangeBookshelf: propTypes.func.isRequired
+}
 
 export default ListBooks;
 
