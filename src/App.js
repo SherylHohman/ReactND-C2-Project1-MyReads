@@ -38,10 +38,12 @@ class BooksApp extends React.Component {
     // find this particular book in books
     //  update its "shelf" field to the newly selected bookshelf
     //  books[myBook].shelf: shelf
-    console.log("I'm here..!", shelf, book.title);
+    console.log("I'm in changeBookshelf..! :", shelf, book.title);
     console.log("INTTRO ", this.state.books);
-    console.log("I'm still here..!", book.id);
-    // // const indexOfBook = this.books.indexOf(book);
+    // console.log("I'm still here..!", book.id);
+    const indexOfBook = this.books.findIndex((aBook) => (aBook.id === book.id));
+    console.log(indexOfBook);
+    console.log('before setState:', this.books[indexOfBook]);//.shelf, this.books[indexOfBook].title);
     // console.log(indexOfBook);
     // console.log("index, title, shelf:", indexOfBook)//,
                 // this.books[indexOfBook].title,
