@@ -34,6 +34,20 @@ class BooksApp extends React.Component {
     return filteredBookData
   }
 
+  changeBookshelf(book, shelf){
+    // find this particular book in books
+    //  update its "shelf" field to the newly selected bookshelf
+    //  books[myBook].shelf: shelf
+    const indexOfBook = this.books.indexOf(book);
+    console.log("index, title, shelf:", indexOfBook,
+                this.books[indexOfBook].title,
+                this.books[indexOfBook].shelf);
+
+    // this.setState((prev) => ({}));
+    // or can I use
+    // this.setState({books[indexOfMybook].shelf: shelf});
+  }
+
   render() {
     return (
       <div className="app">
@@ -43,11 +57,17 @@ class BooksApp extends React.Component {
         )} />
 
         <Route exact path="/" render={() => (
-          <ListBooks books={this.state.books}/>
-        ) }/>
+          <ListBooks
+            books={this.state.books}
+            onChangeBookshelf={this.changeBookshelf}
+          />
+        )} />
 
       </div>
     );
+          //   onChangeBookshelf={(book, shelf) => {
+          //     this.changeBookshelf(book, shelf);
+          //   }}
   }
 }
 

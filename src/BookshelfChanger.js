@@ -1,70 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const BookshelfChanger = function(props) {
-
-  // now has access to bookshelves from ListBooks component via props
-  const onChangeBookshelf = function(e){
-    const newShelf = e.target.value;
-    e.preventDefault;
-    props.onChangeBookshelf(props.book, newShelf);
-    console.log(`Changed ${props.book.title} to ${newShelf}`);
-  }
+class BookshelfChanger extends Component {
 
   // now has access to bookshelves from ListBooks component via props
-  const handleSubmit = function(e){
-    e.preventDefault();
+
+  onChangeBookshelf(e) {
+    // e.preventDefault();
     const newShelf = e.target.value;
-    props.onChangeBookshelf(props.book, newShelf);
-    console.log(`Changed ${props.book.title} to ${newShelf}`);
+    console.log("onChangeBookshelf\n", newShelf, ":", this.props.book.title);
+
+    this.props.onChangeBookshelf(this.props.book, newShelf);
+
+    // hmm.. just as the Functional Component version using `ref`,
+    //  BooksApp.changeBookshelf is NOT being called.
+    //  .. what to do ?
+    //  - (git commit .. JIC.)
+    //  - go Exercise !!
+    //  - review Contacts App. More Google Searches, docs, etc
+    //  - Fix.
   }
 
-  return (
+render() {
+    return (
 
-    <div className="book-shelf-changer">
-      {/*<select onChange={(event) => onChangeBookshelf(event)}>*/}
-      {/*<select onChange={(e) => onChangeBookshelf(e.target.value)}>*/}
-      <select ref={(select) => onChangeBookshelf}>
-        <option value="none" disabled>Move to...</option>
-        {props.bookshelves.map( (bookshelf) => (
+      <div className="book-shelf-changer">
+        <select onChange={(event)=>this.onChangeBookshelf(event)}>
+          <option value="none" disabled>Move to...</option>
+          {this.props.bookshelves.map( (bookshelf) => (
             <option key={bookshelf.shelf} value={bookshelf.shelf}>
-              {bookshelf.shelfTitle}</option>
-        ) )}
-        <option value="none">None</option>
-      </select>
-    </div>
+            {bookshelf.shelfTitle}</option>
+          ) )}
+          <option value="none">None</option>
+        </select>
+      </div>
 
-  );
+    );
+  }
+
 }
 
-
 export default BookshelfChanger;
-
-// looks like onchange is only accessible to Controlled Components
-// And I cannot seem to trigger
-
-// onChange won't work unless I convert this (back again) class component
-//  ..and select back to a Controlled Component
-//  However, for cases like this, I *can* use (DOM attribute) in it's stead.
-
-// Pretty sure I won't need a Controlled component afterall.
-// possibly not even a class component
-// I'll nust need to call an eventHandler of some sort, that will be defined
-//    in BooksApp, the owner of the state I need to change.
-//  .. and passed down to me via props.
-// Yea, thinking on how a select thingy works - and that it's a "modal" type thing.
-//   this component probably doesn't need state of it's own.
-//   - as soon as a user selects, it goes away.
-//  And state (of BooksApp) is changed.  Re-render will show everything in the new shelf..
-//... Ok, Yes, as suspected while refactoring to use bookshelves,
-//  I don't even need a class component.
-//  WANTED to revert back to Functional.. at that time, since that refactor
-//    *definitely* didn't need class, and nothing to date did.
-//    - it was looking "ugly" and in the way do me.. ha.
-//  ... but also only wanted to change one thing at a time.  So didn't
-//    remove it while also changing how the component was rendered.
-//  So here we are, an out of order commit to remove "class" refactor, and all references to this uneeded state variable.
-
-
 
 /*
   Thinking of how to approach this:

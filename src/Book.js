@@ -22,7 +22,10 @@ const Book = function(props){
             }}
         >
         </div>
-        <BookshelfChanger book={props.book} bookshelves={props.bookshelves}/>
+        <BookshelfChanger
+          book={props.book}
+          bookshelves={props.bookshelves}
+          onChangeBookshelf={props.onChangeBookshelf}/>
       </div>
       <div className="book-title">{title}</div>
       <div className="book-authors">{authors}</div>

@@ -26,7 +26,7 @@ const ListBooks = function(props){
                     shelfTitle={bookshelf.shelfTitle}
                     shelf={bookshelf.shelf}
                     bookshelves = {bookshelves}
-                  />
+                    onChangeBookshelf={props.onChangeBookshelf}/>
                 </li>
               ))}
             </div>

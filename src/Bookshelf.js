@@ -24,6 +24,7 @@ const Bookshelf = function(props){
                     <Book
                       book={book}
                       bookshelves={props.bookshelves}
+                      onChangeBookshelf={props.onChangeBookshelf}
                   /></li>
           ))}
 
