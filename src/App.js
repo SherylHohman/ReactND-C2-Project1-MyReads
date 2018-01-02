@@ -24,6 +24,7 @@ class BooksApp extends React.Component {
   filterBookData(booksAllData) {
     // pull only the data I need into state.books, and
     //   reformat into easy to access "variables"/properties
+
     const filteredBookData = booksAllData.map((bookAllData) => ({
       id: bookAllData.id,
       shelf: bookAllData.shelf,
@@ -35,25 +36,16 @@ class BooksApp extends React.Component {
   }
 
   changeBookshelf(book, shelf){
-    // find this particular book in books
-    //  update its "shelf" field to the newly selected bookshelf
-    //  books[myBook].shelf: shelf
-    
-    console.log("I'm in changeBookshelf..! :", shelf, book.title);
-    console.log("INTTRO ", this.state.books);
 
+    // update this book to have the new shelf value
     book.shelf = shelf;
 
-    console.log('push', this.state.books.filter((aBook) => (aBook.id !== book.id)).push(book));
-    console.log('concat', this.state.books.filter((aBook) => (aBook.id !== book.id)).concat(book));
-
+    //  filter gives me back array of all *Except* book.
+    //  now add book (back) into the array, but with its updated shelf value
     this.setState((prevState) => (
-      // {books: prevState.books.filter((aBook) => (aBook.id !== book.id)).push(book)} //push returns "7" rather than an array !?!
-      // `concat` adds `book` to the array. not sure why. I expected `push` to do so
+      // `concat` adds book to the array; `push` turns the array.length ?? dunno why
       {books: prevState.books.filter((aBook) => (aBook.id !== book.id)).concat(book)}
     ));
-
-    console.log("OUTTRO", this.state.books);
   }
 
 

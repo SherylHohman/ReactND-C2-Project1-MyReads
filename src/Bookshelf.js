@@ -6,9 +6,6 @@ const Bookshelf = function(props){
 
   const { books, shelfTitle, shelf } = props;
 
-  // prop.bookshelves is passed to us, but we don't need it directly.
-  //   Passing it down to Book, not because *Book* needs this property,
-  //   but because BookshelfChanger, a child of Book, needs it.
 
   return (
 
@@ -23,14 +20,14 @@ const Bookshelf = function(props){
                   <li key={book.id}>
                     <Book
                       book={book}
-                      bookshelves={props.bookshelves}
                       onChangeBookshelf={props.onChangeBookshelf}
+                      bookshelves={props.bookshelves}
                   /></li>
           ))}
 
           {/* ...or Loading message */}
           {books.length === 0 && (
-            <p>Retrieving your books.. </p>
+            <p>Dusting off your books.. </p>
           )}
 
         </ol>
@@ -44,9 +41,12 @@ Bookshelf.propTypes = {
   books: PropTypes.array.isRequired,
   shelfTitle: PropTypes.string.isRequired,
   shelf: PropTypes.string.isRequired,
-  bookshelves: PropTypes.array.isRequired,
-  onChangeBookshelf: PropTypes.func.isRequired
+  onChangeBookshelf: PropTypes.func.isRequired,
+  bookshelves: PropTypes.array.isRequired
 };
 
-export default Bookshelf;
+  // prop.bookshelves and onChangeBookshelf are passed in, only to be
+  //   passed down to <BookshelfChanger/>.
 
+
+export default Bookshelf;

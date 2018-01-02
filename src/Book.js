@@ -3,14 +3,8 @@ import BookshelfChanger from './BookshelfChanger';
 import PropTypes from 'prop-types';
 
 const Book = function(props){
-  // convenience variables
+
   const {title, authors, bookCoverURL} = props.book;
-
-  // prop.bookshelves is passed to us, but we don't need it directly.
-  //   to BookshelfChanger, so that it's <select> options will always match
-  //   the list Bookshelf Titles, defined in ListBooks.
-  //   That's what bookshelves stores.
-
 
   return (
     <div className="book">
@@ -24,8 +18,8 @@ const Book = function(props){
         </div>
         <BookshelfChanger
           book={props.book}
-          bookshelves={props.bookshelves}
-          onChangeBookshelf={props.onChangeBookshelf}/>
+          onChangeBookshelf={props.onChangeBookshelf}
+          bookshelves={props.bookshelves}/>
       </div>
       <div className="book-title">{title}</div>
       <div className="book-authors">{authors}</div>
@@ -35,8 +29,14 @@ const Book = function(props){
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
-  bookshelves: PropTypes.array.isRequired,
-  onChangeBookshelf: PropTypes.func.isRequired
+  onChangeBookshelf: PropTypes.func.isRequired,
+  bookshelves: PropTypes.array.isRequired
 };
+  // prop.bookshelves is passed in, only to be passed down to
+  //   BookshelfChanger. re: it's <select> options will always match
+  //   the list Bookshelf Titles, defined in ListBooks, stored in bookshelves
+  // likewise, onChanageBookshelf is also passed through.
+
+
 
 export default Book;
