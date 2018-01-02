@@ -37,15 +37,40 @@ class BooksApp extends React.Component {
 
   changeBookshelf(book, shelf){
 
-    // update this book to have the new shelf value
-    book.shelf = shelf;
+  // update database
+    BooksAPI.update(book, shelf).then((res) => {
+      // console.log('updated:', res);
+      // console.log(book.id, res[shelf], res[shelf].indexOf(book.id));
 
-    //  filter gives me back array of all *Except* book.
-    //  now add book (back) into the array, but with its updated shelf value
-    this.setState((prevState) => (
-      // `concat` adds book to the array; `push` turns the array.length ?? dunno why
-      {books: prevState.books.filter((aBook) => (aBook.id !== book.id)).concat(book)}
-    ));
+    // Verify DB was updated, before updating our state
+    if (res[shelf].indexOf(book.id) !== -1) {
+
+      // if new shelf is `none` remove this book from state array
+      if (shelf === 'none') {
+        this.setState((prevState) => (
+          {books: prevState.books.filter((aBook) => (aBook.id !== book.id))}
+        ));
+        // TODO: consider keeping it in array with 'none'value
+        //    then can add an additional shelf: "recently removed",
+        //    showing "none" values.
+        //    This row bould be cleared on Page/App reload/refresh
+
+      } else {
+        // remove book, then add it back to array, but with new shelf value
+        book.shelf = shelf;
+        this.setState((prevState) => (
+          // `concat` adds book to the array; `push` turns the array.length - why??
+          {books: prevState.books
+            .filter((aBook) => (aBook.id !== book.id))
+            .concat(book)
+          }
+        ));
+      }  // if none
+
+    } // if DB update successful
+
+    })// .then
+
   }
 
 
