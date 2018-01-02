@@ -13,60 +13,43 @@ class BookshelfChanger extends Component {
     shelf: this.props.book.shelf
   }
 
-  componentDidMount() {
-    // this.setState({ shelf: this.props.book.shelf });
-    console.log("entering didMount", this.state);
-    this.setState( {shelf: this.props.book.shelf} );
-    console.log("exiting  didMount", this.state);
-  // }
-
-  // changeShelf(newShelf){
-  //   this.setState({ shelf: newShelf });
-  //   this.props.onChangeBookshelf(this.prop.book, newShelf);
-  }
-
   changeShelf(newShelf){
-    // e.preventDefault();
-    // const newShelf = e.target.value;
     console.log("entering changeShelf", this.state, newShelf)
-    this.setState({ shelf: newShelf });
-    console.log("changed local Shelf", this.state)
+
+    // as suspected.. Controlled Component is not needed:
+    //  since component closes, re-render to keep <select>'s selected option
+    //  aligned with this.state.shelf serves no purpose *In This Case*
+    //  When Modal is re-opened, then it'll re-render, showing up on the screen again, and automatically be set to the proper value when state is initialized at render time.
+
+    // turns <select> into a modal component
+    // this.setState({ shelf: newShelf });
+    // console.log("changed local Shelf", this.state)
+
     this.props.onChangeBookshelf(this.prop.book, this.state.shelf);
     console.log("leaving  changeShelf", this.state)
   }
-
-  // // onChangeBookshelf(e) {
-    //   // e.preventDefault();
-    //   const newShelf = e.target.value;
-    //   console.log("onChangeBookshelf\n", newShelf, ":", this.props.book.title);
-
-    //   this.props.onChangeBookshelf(this.props.book, newShelf);
-
-    //   // hmm.. just as the Functional Component version using `ref`,
-    //   //  BooksApp.changeBookshelf is NOT being called.
-    //   //  .. what to do ?
-    //   //  - (git commit .. JIC.)
-    //   //  - go Exercise !!
-    //   //  - review Contacts App. More Google Searches, docs, etc
-    //   //  - Fix.
-    // }
 
 render() {
     return (
 
       <div className="book-shelf-changer">
-        {/*<select onChange={(event) => this.onChangeBookshelf(event)}>*/}
-        {/*<select onChange={(e) => this.props.onChangeBookshelf(e.target.value)}>*/}
+}
         <select
           value={this.state.shelf}
-/*          onChange={(e) => this.changeShelf(e.target.value)}>*/
-            onChange={(e) => this.props.onChangeBookshelf(this.props.book, e.target.value)}>
-            <option value="none" disabled>Move to...</option>
-            {this.props.bookshelves.map( (bookshelf) => (
-              <option key={bookshelf.shelf} value={bookshelf.shelf}>
-              {bookshelf.shelfTitle}</option>
-            ))}
-            <option value="none">None</option>
+          onChange={(e) => this.props.onChangeBookshelf(
+            this.props.book, e.target.value)
+        }>
+          <option value="none" disabled>Move to...</option>
+
+          {/* bookshelves options */}
+          {this.props.bookshelves.map( (bookshelf) => (
+            <option key={bookshelf.shelf} value={bookshelf.shelf}>
+              {bookshelf.shelfTitle}
+            </option>))}
+
+          {/* option removes book from bookshelf */}
+          <option value="none">None</option>
+
         </select>
       </div>
 

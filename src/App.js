@@ -38,53 +38,26 @@ class BooksApp extends React.Component {
     // find this particular book in books
     //  update its "shelf" field to the newly selected bookshelf
     //  books[myBook].shelf: shelf
+    
     console.log("I'm in changeBookshelf..! :", shelf, book.title);
     console.log("INTTRO ", this.state.books);
-    // console.log("I'm still here..!", book.id);
-    const indexOfBook = this.books.findIndex((aBook) => (aBook.id === book.id));
-    console.log(indexOfBook);
-    console.log('before setState:', this.books[indexOfBook]);//.shelf, this.books[indexOfBook].title);
-    // console.log(indexOfBook);
-    // console.log("index, title, shelf:", indexOfBook)//,
-                // this.books[indexOfBook].title,
-                // this.books[indexOfBook].shelf);
+
     book.shelf = shelf;
-    // this.setState( {books[indexOfBook].shelf: shelf} );
-    // this.setState((prevState) => (
-    //   {books: prevState.books.filter((aBook) => (aBook.id !== book.id))
-    //                  .push(book)}
-    //                     // .concat([ book ])
-    // ));
+
+    console.log('push', this.state.books.filter((aBook) => (aBook.id !== book.id)).push(book));
+    console.log('concat', this.state.books.filter((aBook) => (aBook.id !== book.id)).concat(book));
 
     this.setState((prevState) => (
-      {books: prevState.books.filter((aBook) => (aBook.id !== book.id)).push(book)}
+      // {books: prevState.books.filter((aBook) => (aBook.id !== book.id)).push(book)} //push returns "7" rather than an array !?!
+      // `concat` adds `book` to the array. not sure why. I expected `push` to do so
+      {books: prevState.books.filter((aBook) => (aBook.id !== book.id)).concat(book)}
     ));
 
-    console.log(this.state.books.filter((aBook) => (aBook.id !== book.id)).concat(book));
     console.log("OUTTRO", this.state.books);
-    // console.log("outtro", this.state.books[-1].shelf, this.state.books[-1].title);
-      // this.state.books[indexOfBook].shelf, this.state.books[indexOfBook].title
-
-    // this.setState((prev) => ({}));
-    // or can I use
-    // this.setState({books[indexOfMybook].shelf: shelf});
   }
 
-  dumb(){
-    let dummy='';
-    console.log(dummy)
-    if (this.state.books.length>0) {
-      dummy="not yet"
-    } else {
-      dummy=this.state.books[0].title
-    }
-    console.log(dummy, dummy)
-    return dummy
-// <h3>this.dumb()</h3>
-  }
 
   render() {
-
     return (
 
       <div className="app">
@@ -96,15 +69,15 @@ class BooksApp extends React.Component {
         <Route exact path="/" render={() => (
           <ListBooks
             books={this.state.books}
-            onChangeBookshelf={ (aBook, newShelf) => {this.changeBookshelf(aBook, newShelf)} }
+            onChangeBookshelf={ (aBook, newShelf) => {
+              this.changeBookshelf(aBook, newShelf)}
+            }
           />
         )} />
 
       </div>
     );
-          //   onChangeBookshelf={(book, shelf) => {
-          //     this.changeBookshelf(book, shelf);
-          //   }}
+
   }
 }
 
