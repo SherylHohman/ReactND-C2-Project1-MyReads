@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import ListBooks from './ListBooks';
 import SearchBooks from './SearchBooks';
 import * as BooksAPI from './BooksAPI';
+import formatData from './utils/FormatData';
 import './App.css';
 
 class BooksApp extends React.Component {
@@ -13,20 +14,20 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     // fetch all books from Database
-    BooksAPI.getAll().then((booksAllData) => {
-      console.log('fetched', booksAllData);
+    BooksAPI.getAll().then((booksAPIData) => {
+      console.log('fetched', booksAPIData);
 
       // filter out and reformat data before storing it into state
-      const books = this.filterBookData(booksAllData)
+      const books = formatData(booksAPIData)
       this.setState({ books });
     })
 
     // temp - debugging why this doesn't work in SearchBooks. Does work Here!
-    BooksAPI.search('React').then((booksAllData) => {
-      console.log('fetched React: ', booksAllData);
+    BooksAPI.search('React').then((booksAPIData) => {
+      console.log('fetched React: ', booksAPIData);
 
       // filter out and reformat data before storing it into state
-      const search = this.filterBookData(booksAllData)
+      const search = formatData(booksAPIData)
       this.setState({ search });
       console.log('books React: ', this.state.search);
 
@@ -34,40 +35,6 @@ class BooksApp extends React.Component {
 
 }
 
-  filterBookData(booksAllData) {
-    // pull only the data I need into state.books, and
-    //   reformat into easy to access "variables"/properties
-
-    // Note: that "search" API only returns books that do *NOT* already
-    //  reside on a shelf.  They have no "shelf" property - it must be added.
-    //  (on the other hand, they have a "categories" property that getAll books don't.)
-
-    const filteredBookData = booksAllData.map((bookAllData) => ({
-      id: bookAllData.id,
-      title: bookAllData.title,
-      // books from search API: must add `shelf` property, and default it to 'none'
-      shelf: bookAllData.shelf || 'none',
-      authors: bookAllData.authors,
-      bookCoverURL: bookAllData.imageLinks.thumbnail
-    }));
-    console.log(filteredBookData);
-
-    // lets go ahead and alphatize books by title. Easier to inspect in console.
-    const sortedBooks = filteredBookData.sort((a, b) => {
-      const titleA = a.title.toUpperCase();
-      const titleB = b.title.toUpperCase();
-      if (titleA < titleB) {return -1;}
-      if (titleA > titleB) {return  1;}
-      return 0;
-    });
-    console.log('sorted', sortedBooks)
-
-    // TODO: advanced functionality of app. Allow user to sort shelves
-    //  alphabetically by author(s), or title.  In that case, perhaps use sortBy
-    //  package for ease of use, and DRY code.
-
-    return sortedBooks;
-  }
 
   changeBookshelf(book, shelf){
 
@@ -114,7 +81,7 @@ class BooksApp extends React.Component {
       <div className="app">
 
         <Route path="/search" render={() => (
-          <SearchBooks filterBookData={this.filterBookData}/>
+          <SearchBooks/>
         )} />
 
         <Route exact path="/" render={() => (

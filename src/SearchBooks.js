@@ -1,13 +1,14 @@
 import React, {Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import BooksAPI from './BooksAPI';
+import formatData from './utils/FormatData';
 
 class SearchBooks extends Component {
 
-  static propTypes = {
-    filterBookData: PropTypes.func.isRequired
-  }
+  // static propTypes = {
+  //   filterBookData: PropTypes.func.isRequired
+  // }
 
   state = {
     query: '',
