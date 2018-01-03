@@ -1,14 +1,9 @@
 import React, {Component } from 'react';
 import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 import * as BooksAPI from './BooksAPI';
 import formatData from './utils/FormatData';
 
 class SearchBooks extends Component {
-
-  // static propTypes = {
-  //   filterBookData: PropTypes.func.isRequired
-  // }
 
   state = {
     query: '',
@@ -16,50 +11,48 @@ class SearchBooks extends Component {
   }
 
   componentDidMount(){
-    console.log('..in componentDidMount..');
+    console.log('..in componentDidMount..: SearchBooks');
     console.log('query at componentDidMount:', this.state.query);
     console.log('booksSearch at componentDidMount:', this.state.booksSearch);
 
     if (this.state.query) {
       this.getSearchResults();
     }
-    console.log('exiting componentDidMount.\n');
+    console.log('exiting componentDidMount.. (SearchBooks)\n');
   }
 
   searchForBooks(){
 
-    console.log('-----------in searchForBooks..');
+    console.log('--in searchForBooks..');
     console.log('state', this.state);
     if (this.state.query) {
 
       // temp - debugging why this doesn't work in SearchBooks. Does work Here!
       console.log('about to Search DB for React..');
       BooksAPI.search('React').then((booksAPIData) => {
-        console.log('fetched React: ', booksAPIData);
+        console.log('fetched React: (allAPIdata): ', booksAPIData);
 
         // filter out and reformat data before storing it into state
         const booksSearch = formatData(booksAPIData)
         this.setState({ booksSearch });
-        console.log('books React: ', this.state.booksSearch);
+        console.log('booksSearch: ', this.state.booksSearch);
 
       })
-      console.log('--------..leaving searchForBooks');
     }
 
   }
 
   updateQuery(e, query) {
 
-    e.preventDefault();
-    console.log("(e) q:",e.target.value);
-
-    console.log('in updateQuery..');
-    // Hmm... why is updateQuery running at onSubmit ?
-    // e.preventDefault();
-    console.log('beforesSs query: ', this.state.query);
+    // TODO: remove non alpha chars from query. Curated SEARCH_TERMS.md are alpha.
     console.log('updating query to:', query.trim());
+
     this.setState( {query: query.trim()} );
-    console.log('aftersS query: ', this.state.query);
+    // as it stands, search box does not need to be a controlled component
+    // TODO: - either remove its "controlled aspect" (not required)
+    // or advanced TODO: only update state if query (partial) matches a valid
+    //    SEARCH_TERM.md
+    // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
   }
 
   clearQuery(query) {
@@ -70,21 +63,20 @@ class SearchBooks extends Component {
   }
 
   onSubmitHandler(e, query){
-    console.log('*******in onSubmitHandler..');
+    console.log('*in onSubmitHandler..', query);
     e.preventDefault();
 
-    // console.log('..searching for books..', this.state.query);
     this.searchForBooks(query);
-    console.log("************..leaving onSubmitHandler..\n");
+    console.log("*..leaving onSubmitHandler..\n");
   }
 
 
   render() {
 
     console.log('..rendering..');
-    console.log('r state:', this.state);
-    console.log('r state.bookSearch:', this.state.booksSearch);
-    console.log('r state.query:', this.state.query);
+    // console.log('r state:', this.state);
+    // console.log('r state.bookSearch:', this.state.booksSearch);
+    // console.log('r state.query:', this.state.query);
     return (
 
       <div className="search-books">

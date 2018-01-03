@@ -14,7 +14,7 @@ const formatData = function(booksAPIdata){
       authors: bookAPIdata.authors,
       bookCoverURL: bookAPIdata.imageLinks.thumbnail
     }));
-    console.log(booksData);
+    console.log('formatted:', booksData);
 
     // lets go ahead and alphatize books by title. Easier to inspect in console.
     const sortedBooks = booksData.sort((a, b) => {
@@ -24,7 +24,7 @@ const formatData = function(booksAPIdata){
       if (titleA > titleB) {return  1;}
       return 0;
     });
-    console.log('sorted', sortedBooks)
+    console.log('sorted:', sortedBooks)
 
     // Notice: Over Time, books (on the shelves) will become "unsorted",
     //  as books are moved on, off, and between shelves.
