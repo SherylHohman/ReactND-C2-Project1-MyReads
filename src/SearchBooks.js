@@ -51,8 +51,12 @@ class SearchBooks extends Component {
     console.log('exiting componentDidMount.\n');
   }
 
-  getSearchResults(){
-    console.log('in getSearchResults');
+  searchForBooks(){
+
+    // !!!!!!!!!!!!  SEARCH FOR BOOKS IS NEVER EXECUTED  !!!!!!!!
+    // !!!!!!!!!!!!   .. b/c ON SUBMIT HANDLER IS NEVER EXECUTED  !!!!!!!!
+
+    console.log('-----------in searchForBooks..');
     console.log('state', this.state);
     if (this.state.query) {
 
@@ -76,12 +80,15 @@ class SearchBooks extends Component {
         console.log('books React: ', this.state.search);
 
       })
+
+      console.log('--------..leaving searchForBooks');
     }
   }
 
   updateQuery(e, query) {
 
     e.preventDefault();
+    console.log("(e) q:",e.target.value);
 
     console.log('in updateQuery..');
     // Hmm... why is updateQuery running at onSubmit ?
@@ -100,8 +107,13 @@ class SearchBooks extends Component {
   }
 
   onSubmitHandler(e){
-    console.log('in onSubmitHandler..');
+    // !!!!!!!!!!!!  ON SUBMIT HANDLER IS NEVER EXECUTED  !!!!!!!!
+
+    console.log('*******in onSubmitHandler..');
     e.preventDefault();
+
+    console.log('..searching for books..', this.state.query);
+    this.searchForBooks();
     // his// console.log("value", e.target.value, 'e', e);
     // this.updateQuery(e.target.value);
 
@@ -116,7 +128,8 @@ class SearchBooks extends Component {
     //  at re-render, componentDidMount will be called, triggering API request
     //  for the new set of books.. then when received, re-render with books
     //  whala (I hope..)
-    this.setState({ booksSearch: [] });
+
+    // this.setState({ booksSearch: [] });
 
     // // BooksAPI.search(this.state.query).then((booksAPIData) => {
     // //   console.log('searched',booksAPIData);
@@ -124,7 +137,7 @@ class SearchBooks extends Component {
     // //   // this.setState({ booksSearch });
 
     // console.log('booksSearch', this.state.booksSearch);
-    console.log("\n");
+    console.log("************..leaving onSubmitHandler..\n");
   }
 
 
@@ -196,6 +209,23 @@ export default SearchBooks;
 */
 
 /* ACK BUG and feature Status:
+
+  // !!!!!!!!!!!!  SEARCH FOR BOOKS IS NEVER EXECUTED  !!!!!!!!
+  // !!!!!!!!!!!!   .. b/c ON SUBMIT HANDLER IS NEVER EXECUTED  !!!!!!!!
+
+  // And URL changes: adding "?" causing APP to "Restart" - Reload
+
+  // -- perhaps I should remove all non-alpha chars from "query"
+  // -- we're limited to certain terms only, anyway.  2 birds, 1 stone ?
+  //    (not "correct" solution - not address actual problem - hacky "fix" prob won't work anyway - because page reloads WITHOUT calling UPDATE QUERY at time of submit.)
+
+  // Was thinking of "Advanced" (don't have time for.. but features to add:)
+  //  show allowed search terms. Only (and Automatically) "submit", CALL
+  //  SEARCH BOOKS when one of the terms is matched.
+  //  could also add colored feedback showing matches as user types,
+  //    or remove unmatched terms as user types.
+  //  Could also do advanced char matching like PackageControl does..
+
 
   App RELOADS from server () at Search onSubmit !! Why?
 
