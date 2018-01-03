@@ -106,15 +106,17 @@ class SearchBooks extends Component {
     console.log('query: ', this.state.query);
   }
 
-  onSubmitHandler(e){
+  onSubmitHandler(e, query){
     // !!!!!!!!!!!!  ON SUBMIT HANDLER IS NEVER EXECUTED  !!!!!!!!
 
     console.log('*******in onSubmitHandler..');
     e.preventDefault();
 
-    console.log('..searching for books..', this.state.query);
-    this.searchForBooks();
-    // his// console.log("value", e.target.value, 'e', e);
+    // console.log('..searching for books..', this.state.query);
+    this.searchForBooks(query);
+    /*this.searchForBooks(e.target.value);*/
+
+    // this// console.log("value", e.target.value, 'e', e);
     // this.updateQuery(e.target.value);
 
     // why is this.state UNDEFINED??
@@ -159,13 +161,15 @@ class SearchBooks extends Component {
           </Link>
 
           <div className="search-books-input-wrapper">
+            <form onSubmit={(e) => {this.onSubmitHandler(e, this.state.query)}}>
+            {/*<form onSubmit={this.onSubmitHandler(event)}>*/}
             {/*<form onSubmit={this.onSubmitHandler}>*/}
-            <form onSubmit={(e) => this.onSubmitHandler }>
+            {/*<form onSubmit={(e) => this.onSubmitHandler() }>*/}
               <input
                 type="text"
                 placeholder="Search by title or author"
                 value={this.state.query}
-                onChange={ (event) => {this.updateQuery(event, event.target.value)}}
+                onChange={ (event) => {this.updateQuery(event, event.target.value)} }
               />
               {/* HTML5 supports "hidden" property, so submit button not seen
                   Note: buttons always default to submit.
