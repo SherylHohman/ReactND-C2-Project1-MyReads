@@ -1,9 +1,16 @@
 import React, {Component } from 'react';
 import { Link } from 'react-router-dom';
+import Bookshelf from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import formatData from './utils/FormatData';
+import PropTypes from 'prop-types';
 
 class SearchBooks extends Component {
+
+  static propTypes = {
+    onChangeBookshelf: PropTypes.func.isRequired
+    // bookshelves: PropTypes.array.isRequired
+  }
 
   state = {
     query: '',
@@ -73,6 +80,32 @@ class SearchBooks extends Component {
 
   render() {
 
+    const browsingShelf = [
+      {shelf: "none", shelfTitle: this.state.query},
+    ];
+
+    const tempBookshelvesDUPLICATED = [
+      {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
+      {shelf: "wantToRead",       shelfTitle: "Want To Read"},
+      {shelf: "read",             shelfTitle: "Did Read"}
+    ];
+    //  copy of const "bookshelves" from ListBooks.
+    //    SearchBooks and Bookshelf only need "bookshelves so it can be passed"
+    //    down to changeBookshelves Component.
+    //  ListBooks currently owns this data, and passes it down to Bookshelf,
+    //    but it cannot pass it down to (here) SearchBooks
+
+    //  Therefore, either BooksApp needs to own this data, so it can be passed
+    //    both here, and to ListBooks, to be used and/or passed on down the line.
+    //  Or, can move this const into utils folder. It *is* kind of realated to
+    //    data and info that's stored on the server..
+
+    //  Or can consider restructuring the app all together.
+    //  FOR NOW, in order to see what BROWSING BOOKS looks like,
+    //    get it MVP complete, see what it looks like, decide on layout, design
+    //    and functionality of this component, I'll use this DUPLICATED ver.
+
+
     console.log('..rendering..');
     // console.log('r state:', this.state);
     // console.log('r state.bookSearch:', this.state.booksSearch);
@@ -101,9 +134,23 @@ class SearchBooks extends Component {
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
 
+        {/* TODO:
+            - this code could be a component that gets sent in an "bookshelf array".
+              It's the same code that gets mapped over in Bookshelf.
+              Here, it could then map over (browsingShelf, above);
+              and there, map over bookshelves.  Satisify the requirements for both.
+            - On the other hand, I may want to include additional information
+              for thebooks in this page. Such as Description, etc.
+       */}
+
         <div className="search-books-results">
           <ol className="books-grid">
-            {/* TODO: Show Results of search */}
+                <Bookshelf
+                  books={this.state.booksSearch}
+                  shelfTitle={this.state.query}
+                  shelf={'none'}
+                  onChangeBookshelf={this.props.onChangeBookshelf}
+                  bookshelves={[tempBookshelvesDUPLICATED]}/>
           </ol>
         </div> {/* search-books-results */}
 

@@ -5,11 +5,11 @@ import propTypes from 'prop-types';
 
 const ListBooks = function(props){
 
-  const bookshelves = [
-    {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
-    {shelf: "wantToRead",       shelfTitle: "Want To Read"},
-    {shelf: "read",             shelfTitle: "Did Read"}
-  ];
+const bookshelves = [
+  {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
+  {shelf: "wantToRead",       shelfTitle: "Want To Read"},
+  {shelf: "read",             shelfTitle: "Did Read"}
+];
 
   return (
 
