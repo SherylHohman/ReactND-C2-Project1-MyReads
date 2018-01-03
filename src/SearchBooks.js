@@ -94,19 +94,8 @@ class SearchBooks extends Component {
                 value={this.state.query}
                 onChange={ (event) => {this.updateQuery(event, event.target.value)} }
               />
-              {/* HTML5 supports "hidden" property, so submit button not seen
-                  Note: buttons always default to submit.
-                  submit <button> or <input> REQUIRED for form onSubmit to work.
-                  First "submit" field listed
-                    (includes buttons that aren't *specifically* "type=" otherwise)
-                  is the data that gets passed as "e" to form's onSubmit.
-                  Hence, if don't have a "submit" <button> or <input>
-                    Then event passed to form's onSubmit will be UNDEFINED !
-                  Button *woulb be* ugly here. Fortunately, HTML 5 "hidden"
-                    attribute to the rescue. (solves issues with workarounds in various browsers prior to its availability)
-                */}
-              {/*<button type="submit" hidden>Search for Books</button>*/}
-              <button>Search for Books</button>
+              <button type="submit" hidden>Search for Books</button>
+
             </form>
 
           </div> {/* search-books-input-wrapper */}
