@@ -8,8 +8,8 @@ import './App.css';
 
 class BooksApp extends React.Component {
   state = {
-    books : [],
-    search: []  /* temp - debugging why this doesn't work in SearchBooks*/
+    books : []//,
+    // search: []  /* temp - debugging why this doesn't work in SearchBooks*/
   }
 
   componentDidMount() {
@@ -22,16 +22,16 @@ class BooksApp extends React.Component {
       this.setState({ books });
     })
 
-    // temp - debugging why this doesn't work in SearchBooks. Does work Here!
-    BooksAPI.search('React').then((booksAPIData) => {
-      console.log('fetched React: ', booksAPIData);
+    // // temp - debugging why this doesn't work in SearchBooks. Does work Here!
+    // BooksAPI.search('React').then((booksAPIData) => {
+    //   console.log('fetched React: ', booksAPIData);
 
-      // filter out and reformat data before storing it into state
-      const search = formatData(booksAPIData)
-      this.setState({ search });
-      console.log('books React: ', this.state.search);
+    //   // filter out and reformat data before storing it into state
+    //   const search = formatData(booksAPIData)
+    //   this.setState({ search });
+    //   console.log('books React: ', this.state.search);
 
-    })
+    // })
 
 }
 

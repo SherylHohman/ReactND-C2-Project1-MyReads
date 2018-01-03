@@ -16,37 +16,126 @@ class SearchBooks extends Component {
   }
 
   componentDidMount(){
+    console.log('..in componentDidMount..');
+    console.log('query at componentDidMount:', this.state.query);
+    console.log('booksSearch at componentDidMount:', this.state.booksSearch);
+
     if (this.state.query) {
-      BooksAPI.search(this.state.query).then((booksAllData) => {
-        console.log('CDM searched', booksAllData);
-        // const booksSearch = this.props.filterBookData(booksAllData);
-        // this.setState({ booksSearch });
-
-        console.log('CDM booksSearch', this.state.booksSearch);
-      });
+      this.getSearchResults();
     }
+    // if (this.state.query) {
 
+    // //   BooksAPI.search(this.state.query).then((booksAPIData) => {
+    // //     console.log('CDM searched', booksAPIData);
+    // //     // const booksSearch = this.props.filterBookData(booksAPIData);
+    // //     // this.setState({ booksSearch });
+
+    // //     console.log('CDM booksSearch', this.state.booksSearch);
+    // //   });
+    // // }
+
+    //   // temp - debugging why this doesn't work in SearchBooks. Does work Here!
+    //   console.log('about to Search DB for React..');
+    //   BooksAPI.search('React').then((booksAPIData) => {
+    //     console.log('fetched React: ', booksAPIData);
+
+    //     // filter out and reformat data before storing it into state
+    //     const search = formatData(booksAPIData)
+    //     this.setState({ search });
+    //     console.log('books React: ', this.state.search);
+
+    //   })
+    // } else {
+    //   this.setState({booksSearch: []});
+    // }
+    console.log('exiting componentDidMount.\n');
   }
 
-  updateQuery(query) {
+  getSearchResults(){
+    console.log('in getSearchResults');
+    console.log('state', this.state);
+    if (this.state.query) {
+
+    //   BooksAPI.search(this.state.query).then((booksAPIData) => {
+    //     console.log('CDM searched', booksAPIData);
+    //     // const booksSearch = this.props.filterBookData(booksAPIData);
+    //     // this.setState({ booksSearch });
+
+    //     console.log('CDM booksSearch', this.state.booksSearch);
+    //   });
+    // }
+
+      // temp - debugging why this doesn't work in SearchBooks. Does work Here!
+      console.log('about to Search DB for React..');
+      BooksAPI.search('React').then((booksAPIData) => {
+        console.log('fetched React: ', booksAPIData);
+
+        // filter out and reformat data before storing it into state
+        const search = formatData(booksAPIData)
+        this.setState({ search });
+        console.log('books React: ', this.state.search);
+
+      })
+    }
+  }
+
+  updateQuery(e, query) {
+
+    e.preventDefault();
+
+    console.log('in updateQuery..');
+    // Hmm... why is updateQuery running at onSubmit ?
+    // e.preventDefault();
+    console.log('beforesSs query: ', this.state.query);
+    console.log('updating query to:', query.trim());
     this.setState( {query: query.trim()} );
-    console.log(this.state.query);
+    console.log('aftersS query: ', this.state.query);
+  }
+
+  clearQuery(query) {
+    console.log('in clearQuery..');
+    console.log('resetting query to ""');
+    this.setState( {query: ''} );
+    console.log('query: ', this.state.query);
   }
 
   onSubmitHandler(e){
+    console.log('in onSubmitHandler..');
     e.preventDefault();
-    console.log("searching for..", this.state.query);
+    // his// console.log("value", e.target.value, 'e', e);
+    // this.updateQuery(e.target.value);
 
-    // BooksAPI.search(this.state.query).then((booksAllData) => {
-    //   console.log('searched',booksAllData);
-    //   // const booksSearch = this.props.filterBookData(booksAllData);
-    //   // this.setState({ booksSearch });
+    // why is this.state UNDEFINED??
+    // console.log('state:', this.state);
+    // console.log("query for..", this.state.query)
 
-      console.log('booksSearch', this.state.booksSearch);
+    // console.log("e.target.value:", e.target.value);
+    // console.log("this.state.query:", this.state.query);
+    // clear this.state.searchBook
+    //  this calls setState, which will cause re-render
+    //  at re-render, componentDidMount will be called, triggering API request
+    //  for the new set of books.. then when received, re-render with books
+    //  whala (I hope..)
+    this.setState({ booksSearch: [] });
+
+    // // BooksAPI.search(this.state.query).then((booksAPIData) => {
+    // //   console.log('searched',booksAPIData);
+    // //   // const booksSearch = this.props.filterBookData(booksAPIData);
+    // //   // this.setState({ booksSearch });
+
+    // console.log('booksSearch', this.state.booksSearch);
+    console.log("\n");
   }
 
 
   render() {
+
+    // UGH - "Entering" a search terms seems to trigger a PAGE RELOAD FROM SERVER - "?" is added to address bar. Even though I have PrevendDefault !
+
+    console.log('..rendering..');
+    console.log('r state:', this.state);
+    console.log('r state.bookSearch:', this.state.booksSearch);
+    console.log('r state.query:', this.state.query);
     return (
 
       <div className="search-books">
@@ -57,13 +146,27 @@ class SearchBooks extends Component {
           </Link>
 
           <div className="search-books-input-wrapper">
-            <form onSubmit={(e) => this.onSubmitHandler(e)}>
+            {/*<form onSubmit={this.onSubmitHandler}>*/}
+            <form onSubmit={(e) => this.onSubmitHandler }>
               <input
                 type="text"
                 placeholder="Search by title or author"
                 value={this.state.query}
-                onChange={ (event) => {this.updateQuery(event.target.value)}}
+                onChange={ (event) => {this.updateQuery(event, event.target.value)}}
               />
+              {/* HTML5 supports "hidden" property, so submit button not seen
+                  Note: buttons always default to submit.
+                  submit <button> or <input> REQUIRED for form onSubmit to work.
+                  First "submit" field listed
+                    (includes buttons that aren't *specifically* "type=" otherwise)
+                  is the data that gets passed as "e" to form's onSubmit.
+                  Hence, if don't have a "submit" <button> or <input>
+                    Then event passed to form's onSubmit will be UNDEFINED !
+                  Button *woulb be* ugly here. Fortunately, HTML 5 "hidden"
+                    attribute to the rescue. (solves issues with workarounds in various browsers prior to its availability)
+                */}
+              {/*<button type="submit" hidden>Search for Books</button>*/}
+              <button>Search for Books</button>
             </form>
 
           </div> {/* search-books-input-wrapper */}
@@ -90,4 +193,26 @@ export default SearchBooks;
 
   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
   you don't find a specific author or title. Every search is limited by search terms.
+*/
+
+/* ACK BUG and feature Status:
+
+  App RELOADS from server () at Search onSubmit !! Why?
+
+  preventDefault called in Both: onChange and onSubmit.
+  But...
+    - page Reloads from server.
+    - "?" is added to URL in browser bar
+    - API not getting called with search query.
+    - .. hence booksSearch always empty,
+    - .. and query gets reset
+    - .. and books gets re-fetched from server, even though Not displaying
+         Home page, where books would be shown.
+       Hmm.. I'm not calling any methods on BooksApp, nor setting BooksApp.state. So, why is it rendered?
+       -- wait, is this because somehow "?" is added to URL
+       -- BACK to SQUARE 1: Why is ? being added?
+       -- 'Enter Key', or 'Button Click' must be adding it.
+       -- But Why?? PreventDefault isn't that part of it's jobG?
+       -- I don't want to add ANYTHING to the this.state.query at that point.
+
 */
