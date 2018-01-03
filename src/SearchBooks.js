@@ -1,7 +1,7 @@
 import React, {Component } from 'react';
 import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
-import BooksAPI from './BooksAPI';
+import * as BooksAPI from './BooksAPI';
 import formatData from './utils/FormatData';
 
 class SearchBooks extends Component {
@@ -75,9 +75,9 @@ class SearchBooks extends Component {
         console.log('fetched React: ', booksAPIData);
 
         // filter out and reformat data before storing it into state
-        const search = formatData(booksAPIData)
-        this.setState({ search });
-        console.log('books React: ', this.state.search);
+        const booksSearch = formatData(booksAPIData)
+        this.setState({ booksSearch });
+        console.log('books React: ', this.state.booksSearch);
 
       })
 
