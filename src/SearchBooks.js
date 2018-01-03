@@ -143,18 +143,25 @@ class SearchBooks extends Component {
               for thebooks in this page. Such as Description, etc.
        */}
 
-        <div className="search-books-results">
-          <ol className="books-grid">
-                <Bookshelf
-                  books={this.state.booksSearch}
-                  shelfTitle={this.state.query}
-                  shelf={'none'}
-                  onChangeBookshelf={this.props.onChangeBookshelf}
-                  bookshelves={[tempBookshelvesDUPLICATED]}/>
-          </ol>
-        </div> {/* search-books-results */}
+        {this.state.booksSearch ? (
+          <div className="search-books-results">
+            <ol className="books-grid">
+                  <Bookshelf
+                    books={this.state.booksSearch}
+                    shelfTitle={this.state.query}
+                    shelf={'none'}
+                    onChangeBookshelf={this.props.onChangeBookshelf}
+                    bookshelves={tempBookshelvesDUPLICATED}/>
+            </ol>
+          </div> /* search-books-results */
 
-      </div> /* search-books */
+        ) : (
+
+          <h2>Let's find some more books !</h2>
+
+        )}
+
+        </div> /* search-books */
 
     );
   }
