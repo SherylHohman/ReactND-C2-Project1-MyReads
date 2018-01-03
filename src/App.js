@@ -21,19 +21,7 @@ class BooksApp extends React.Component {
       const books = formatData(booksAPIData)
       this.setState({ books });
     })
-
-    // // temp - debugging why this doesn't work in SearchBooks. Does work Here!
-    // BooksAPI.search('React').then((booksAPIData) => {
-    //   console.log('fetched React: ', booksAPIData);
-
-    //   // filter out and reformat data before storing it into state
-    //   const search = formatData(booksAPIData)
-    //   this.setState({ search });
-    //   console.log('books React: ', this.state.search);
-
-    // })
-
-}
+  }
 
 
   changeBookshelf(book, shelf){
