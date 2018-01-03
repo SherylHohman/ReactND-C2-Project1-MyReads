@@ -7,7 +7,8 @@ import './App.css';
 
 class BooksApp extends React.Component {
   state = {
-    books : []
+    books : [],
+    search: []
   }
 
   componentDidMount() {
@@ -19,7 +20,16 @@ class BooksApp extends React.Component {
       const books = this.filterBookData(booksAllData)
       this.setState({ books });
     })
-  }
+
+    BooksAPI.search('Android').then((booksAllData) => {
+      console.log('fetched Android: ', booksAllData);
+
+      // filter out and reformat data before storing it into state
+      const search = this.filterBookData(booksAllData)
+      this.setState({ search });
+    })
+
+}
 
   filterBookData(booksAllData) {
     // pull only the data I need into state.books, and
@@ -80,7 +90,7 @@ class BooksApp extends React.Component {
       <div className="app">
 
         <Route path="/search" render={() => (
-          <SearchBooks />
+          <SearchBooks filterBookData={this.filterBookData}/>
         )} />
 
         <Route exact path="/" render={() => (

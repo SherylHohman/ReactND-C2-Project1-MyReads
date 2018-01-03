@@ -1,15 +1,49 @@
 import React, {Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import BooksAPI from './BooksAPI';
 
 class SearchBooks extends Component {
 
+  static propTypes = {
+    filterBookData: PropTypes.func.isRequired
+  }
+
   state = {
-    query: ''
+    query: '',
+    booksSearch: []  // not named books, to avoid confusion in ReactDevTools
+  }
+
+  componentDidMount(){
+    if (this.state.query) {
+      BooksAPI.search(this.state.query).then((booksAllData) => {
+        console.log('CDM searched', booksAllData);
+        // const booksSearch = this.props.filterBookData(booksAllData);
+        // this.setState({ booksSearch });
+
+        console.log('CDM booksSearch', this.state.booksSearch);
+      });
+    }
+
   }
 
   updateQuery(query) {
     this.setState( {query: query.trim()} );
+    console.log(this.state.query);
   }
+
+  onSubmitHandler(e){
+    e.preventDefault();
+    console.log("searching for..", this.state.query);
+
+    // BooksAPI.search(this.state.query).then((booksAllData) => {
+    //   console.log('searched',booksAllData);
+    //   // const booksSearch = this.props.filterBookData(booksAllData);
+    //   // this.setState({ booksSearch });
+
+      console.log('booksSearch', this.state.booksSearch);
+  }
+
 
   render() {
     return (
@@ -22,12 +56,14 @@ class SearchBooks extends Component {
           </Link>
 
           <div className="search-books-input-wrapper">
-            <input
-              type="text"
-              placeholder="Search by title or author"
-              value={this.state.query}
-              onChange={ (event) => {this.updateQuery(event.target.value)}}
-            />
+            <form onSubmit={(e) => this.onSubmitHandler(e)}>
+              <input
+                type="text"
+                placeholder="Search by title or author"
+                value={this.state.query}
+                onChange={ (event) => {this.updateQuery(event.target.value)}}
+              />
+            </form>
 
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
