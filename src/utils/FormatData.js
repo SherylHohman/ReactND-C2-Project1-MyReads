@@ -1,15 +1,9 @@
 const formatData = function(booksAPIdata){
-    // pull only the data I need into state.books, and
-    //   reformat into easy to access "variables"/properties
-
-    // Note: that "search" API only returns books that do *NOT* already
-    //  reside on a shelf.  They have no "shelf" property - it must be added.
-    //  (on the other hand, they have a "categories" property that getAll books don't.)
 
     const booksData = booksAPIdata.map((bookAPIdata) => ({
       id: bookAPIdata.id,
       title: bookAPIdata.title,
-      // books from search API: must add `shelf` property, and default it to 'none'
+      // books from search API: must add `shelf` property with value: 'none'
       shelf: bookAPIdata.shelf || 'none',
       authors: bookAPIdata.authors,
       bookCoverURL: bookAPIdata.imageLinks.thumbnail
@@ -26,6 +20,16 @@ const formatData = function(booksAPIdata){
     });
     console.log('sorted:', sortedBooks)
 
+    return sortedBooks;
+  }
+
+export default formatData;
+
+
+    // Note: that "search" API only returns books that do *NOT* already
+    //  reside on a shelf.  They have no "shelf" property - it must be added.
+    //  (on the other hand, they have a "categories" property that getAll books don't.)
+
     // Notice: Over Time, books (on the shelves) will become "unsorted",
     //  as books are moved on, off, and between shelves.
     //  in essence, the last book moved will liekly become the last book listed
@@ -37,7 +41,3 @@ const formatData = function(booksAPIdata){
     //  alphabetically by author(s), or title.  In that case, perhaps use
     //  sortBy package for DRY code, and ease of use.
 
-    return sortedBooks;
-  }
-
-export default formatData;

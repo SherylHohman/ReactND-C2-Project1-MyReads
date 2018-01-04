@@ -15,25 +15,23 @@ class BookshelfChanger extends Component {
   }
 
   changeShelf(newShelf){
+    this.props.onChangeBookshelf(this.prop.book, this.state.shelf);
 
     // turns <select> into a modal component:
     //    not needed since this component closes upon <select>ion
     // this.setState({ shelf: newShelf });
     // console.log("changed local Shelf", this.state)
-
-    this.props.onChangeBookshelf(this.prop.book, this.state.shelf);
   }
 
 render() {
     return (
-
       <div className="book-shelf-changer">
 
         <select
           value={this.state.shelf}
           onChange={(e) => this.props.onChangeBookshelf(
-            this.props.book, e.target.value)
-        }>
+            this.props.book, e.target.value)}>
+
           <option value="none" disabled>Move to...</option>
 
           {/* bookshelves are the options */}
@@ -42,12 +40,11 @@ render() {
               {bookshelf.shelfTitle}
             </option>))}
 
-          {/* none option removes book from bookshelf */}
+          {/* "none" option removes book from bookshelf */}
           <option value="none">None</option>
 
         </select>
       </div>
-
     );
   }
 

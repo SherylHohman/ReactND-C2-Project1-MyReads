@@ -18,107 +18,53 @@ class SearchBooks extends Component {
   }
 
   componentDidMount(){
-    console.log('..in componentDidMount..: SearchBooks');
-    console.log('query at componentDidMount:', this.state.query);
-    console.log('booksSearch at componentDidMount:', this.state.booksSearch);
-
     if (this.state.query) {
       this.getSearchResults();
     }
-    console.log('exiting componentDidMount.. (SearchBooks)\n');
   }
 
   searchForBooks(){
-
-    console.log('--in searchForBooks..');
-    console.log('state', this.state);
     if (this.state.query) {
-
       // TODO: use search query, instead of hard-coded "React" query
-      console.log('about to Search DB for React..');
       BooksAPI.search('React').then((booksAPIData) => {
-        console.log('fetched React: (allAPIdata): ', booksAPIData);
-
-        // filter out and reformat data before storing it into state
         const booksSearch = formatData(booksAPIData)
         this.setState({ booksSearch });
-        console.log('booksSearch: ', this.state.booksSearch);
-
       })
     }
-
   }
 
   updateQuery(e, query) {
+    this.setState( {query: query.trim()} );
 
     // TODO: remove non alpha chars from query. Curated SEARCH_TERMS.md are alpha.
-    console.log('updating query to:', query.trim());
-
-    this.setState( {query: query.trim()} );
-    // as it stands, search box does not need to be a controlled component
     // TODO: - either remove its "controlled aspect" (not required)
-    // or advanced TODO: only update state if query (partial) matches a valid
-    //    SEARCH_TERM.md
-    // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
-  }
+      // or advanced TODO: only update state if query (partial) matches a valid
+      //    SEARCH_TERM.md
+      // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
+    }
 
   clearQuery() {
-    console.log('in clearQuery..');
-    console.log('resetting query to ""');
     this.setState( {query: ''} );
-    console.log('query: ', this.state.query);
   }
 
   onSubmitHandler(e, query){
-    console.log('*in onSubmitHandler..', query);
     e.preventDefault();
-
     this.searchForBooks(query);
-    console.log("*..leaving onSubmitHandler..\n");
   }
 
-
   render() {
-
-    // const browsingShelf = [
-    //   {shelf: "none", shelfTitle: this.state.query},
-    // ];
-
     const tempBookshelvesDUPLICATED = [
       {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
       {shelf: "wantToRead",       shelfTitle: "Want To Read"},
       {shelf: "read",             shelfTitle: "Did Read"}
     ];
-    //  copy of const "bookshelves" from ListBooks.
-    //    SearchBooks and Bookshelf only need "bookshelves so it can be passed"
-    //    down to changeBookshelves Component.
-    //  ListBooks currently owns this data, and passes it down to Bookshelf,
-    //    but it cannot pass it down to (here) SearchBooks
 
-    //  Therefore, either BooksApp needs to own this data, so it can be passed
-    //    both here, and to ListBooks, to be used and/or passed on down the line.
-    //  Or, can move this const into utils folder. It *is* kind of realated to
-    //    data and info that's stored on the server..
-
-    //  Or can consider restructuring the app all together.
-    //  FOR NOW, in order to see what BROWSING BOOKS looks like,
-    //    get it MVP complete, see what it looks like, decide on layout, design
-    //    and functionality of this component, I'll use this DUPLICATED ver.
-
-
-    console.log('..rendering..');
-    // console.log('r state:', this.state);
-    // console.log('r state.bookSearch:', this.state.booksSearch);
-    // console.log('r state.query:', this.state.query);
     return (
-
       <div className="search-books">
-
         <div className="search-books-bar">
           <Link to="/" className="close-search">
             Close
           </Link>
-
           <div className="search-books-input-wrapper">
             <form onSubmit={(e) => {this.onSubmitHandler(e, this.state.query)}}>
               <input
@@ -128,20 +74,9 @@ class SearchBooks extends Component {
                 onChange={ (event) => {this.updateQuery(event, event.target.value)} }
               />
               <button type="submit" hidden>Search for Books</button>
-
             </form>
-
-          </div> {/* search-books-input-wrapper */}
-        </div> {/* search-books-bar */}
-
-        {/* TODO:
-            - this code could be a component that gets sent in an "bookshelf array".
-              It's the same code that gets mapped over in Bookshelf.
-              Here, it could then map over (browsingShelf, above);
-              and there, map over bookshelves.  Satisify the requirements for both.
-            - On the other hand, I may want to include additional information
-              for thebooks in this page. Such as Description, etc.
-       */}
+          </div>
+        </div>
 
         {this.state.booksSearch ? (
           <div className="search-books-results">
@@ -151,18 +86,15 @@ class SearchBooks extends Component {
                     shelfTitle={this.state.query}
                     shelf={'none'}
                     onChangeBookshelf={this.props.onChangeBookshelf}
-                    bookshelves={tempBookshelvesDUPLICATED}/>
+                    bookshelves={tempBookshelvesDUPLICATED}
+                  />
             </ol>
-          </div> /* search-books-results */
+          </div>
 
         ) : (
-
           <h2>Let's find some more books !</h2>
-
         )}
-
         </div> /* search-books */
-
     );
   }
 };
@@ -176,33 +108,4 @@ export default SearchBooks;
 
   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
   you don't find a specific author or title. Every search is limited by search terms.
-*/
-
-// TODO: Warning in console on SearchBooks Results, when click changeBookshelf
-//    button:
-//  [Violation] Added non-passive event listener to a scroll-blocking 'mousewheel'
-//    event. Consider marking event handler as 'passive' to make the page more
-//    responsive. See https://www.chromestatus.com/feature/5745543795965952
-
-/* BUG / Strange Behaviour
-  feat: SearchBooks, changeShelf adds book to shelf
-
-  BooksApp.books is updated to reflect book's new shelf locally.
-  DB (supposedly) is also updated to reflect book's new shelf.
-
-  However, there are some issues/bugs/strange behaviour:
-    - Search on the same term, returns "moved" books. It should only be
-      returning books *not* on a shelf. So something is wrong. Moved
-      books should not appear in sebsequent searches. (unless removed)
-    - ListBooks shows some of these books on *multiple* shelves.
-      Book should reside on a single shelf only.
-    - ReLoading the app, should pull from the DB books on the shelves
-      and they should have remembered the last state I "set" them to.
-    - changeBookshelves is not acting like a controlled component when
-      called from the Search page.  In ListBooks, the current shelf is
-      Highlighted on the dropdown menu. In Search, "Move To" is highlighted.
-      from Search, I expected "none" to be highlighted, on all books listed
-      (Perhaps this one is a simple oversight in not adding this feat.
-      If I didnt make this one a controlled component, its not a bug.
-      Just incomplete.)
 */

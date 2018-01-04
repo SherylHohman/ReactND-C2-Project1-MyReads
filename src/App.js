@@ -8,8 +8,7 @@ import './App.css';
 
 class BooksApp extends React.Component {
   state = {
-    books : []//,
-    // search: []  /* temp - debugging why this doesn't work in SearchBooks*/
+    books : []
   }
 
   componentDidMount() {
@@ -23,15 +22,11 @@ class BooksApp extends React.Component {
     })
   }
 
-
   changeBookshelf(book, shelf){
-
   // update database
     BooksAPI.update(book, shelf).then((res) => {
-      // console.log('updated:', res);
-      // console.log(book.id, res[shelf], res[shelf].indexOf(book.id));
 
-    // Verify DB was updated, before updating our state
+    // Verify DB was updated, before updating our local state (keep in synch)
     if (res[shelf].indexOf(book.id) !== -1) {
 
       // if new shelf is `none` remove this book from state array
@@ -39,59 +34,46 @@ class BooksApp extends React.Component {
         this.setState((prevState) => (
           {books: prevState.books.filter((aBook) => (aBook.id !== book.id))}
         ));
-        // TODO: consider keeping it in array with 'none'value
-        //    then can add an additional shelf: "recently removed",
-        //    showing "none" values.
-        //    This row bould be cleared on Page/App reload/refresh
 
       } else {
         // remove book, then add it back to array, but with new shelf value
         book.shelf = shelf;
         this.setState((prevState) => (
-          // `concat` adds book to the array; `push` turns the array.length - why??
           {books: prevState.books
             .filter((aBook) => (aBook.id !== book.id))
             .concat(book)
           }
         ));
-      }  // if none
+      }  // if none else
 
-    } // if DB update successful
+    }   // if DB update successful
 
-    })// .then
+    }) // .then
 
   }
 
-
   addToBookshelf(book, shelf){
-
   // update database
     BooksAPI.update(book, shelf).then((res) => {
-      console.log('..added:', book.id, 'to', shelf, ':\n  ', res);
 
       // Verify DB was updated, before adding to state
-      console.log(res[shelf].indexOf(book.id), ((res[shelf].indexOf(book.id) !== -1)) );
       if (res[shelf].indexOf(book.id) !== -1) {
-        console.log('shelf:', shelf, shelf!=='none');
         if (shelf !== 'none') {  // should not be the cose, check JIC
 
-          // remove book, then add it back to array, but with new shelf value
+          //  add book to state array, with its (new) shelf value
           book.shelf = shelf;
           this.setState((prevState) => (
             {books: prevState.books.concat(book)}
-          )); // update state
-          console.log('after adding book:', this.state.books);
+          ));
+
         }  // if none
       } // if DB update successful
 
     })// .then
-    console.log('..exiting added');
   }
-
 
   render() {
     return (
-
       <div className="app">
 
         <Route path="/search" render={() => (
