@@ -43,21 +43,19 @@ class SearchBooks extends Component {
 
 
         const thisBookIsInDB = function(thisBook){
-          console.log('--checking DB for', thisBook.id)
-          let foundMatch = false;
+          // console.log('--checking DB for', thisBook.id)
 
-          for (let myBook of myBooks) {
-            // console.log('  myBook.id:', myBook.id);
+          let foundMatch = myBooks.every((myBook) => {
             if (myBook.id === thisBook.id) {
-              foundMatch = true;
-              console.log('  Matched:', thisBook.id, myBook.id);
+              console.log('  ', myBook.id, thisBook.id);
             }
-          }
-          console.log('  returning:', foundMatch, 'for', thisBook.id);
+            return (myBook.id !== thisBook.id);
+          });
+          // console.log('  returning:', foundMatch, 'for', thisBook.id);
 
           return foundMatch;
-          // inefficient because it keeps checking even after foundMatch.
-          //  but don't care. Just want a working prototype
+          // every is less efficient than for of loop that exits early.
+          //   a) not noticeable b) functional is more readable
         };
 
         // remove books that are already in our DB
