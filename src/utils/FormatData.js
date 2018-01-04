@@ -14,7 +14,7 @@ const formatData = function(booksAPIdata){
       authors: bookAPIdata.authors,
       bookCoverURL: bookAPIdata.imageLinks.thumbnail
     }));
-    console.log('formatted:', booksData);
+    // console.log('formatted:', booksData);
 
     // lets go ahead and alphatize books by title. Easier to inspect in console.
     const sortedBooks = booksData.sort((a, b) => {
@@ -37,7 +37,15 @@ const formatData = function(booksAPIdata){
     //  alphabetically by author(s), or title.  In that case, perhaps use
     //  sortBy package for DRY code, and ease of use.
 
-    return sortedBooks;
+
+    //temp sort by book id for debugging ease
+    const sortByID = booksData.sort((a,b) => {
+      if (a.id < b.id) return -1;
+      if (a.id > b.id) return  1;
+      return 0; //(same id - there's problem in this case)
+    });
+    return sortByID;
+    // return sortedBooks;
   }
 
 export default formatData;

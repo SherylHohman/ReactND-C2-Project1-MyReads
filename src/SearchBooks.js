@@ -18,20 +18,20 @@ class SearchBooks extends Component {
   }
 
   componentDidMount(){
-    console.log('..in componentDidMount..: SearchBooks');
-    console.log('query at componentDidMount:', this.state.query);
-    console.log('booksSearch at componentDidMount:', this.state.booksSearch);
+    // console.log('..in componentDidMount..: SearchBooks');
+    // console.log('query at componentDidMount:', this.state.query);
+    // console.log('booksSearch at componentDidMount:', this.state.booksSearch);
 
     if (this.state.query) {
       this.getSearchResults();
     }
-    console.log('exiting componentDidMount.. (SearchBooks)\n');
+    // console.log('exiting componentDidMount.. (SearchBooks)\n');
   }
 
   searchForBooks(){
 
-    console.log('--in searchForBooks..');
-    console.log('state', this.state);
+    // console.log('--in searchForBooks..');
+    // console.log('state', this.state);
     if (this.state.query) {
 
       // TODO: use search query, instead of hard-coded "React" query
@@ -52,7 +52,7 @@ class SearchBooks extends Component {
   updateQuery(e, query) {
 
     // TODO: remove non alpha chars from query. Curated SEARCH_TERMS.md are alpha.
-    console.log('updating query to:', query.trim());
+    // console.log('updating query to:', query.trim());
 
     this.setState( {query: query.trim()} );
     // as it stands, search box does not need to be a controlled component
@@ -70,19 +70,15 @@ class SearchBooks extends Component {
   }
 
   onSubmitHandler(e, query){
-    console.log('*in onSubmitHandler..', query);
+    // console.log('*in onSubmitHandler..', query);
     e.preventDefault();
 
     this.searchForBooks(query);
-    console.log("*..leaving onSubmitHandler..\n");
+    // console.log("*..leaving onSubmitHandler..\n");
   }
 
 
   render() {
-
-    // const browsingShelf = [
-    //   {shelf: "none", shelfTitle: this.state.query},
-    // ];
 
     const tempBookshelvesDUPLICATED = [
       {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
@@ -106,7 +102,7 @@ class SearchBooks extends Component {
     //    and functionality of this component, I'll use this DUPLICATED ver.
 
 
-    console.log('..rendering..');
+    // console.log('..rendering..');
     // console.log('r state:', this.state);
     // console.log('r state.bookSearch:', this.state.booksSearch);
     // console.log('r state.query:', this.state.query);
@@ -143,7 +139,7 @@ class SearchBooks extends Component {
               for thebooks in this page. Such as Description, etc.
        */}
 
-        {this.state.booksSearch ? (
+        {this.state.booksSearch===[] ? (
           <div className="search-books-results">
             <ol className="books-grid">
                   <Bookshelf
