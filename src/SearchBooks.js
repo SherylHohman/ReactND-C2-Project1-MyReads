@@ -19,59 +19,38 @@ class SearchBooks extends Component {
   }
 
   componentDidMount(){
-    // console.log('..in componentDidMount..: SearchBooks');
-    // console.log('query at componentDidMount:', this.state.query);
-    // console.log('booksSearch at componentDidMount:', this.state.booksSearch);
-
-    if (this.state.query) {
+     if (this.state.query) {
       this.getSearchResults();
     }
-    // console.log('exiting componentDidMount.. (SearchBooks)\n');
   }
 
   searchForBooks(){
-
     console.log('--in searchForBooks..');
-    // console.log('state', this.state);
     const myBooks = this.props.booksInDB;  // convenience
-    // if (this.state.query) {
 
-      // TODO: use search query, instead of hard-coded "React" query
-      console.log('about to Search DB for React..');
-      BooksAPI.search('React').then((searchResults) => {
-        console.log('fetched React: (allAPIdata): ', searchResults);
+    // TODO: use search query, instead of hard-coded "React" query
+    console.log('about to Search DB for React..');
+    BooksAPI.search('React').then((searchResults) => {
+      console.log('fetched React: (allAPIdata): ', searchResults);
 
-
-        // remove books that are already in our DB
-        const newBooksAPIData = searchResults.filter((searchResult) => {
-          return myBooks.every((myBook) => {
-            return (myBook.id !== searchResult.id);
-          });
+      // remove books that are already in our DB
+      const newBooksAPIdata = searchResults.filter((searchResult) => {
+        return myBooks.every((myBook) => {
+          return (myBook.id !== searchResult.id);
         });
-        console.log('filtered React: (newBooksAPIData): ', newBooksAPIData);
+      });
 
-
-        // thin and reformat data before storing these books into state
-        const booksSearch = formatData(newBooksAPIData)
+      // thin and reformat data before storing the remaining books into state
+      const booksSearch = formatData(newBooksAPIdata)
         this.setState({ booksSearch });
-        console.log('booksSearch: ', this.state.booksSearch);
-      })
+      });
 
-    // }  // if query
-
+    console.log('state.booksSearch', this.state.booksSearch);
   }
 
   updateQuery(e, query) {
-
     // TODO: remove non alpha chars from query. Curated SEARCH_TERMS.md are alpha.
-    // console.log('updating query to:', query.trim());
-
     this.setState( {query: query.trim()} );
-    // as it stands, search box does not need to be a controlled component
-    // TODO: - either remove its "controlled aspect" (not required)
-    // or advanced TODO: only update state if query (partial) matches a valid
-    //    SEARCH_TERM.md
-    // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
   }
 
   clearQuery() {
@@ -82,13 +61,9 @@ class SearchBooks extends Component {
   }
 
   onSubmitHandler(e, query){
-    // console.log('*in onSubmitHandler..', query);
     e.preventDefault();
-
     this.searchForBooks(query);
-    // console.log("*..leaving onSubmitHandler..\n");
   }
-
 
   render() {
 
@@ -97,29 +72,8 @@ class SearchBooks extends Component {
       {shelf: "wantToRead",       shelfTitle: "Want To Read"},
       {shelf: "read",             shelfTitle: "Did Read"}
     ];
-    //  copy of const "bookshelves" from ListBooks.
-    //    SearchBooks and Bookshelf only need "bookshelves so it can be passed"
-    //    down to changeBookshelves Component.
-    //  ListBooks currently owns this data, and passes it down to Bookshelf,
-    //    but it cannot pass it down to (here) SearchBooks
 
-    //  Therefore, either BooksApp needs to own this data, so it can be passed
-    //    both here, and to ListBooks, to be used and/or passed on down the line.
-    //  Or, can move this const into utils folder. It *is* kind of realated to
-    //    data and info that's stored on the server..
-
-    //  Or can consider restructuring the app all together.
-    //  FOR NOW, in order to see what BROWSING BOOKS looks like,
-    //    get it MVP complete, see what it looks like, decide on layout, design
-    //    and functionality of this component, I'll use this DUPLICATED ver.
-
-
-    // console.log('..rendering..');
-    // console.log('r state:', this.state);
-    // console.log('r state.bookSearch:', this.state.booksSearch);
-    // console.log('r state.query:', this.state.query);
     return (
-
       <div className="search-books">
 
         <div className="search-books-bar">
@@ -142,35 +96,23 @@ class SearchBooks extends Component {
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
 
-        {/* TODO:
-            - this code could be a component that gets sent in an "bookshelf array".
-              It's the same code that gets mapped over in Bookshelf.
-              Here, it could then map over (browsingShelf, above);
-              and there, map over bookshelves.  Satisify the requirements for both.
-            - On the other hand, I may want to include additional information
-              for thebooks in this page. Such as Description, etc.
-       */}
-
         {this.state.booksSearch===[] ? (
           <div className="search-books-results">
             <ol className="books-grid">
-                  <Bookshelf
-                    books={this.state.booksSearch}
-                    shelfTitle={this.state.query}
-                    shelf={'none'}
-                    onChangeBookshelf={this.props.onChangeBookshelf}
-                    bookshelves={tempBookshelvesDUPLICATED}/>
+                <Bookshelf
+                  books={this.state.booksSearch}
+                  shelfTitle={this.state.query}
+                  shelf={'none'}
+                  onChangeBookshelf={this.props.onChangeBookshelf}
+                  bookshelves={tempBookshelvesDUPLICATED}/>
             </ol>
           </div> /* search-books-results */
 
         ) : (
-
-          <h2>Let's find some more books !</h2>
-
+          <p>Let's add some new books !</p>
         )}
 
         </div> /* search-books */
-
     );
   }
 };
@@ -191,6 +133,34 @@ export default SearchBooks;
 //  [Violation] Added non-passive event listener to a scroll-blocking 'mousewheel'
 //    event. Consider marking event handler as 'passive' to make the page more
 //    responsive. See https://www.chromestatus.com/feature/5745543795965952
+
+/* TODO:
+    bookSearch Bookshelf
+    - this code could be a component that gets sent in an "bookshelf array".
+      It's the same code that gets mapped over in Bookshelf.
+      Here, it could then map over (browsingShelf, above);
+      and there, map over bookshelves.  Satisify the requirements for both.
+    - On the other hand, I may want to include additional information
+      for thebooks in this page. Such as Description, etc.
+*/
+
+// TODO: tempBookshelvesDUPLICATED
+// REM Update and Remove
+    //  copy of const "bookshelves" from ListBooks.
+    //    SearchBooks and Bookshelf only need "bookshelves so it can be passed"
+    //    down to changeBookshelves Component.
+    //  ListBooks currently owns this data, and passes it down to Bookshelf,
+    //    but it cannot pass it down to (here) SearchBooks
+
+    //  Therefore, either BooksApp needs to own this data, so it can be passed
+    //    both here, and to ListBooks, to be used and/or passed on down the line.
+    //  Or, can move this const into utils folder. It *is* kind of realated to
+    //    data and info that's stored on the server..
+
+    //  Or can consider restructuring the app all together.
+    //  FOR NOW, in order to see what BROWSING BOOKS looks like,
+    //    get it MVP complete, see what it looks like, decide on layout, design
+    //    and functionality of this component, I'll use this DUPLICATED ver.
 
 /* BUG / Strange Behaviour
   feat: SearchBooks, changeShelf adds book to shelf
@@ -269,9 +239,12 @@ export default SearchBooks;
   Therefore, checking API with DB (shortcut: local representation of DB),
     to remove books the user already has stored, will solve the DUPLICATED
     books (on front end) issue.
-
-
-    "removed" from our DB ()
-
-
+"removed" from our DB ()
 */
+
+  // TODO: - Search Bar:
+  //  either remove its "controlled aspect" (not required)
+  // as it stands, search box does not need to be a controlled component
+  // or advanced TODO: only update state if query (partial) matches a valid
+  //    SEARCH_TERM.md
+  // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
