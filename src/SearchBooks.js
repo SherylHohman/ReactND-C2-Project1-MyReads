@@ -202,3 +202,64 @@ export default SearchBooks;
       If I didnt make this one a controlled component, its not a bug.
       Just incomplete.)
 */
+
+/* --- Epiffiny --- Suddently realized I Had Fundamental MisUnderstanding
+******   OF How SearchAPI WORKS ** AND ** Whatis Stored in the  Database !! *****
+
+  (It Seems obvious in hindsight, but lack of clarify, experience or explanats
+    left me assuming the Searched Books were Part Of Our Database.
+    Not So! *That* Design simply wouldn't make sense.
+    It also explains why search, and getAll return Different, but similar data. )
+
+  New Understamding ( hope I'm right this time - it * feels clean, and simple*)
+  - Our DB *only* stores books that have been placed on a shelf.
+  - when a book is "removed" from a shelf, AT THE API LEVEL,
+    ie set to shelf: "none", it's "deleted" from the Database
+  - so getAll(), literally fetched EVERYTHING our DB stores.
+  - search(), goes out to a 3rd party and returns lists of books based on the
+    search query provided.  Search() knows *nothing* about what is stored in
+    our DB.  Books returned by search may or may not already be in our DB
+  - When update() "adds" a book to DB, hmm.. maybe I'm wrong again afterall..
+    hmm... well, I'm thinking that maybe it get() the book from 3rd party,
+    copies ALL the fields/properties provides, and adds a new field: shelf,
+    setting "shelf" to the desired shelf.  ..and my though was that it's in
+    this way, that duplicat books have been added to DB.
+    - But, why then would update() not behave in the same manner, thusly
+      potentially duplicating books that were already in the DB also. ?
+    - Oh. Duh. I never called update() on a book that *already existed on a shelf*
+      On home page, every book is on a shelf. update.. hmm.. no that doesn't
+      make sense. Dunno.
+  Well, anyway. workaround.
+  First. App front, where I've basically cached a copy of the DB locally,
+    except that I'm holding onto fewer fields, clearly I need to make sure
+    that changes are synched between the local representation of what I *think*
+    (or intend to be) is in the DB, and what really is.
+  Oh, maybe *that's* what I had realized. Perhaps locally I'd added a book twice.
+  Yes, that it.
+  So, when I search() for books, I need to filter out any book that's already in
+    my DB. else (locally) it'll appear to be on a shelf and in 'none' at the
+    same time.  Also, when I subsequently move a book "from 'none'" to a shelf,
+    I'd actually be ADDING a second copy at the new shelf.
+  So, after fetching books from a search(), look through my LOCAL
+    representation of books in the DB, `BooksApp.state.books`,
+      (searching the actual DB would be too expensive).
+      And BooksApp.books *should* always be current
+      (Indeed, I'm not calling etState() to update the local stash until *after* I receive confirmation from API that the change I requested was successful)
+  *and remove* (`.filter` out) any book returned from search() API that already exists in BooksApp.state.books from the search() results. Now, send the remainer
+  through FormatData, to add `shelf:none`, etc, and give *that* result back to SearchBooks.setstate..
+
+  While it *seemed* that I was already doing this in FormatData - if `shelf`
+    didn't exist in a set of books returned from API, it would ADD the
+    `shelf: 'none'` property and value.
+  Problem is, search() does not return books from our DB, it returns list from
+    3rd party.  So, **ALL** books are missing the `shelf` property.
+    So it is added to all books. Even ones that already exist in the DB.
+  Therefore, checking API with DB (shortcut: local representation of DB),
+    to remove books the user already has stored, will solve the DUPLICATED
+    books (on front end) issue.
+
+
+    "removed" from our DB ()
+
+
+*/
