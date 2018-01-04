@@ -9,7 +9,6 @@ import './App.css';
 class BooksApp extends React.Component {
   state = {
     books : []//,
-    // search: []  /* temp - debugging why this doesn't work in SearchBooks*/
   }
 
   componentDidMount() {
@@ -95,9 +94,11 @@ class BooksApp extends React.Component {
       <div className="app">
 
         <Route path="/search" render={() => (
-          <SearchBooks onChangeBookshelf={ (aBook, newShelf) => {
-              this.addToBookshelf(aBook, newShelf)}
-            }/>
+          <SearchBooks
+            onChangeBookshelf={ (aBook, newShelf) => {
+              this.addToBookshelf(aBook, newShelf)}}
+            booksInDB={this.state.books}
+            />
         )} />
 
         <Route exact path="/" render={() => (
