@@ -96,7 +96,7 @@ class SearchBooks extends Component {
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
 
-        {this.state.booksSearch===[] ? (
+        {this.state.booksSearch!==[] ? (
           <div className="search-books-results">
             <ol className="books-grid">
                 <Bookshelf
