@@ -43,19 +43,9 @@ class SearchBooks extends Component {
 
 
         const thisBookIsInDB = function(thisBook){
-          // console.log('--checking DB for', thisBook.id)
-
-          let foundMatch = myBooks.every((myBook) => {
-            if (myBook.id === thisBook.id) {
-              console.log('  ', myBook.id, thisBook.id);
-            }
+          return myBooks.every((myBook) => {
             return (myBook.id !== thisBook.id);
           });
-          // console.log('  returning:', foundMatch, 'for', thisBook.id);
-
-          return foundMatch;
-          // every is less efficient than for of loop that exits early.
-          //   a) not noticeable b) functional is more readable
         };
 
         // remove books that are already in our DB
@@ -64,15 +54,6 @@ class SearchBooks extends Component {
         });
         console.log('filtered React: (newBooksAPIData): ', newBooksAPIData);
 
-        // const newBooksAPIData = searchResults.filter((searchResult) => {
-        //     return (
-        //         this.state.books.forEvery((myBook) => {
-        //           console.log('forEvery:', searchResult.id, myBook.id);
-        //             return (searchResult.id !== myBook.id)
-        //         }
-        //     ))
-        // });
-        // console.log('filtered React: (newBooksAPIData): ', newBooksAPIData);
 
         // thin and reformat data before storing these books into state
         const booksSearch = formatData(newBooksAPIData)
