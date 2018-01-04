@@ -9,7 +9,6 @@ import './App.css';
 class BooksApp extends React.Component {
   state = {
     books : []//,
-    // search: []  /* temp - debugging why this doesn't work in SearchBooks*/
   }
 
   componentDidMount() {

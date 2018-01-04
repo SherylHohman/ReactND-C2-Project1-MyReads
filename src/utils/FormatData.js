@@ -44,8 +44,9 @@ const formatData = function(booksAPIdata){
       if (a.id > b.id) return  1;
       return 0; //(same id - there's problem in this case)
     });
-    return sortByID;
-    // return sortedBooks;
+    if(false) return sortByID;  // ignore this sortByID (supress unused vars warning)
+
+    return sortedBooks;
   }
 
 export default formatData;
