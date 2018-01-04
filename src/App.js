@@ -63,6 +63,32 @@ class BooksApp extends React.Component {
   }
 
 
+  addToBookshelf(book, shelf){
+
+  // update database
+    BooksAPI.update(book, shelf).then((res) => {
+      console.log('..added:', book.id, 'to', shelf, ':\n  ', res);
+
+      // Verify DB was updated, before adding to state
+      console.log(res[shelf].indexOf(book.id), ((res[shelf].indexOf(book.id) !== -1)) );
+      if (res[shelf].indexOf(book.id) !== -1) {
+        console.log('shelf:', shelf, shelf!=='none');
+        if (shelf !== 'none') {  // should not be the cose, check JIC
+
+          // remove book, then add it back to array, but with new shelf value
+          book.shelf = shelf;
+          this.setState((prevState) => (
+            {books: prevState.books.concat(book)}
+          )); // update state
+          console.log('after adding book:', this.state.books);
+        }  // if none
+      } // if DB update successful
+
+    })// .then
+    console.log('..exiting added');
+  }
+
+
   render() {
     return (
 
@@ -70,7 +96,7 @@ class BooksApp extends React.Component {
 
         <Route path="/search" render={() => (
           <SearchBooks onChangeBookshelf={ (aBook, newShelf) => {
-              this.changeBookshelf(aBook, newShelf)}
+              this.addToBookshelf(aBook, newShelf)}
             }/>
         )} />
 

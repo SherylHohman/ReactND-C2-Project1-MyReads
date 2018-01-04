@@ -34,7 +34,7 @@ class SearchBooks extends Component {
     console.log('state', this.state);
     if (this.state.query) {
 
-      // temp - debugging why this doesn't work in SearchBooks. Does work Here!
+      // TODO: use search query, instead of hard-coded "React" query
       console.log('about to Search DB for React..');
       BooksAPI.search('React').then((booksAPIData) => {
         console.log('fetched React: (allAPIdata): ', booksAPIData);
@@ -62,7 +62,7 @@ class SearchBooks extends Component {
     // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
   }
 
-  clearQuery(query) {
+  clearQuery() {
     console.log('in clearQuery..');
     console.log('resetting query to ""');
     this.setState( {query: ''} );
@@ -183,3 +183,26 @@ export default SearchBooks;
 //  [Violation] Added non-passive event listener to a scroll-blocking 'mousewheel'
 //    event. Consider marking event handler as 'passive' to make the page more
 //    responsive. See https://www.chromestatus.com/feature/5745543795965952
+
+/* BUG / Strange Behaviour
+  feat: SearchBooks, changeShelf adds book to shelf
+
+  BooksApp.books is updated to reflect book's new shelf locally.
+  DB (supposedly) is also updated to reflect book's new shelf.
+
+  However, there are some issues/bugs/strange behaviour:
+    - Search on the same term, returns "moved" books. It should only be
+      returning books *not* on a shelf. So something is wrong. Moved
+      books should not appear in sebsequent searches. (unless removed)
+    - ListBooks shows some of these books on *multiple* shelves.
+      Book should reside on a single shelf only.
+    - ReLoading the app, should pull from the DB books on the shelves
+      and they should have remembered the last state I "set" them to.
+    - changeBookshelves is not acting like a controlled component when
+      called from the Search page.  In ListBooks, the current shelf is
+      Highlighted on the dropdown menu. In Search, "Move To" is highlighted.
+      from Search, I expected "none" to be highlighted, on all books listed
+      (Perhaps this one is a simple oversight in not adding this feat.
+      If I didnt make this one a controlled component, its not a bug.
+      Just incomplete.)
+*/
