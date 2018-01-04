@@ -42,15 +42,11 @@ class SearchBooks extends Component {
         console.log('fetched React: (allAPIdata): ', searchResults);
 
 
-        const thisBookIsInDB = function(thisBook){
-          return myBooks.every((myBook) => {
-            return (myBook.id !== thisBook.id);
-          });
-        };
-
         // remove books that are already in our DB
         const newBooksAPIData = searchResults.filter((searchResult) => {
-          return thisBookIsInDB(searchResult);
+          return myBooks.every((myBook) => {
+            return (myBook.id !== searchResult.id);
+          });
         });
         console.log('filtered React: (newBooksAPIData): ', newBooksAPIData);
 
