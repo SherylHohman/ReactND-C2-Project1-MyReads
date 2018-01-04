@@ -80,9 +80,9 @@ class SearchBooks extends Component {
 
   render() {
 
-    const browsingShelf = [
-      {shelf: "none", shelfTitle: this.state.query},
-    ];
+    // const browsingShelf = [
+    //   {shelf: "none", shelfTitle: this.state.query},
+    // ];
 
     const tempBookshelvesDUPLICATED = [
       {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
@@ -177,3 +177,9 @@ export default SearchBooks;
   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
   you don't find a specific author or title. Every search is limited by search terms.
 */
+
+// TODO: Warning in console on SearchBooks Results, when click changeBookshelf
+//    button:
+//  [Violation] Added non-passive event listener to a scroll-blocking 'mousewheel'
+//    event. Consider marking event handler as 'passive' to make the page more
+//    responsive. See https://www.chromestatus.com/feature/5745543795965952
