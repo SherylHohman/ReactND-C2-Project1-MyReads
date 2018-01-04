@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 class SearchBooks extends Component {
 
   static propTypes = {
+    booksInDB: PropTypes.array.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired
     // bookshelves: PropTypes.array.isRequired
   }
@@ -30,22 +31,58 @@ class SearchBooks extends Component {
 
   searchForBooks(){
 
-    // console.log('--in searchForBooks..');
+    console.log('--in searchForBooks..');
     // console.log('state', this.state);
-    if (this.state.query) {
+    const myBooks = this.props.booksInDB;  // convenience
+    // if (this.state.query) {
 
       // TODO: use search query, instead of hard-coded "React" query
       console.log('about to Search DB for React..');
-      BooksAPI.search('React').then((booksAPIData) => {
-        console.log('fetched React: (allAPIdata): ', booksAPIData);
+      BooksAPI.search('React').then((searchResults) => {
+        console.log('fetched React: (allAPIdata): ', searchResults);
 
-        // filter out and reformat data before storing it into state
-        const booksSearch = formatData(booksAPIData)
+
+        const thisBookIsInDB = function(thisBook){
+          console.log('--checking DB for', thisBook.id)
+          let foundMatch = false;
+
+          for (let myBook of myBooks) {
+            // console.log('  myBook.id:', myBook.id);
+            if (myBook.id === thisBook.id) {
+              foundMatch = true;
+              console.log('  Matched:', thisBook.id, myBook.id);
+            }
+          }
+          console.log('  returning:', foundMatch, 'for', thisBook.id);
+
+          return foundMatch;
+          // inefficient because it keeps checking even after foundMatch.
+          //  but don't care. Just want a working prototype
+        };
+
+        // remove books that are already in our DB
+        const newBooksAPIData = searchResults.filter((searchResult) => {
+          return thisBookIsInDB(searchResult);
+        });
+        console.log('filtered React: (newBooksAPIData): ', newBooksAPIData);
+
+        // const newBooksAPIData = searchResults.filter((searchResult) => {
+        //     return (
+        //         this.state.books.forEvery((myBook) => {
+        //           console.log('forEvery:', searchResult.id, myBook.id);
+        //             return (searchResult.id !== myBook.id)
+        //         }
+        //     ))
+        // });
+        // console.log('filtered React: (newBooksAPIData): ', newBooksAPIData);
+
+        // thin and reformat data before storing these books into state
+        const booksSearch = formatData(newBooksAPIData)
         this.setState({ booksSearch });
         console.log('booksSearch: ', this.state.booksSearch);
-
       })
-    }
+
+    // }  // if query
 
   }
 
