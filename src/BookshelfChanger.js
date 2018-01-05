@@ -20,8 +20,7 @@ class BookshelfChanger extends Component {
     //    not needed since this component closes upon <select>ion
     // this.setState({ shelf: newShelf });
     // console.log("changed local Shelf", this.state)
-
-    this.props.onChangeBookshelf(this.prop.book, this.state.shelf);
+    this.props.onChangeBookshelf(this.prop.book, newShelf);
   }
 
 render() {

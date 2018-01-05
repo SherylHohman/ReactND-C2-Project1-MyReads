@@ -22,43 +22,73 @@ class BooksApp extends React.Component {
     })
   }
 
+  // checks all shelves in response to see if "deleted"/"none" book remains
+  isInDB(id, response) {
+    console.log('in isInDB..', 'id:', id, response);
+    let foundBook = false;
+    for (let shelf in response){
+      console.log('shelf:, shelf');
+      if (shelf.indexOf(id) !== -1 ) {
+        foundBook = true;
+        console.log(id, 'found on sheld: ', shelf);
+      }
+    }
+    console.log('foundbook: ', foundBook, id);
+    return foundBook;
+  }
 
-  changeBookshelf(book, shelf){
+  deleteBook(book, response) {
+    // verify book has been removed from DB before removing from state
+    console.log('in deleteBook, bookid:', book.id, 'book', book, 'response', response);
+    if (! this.isInDB(book.id, response)) {
+      console.log('..not found, updating state');
+      this.setState((prevState) => (
+        {books: prevState.books
+          .filter((myBook) => (myBook.id !== book.id))
+        }
+      ));
+      console.log('state is now: ');
+    };
+  }
+
+  moveBook(book, newShelf, response){
+    // console.log('in moveBook');
+    // console.log((response[newShelf].indexOf(book.id) !== -1));
+    // Verify book was updated to newShelf in DB, before updating our state
+    if (response[newShelf].indexOf(book.id) !== -1) {
+      book.shelf = newShelf;
+      // console.log(book.shelf, newShelf);
+
+      // remove book, then add it back to array, with its new shelf value
+      this.setState((prevState) => (
+        {
+          books: prevState.books
+          .filter((aBook) => (aBook.id !== book.id))
+          .concat([book])    // `concat[]` returns a new array, for chaining
+        }
+      ));
+      console.log('state exiting moveBook: ', this.state.books);
+    }
+  }
+
+  changeBookshelf(book, newShelf){
+    console.log("enter..", book.id, book);
 
   // update database
-    BooksAPI.update(book, shelf).then((res) => {
-      // console.log('updated:', res);
-      // console.log(book.id, res[shelf], res[shelf].indexOf(book.id));
+    BooksAPI.update(book, newShelf)
+      .then((response) => {
+        console.log('APIupdated: book: ', book, '\nnewShelf:', newShelf,
+                '\ndb response:', response);
 
-    // Verify DB was updated, before updating our state
-    if (res[shelf].indexOf(book.id) !== -1) {
-
-      // if new shelf is `none` remove this book from state array
-      if (shelf === 'none') {
-        this.setState((prevState) => (
-          {books: prevState.books.filter((aBook) => (aBook.id !== book.id))}
-        ));
-        // TODO: consider keeping it in array with 'none'value
-        //    then can add an additional shelf: "recently removed",
-        //    showing "none" values.
-        //    This row bould be cleared on Page/App reload/refresh
-
-      } else {
-        // remove book, then add it back to array, but with new shelf value
-        book.shelf = shelf;
-        this.setState((prevState) => (
-          // `concat` adds book to the array; `push` turns the array.length - why??
-          {books: prevState.books
-            .filter((aBook) => (aBook.id !== book.id))
-            .concat(book)
-          }
-        ));
-      }  // if none
-
-    } // if DB update successful
-
-    })// .then
-
+        // then update state
+        if (newShelf === 'none') {
+          this.deleteBook(book, response);
+        } else {
+          console.log('book', book);
+          this.moveBook(book, newShelf, response);
+          console.log('state after move..', this.state.books);
+        }
+      })
   }
 
 
@@ -69,7 +99,10 @@ class BooksApp extends React.Component {
       console.log('..added:', book.id, 'to', shelf, ':\n  ', res);
 
       // Verify DB was updated, before adding to state
-      console.log(res[shelf].indexOf(book.id), ((res[shelf].indexOf(book.id) !== -1)) );
+      console.log(res[shelf].indexOf(book.id),
+                ((res[shelf].indexOf(book.id) !== -1))
+      );
+
       if (res[shelf].indexOf(book.id) !== -1) {
         console.log('shelf:', shelf, shelf!=='none');
         if (shelf !== 'none') {  // should not be the cose, check JIC
