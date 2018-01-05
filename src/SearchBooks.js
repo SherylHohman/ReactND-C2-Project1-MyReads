@@ -46,11 +46,13 @@ class SearchBooks extends Component {
       console.log('fetched (allAPIdata): ', query, searchResults);
 
       // No books found
-      if (searchResults === []){
+      if (searchResults.error){
+        // technically should THEN check if the error is "empty query" as
+        //   "error" prop doesn't exist on successful result
         console.log('searchResults === []', 'No Books Found for:', query);
         this.setState({
           booksSearch: [],
-          searchResultsTitle: `${query}`,
+          searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
           searchResultsMessage: `..Sorry, No Books Found. Let's try something else.`
         })
         console.assert((this.state.booksSearch===[]),
@@ -154,6 +156,10 @@ class SearchBooks extends Component {
 
   onSubmitHandler(e, query){
     e.preventDefault();
+    this.setState({
+      searchResultsTitle:  'Making Space on Your Shelves',
+      searchResultsMessage: 'Let\'s find more books!',
+     });
     this.searchForBooks(query);
     this.clearQuery();
   }
