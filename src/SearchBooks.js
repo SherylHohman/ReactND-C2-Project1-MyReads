@@ -21,17 +21,18 @@ class SearchBooks extends Component {
     curSearchTerm: '',
 
     // alternate var names for booksSearch -- too Awkward, and *STILL* can't seem to make it "stick" - must keep looking it up. Therefore it's a terrible variable name.
-    books: [],
-    availBooks: [],
-    browsingBooks: [],
-    booksBrowsing: [],
-    queriedBooks: []
+    // books: [],
+    // availBooks: [],
+    // browsingBooks: [],
+    // booksBrowsing: [],
+    // queriedBooks: []
   }
 
   componentDidMount(){
-     if (this.state.query) {
-      this.getSearchResults();
-    }
+     // if (this.state.query) {
+      // this.getSearchResults();
+      this.searchForBooks();
+    // }
   }
 
   searchForBooks(query){
@@ -51,6 +52,11 @@ class SearchBooks extends Component {
           searchResultsTitle: `${query}`,
           searchResultsMessage: `..Sorry, No Books Found. Let's try something else.`
         })
+        console.assert((this.state.booksSearch===[]),
+          'BUG: No Books Found, state SHOULD HAVE BEEN updated:',
+            ', booksSearch:', this.state.booksSearch,
+            ', title:', this.state.searchResultsTitle,
+            ', message:', this.state.searchResultsMessage);
 
       } else {
       // Yea: valid search Term
@@ -68,6 +74,12 @@ class SearchBooks extends Component {
             searchResultsTitle: `${query}`,
             searchResultsMessage: `..You already have all books on ${query} !`
           })
+          console.assert((this.state.booksSearch===[]),
+            'BUG: All Books on Shelves, state SHOULD HAVE BEEN updated:',
+            ', booksSearch:', this.state.booksSearch,
+            ', title:', this.state.searchResultsTitle,
+            ', message:', this.state.searchResultsMessage);
+
         } else {
           // We have some books to show !
 
@@ -78,11 +90,14 @@ class SearchBooks extends Component {
             searchResultsTitle: `${query} (${booksSearch.length})`,
             searchResultsMessage: ''
           });
+          console.log('Books found!',
+            ', title:', this.state.searchResultsTitle,
+            ', message:', this.state.searchResultsMessage);
         }
       }
 
     });
-    console.log('state.booksSearch', this.state.booksSearch);
+    console.log('exiting..searchForBooks: state.booksSearch', this.state.booksSearch);
   }
 
   toTitleCaps(title){
@@ -127,6 +142,10 @@ class SearchBooks extends Component {
     // ..also string substituion doesn't. & object literal notation unsupported
   }
 
+  clearBooksSearch(){
+    this.setState({booksSearch: []});
+  }
+
   onSubmitHandler(e, query){
     e.preventDefault();
     this.searchForBooks(query);
@@ -135,6 +154,7 @@ class SearchBooks extends Component {
 
   render() {
 
+    // from ListBooks. TODO move to App.js or a FormatData or util file
     const tempBookshelvesDUPLICATED = [
       {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
       {shelf: "wantToRead",       shelfTitle: "Want To Read"},
