@@ -47,7 +47,7 @@ class SearchBooks extends Component {
 
       // No books found
       if (searchResults === []){
-        console.log('searchResults === []');
+        console.log('searchResults === []', 'No Books Found for:', query);
         this.setState({
           booksSearch: [],
           searchResultsTitle: `${query}`,
@@ -61,6 +61,7 @@ class SearchBooks extends Component {
 
       } else {
       // Yea: valid search Term
+        console.log('got some results, now see what\'s NOT already on shelves');
         // remove books that are already in our DB
         const newBooksAPIdata = searchResults.filter((searchResult) => {
             return myBooks.every((myBook) => {
@@ -70,6 +71,7 @@ class SearchBooks extends Component {
 
         // All books on this topic are already on shelves
         if (newBooksAPIdata === []) {
+          console.log('newBooksAPIdata===[]: already have all books');
           this.setState({
             booksSearch: [],
             searchResultsTitle: `${query}`,
@@ -83,6 +85,7 @@ class SearchBooks extends Component {
 
         } else {
           // We have some books to show !
+          console.log('we still have these books:', newBooksAPIdata);
 
           // thin and reformat data before storing the remaining books into state
           const booksSearch = formatData(newBooksAPIdata);
@@ -93,7 +96,9 @@ class SearchBooks extends Component {
           });
           console.log('Books found!',
             ', title:', this.state.searchResultsTitle,
-            ', message:', this.state.searchResultsMessage);
+            ', message:', this.state.searchResultsMessage,
+            ', booksSearch: ', this.state.booksSearch
+            );
         }
       }
 
