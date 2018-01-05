@@ -11,18 +11,51 @@ const formatData = function(booksAPIdata){
       console.log(`${i}   id: ${booksAPIdata[i].id} title:   ${booksAPIdata[i].title}`);
     }
 
-    const booksData = booksAPIdata.map((bookAPIdata) => {
-      // ({
-      console.log(bookAPIdata.id, 'bookAPIdata.title', bookAPIdata.title);
-      return {
-      id: bookAPIdata.id || '',
-      title: bookAPIdata.title || '',
+    let booksData = booksAPIdata.map((bookAPIdata) => {
+      // console.log(bookAPIdata.id, 'bookAPIdata.title', bookAPIdata.title);
+
+      const id = (bookAPIdata.id)
+        ? bookAPIdata.id
+        : 'invalidID'
+
+      const title = (bookAPIdata.title)
+        ? bookAPIdata.title
+        : '(title unavailable)';
+
       // books from search API: must add `shelf` property, and default it to 'none'
-      shelf: bookAPIdata.shelf || 'none',
-      authors: bookAPIdata.authors || [],
-      bookCoverURL: bookAPIdata.imageLinks.thumbnail || ''
-    }});
-    // }));
+      const shelf = (bookAPIdata.shelf)
+        ? bookAPIdata.shelf
+        : 'none';
+
+      const authors = (bookAPIdata.authors)
+        ? bookAPIdata.authors
+        : [];
+
+      const bookCoverURL = (bookAPIdata.imageLinks)
+        ? (bookAPIdata.imageLinks['thumbnail'] || '')
+        : '';
+
+      return {
+        id: id,
+        title: title,
+        shelf: shelf,
+        authors: authors,
+        bookCoverURL: bookCoverURL
+      }});
+
+    //  in the unlikely event that any book was missing an id property,
+    //    remove it from searchResults.  Otherwise strange and inconsistent
+    //    behaviour could result (DB). Can't have more than one book refer
+    //    to the same ID.  It would be overwritten and replaced.
+    // setting more than 1 book to invalidID can have unintended consequences
+    //   fortunately *This* property is likely to *always* exist.
+    booksData.filter((book) => {
+      if (book.id === 'invalidID') {
+        console.log('WARNING: this book has an invalidID. It will be removed from the results', book.title, book.authors);
+      }
+      return book.id !== 'invalidID'
+    });
+
     console.log('formatted:', booksData);
 
     // lets go ahead and alphatize books by title. Easier to inspect in console.
