@@ -59,9 +59,9 @@ class SearchBooks extends Component {
 
     // TODO: use search query, instead of hard-coded "React" query
     console.log('about to Search DB for React..');
-    BooksAPI.search('React').then((searchResults) => {
+    BooksAPI.search(this.state.query).then((searchResults) => {
 
-      console.log('fetched React: (allAPIdata): ', searchResults, searchResults);
+      console.log('fetched (allAPIdata): ', this.state.query, searchResults);
 
       // No books found
       if (searchResults === []){
