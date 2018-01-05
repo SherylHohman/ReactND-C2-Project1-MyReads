@@ -18,7 +18,7 @@ class SearchBooks extends Component {
     booksSearch: [] , // not named books, to avoid confusion in ReactDevTools
     searchResultsTitle:  'Making Space on Your Shelves',
     searchResultsMessage: 'Let\'s find more books!',
-    prevSearchTerm: '',
+    curSearchTerm: '',
 
     // alternate var names for booksSearch -- too Awkward, and *STILL* can't seem to make it "stick" - must keep looking it up. Therefore it's a terrible variable name.
     books: [],
@@ -34,7 +34,10 @@ class SearchBooks extends Component {
     }
   }
 
-  searchForBooks(){
+  searchForBooks(query){
+
+    // console.log('--in searchForBooks..');
+    const myBooks = this.props.booksInDB;  // convenience
 
     const titleCaps = function(title){
       if (title.toLowerCase === 'ios'){
@@ -54,20 +57,15 @@ class SearchBooks extends Component {
       })
     }
 
-    console.log('--in searchForBooks..');
-    const myBooks = this.props.booksInDB;  // convenience
+    BooksAPI.search(query).then((searchResults) => {
 
-    // TODO: use search query, instead of hard-coded "React" query
-    console.log('about to Search DB for React..');
-    BooksAPI.search(this.state.query).then((searchResults) => {
-
-      console.log('fetched (allAPIdata): ', this.state.query, searchResults);
+      console.log('fetched (allAPIdata): ', query, searchResults);
 
       // No books found
       if (searchResults === []){
         this.setState({
           booksSearch: [],
-          searchResultsTitle: `${this.state.query}`,
+          searchResultsTitle: `${query}`,
           searchResultsMessage: `..Sorry, No Books Found. Let's try something else.`
         })
 
@@ -84,7 +82,7 @@ class SearchBooks extends Component {
         if (newBooksAPIdata === []) {
           this.setState({
             booksSearch: [],
-            searchResultsTitle: `${this.state.query}`,
+            searchResultsTitle: `${query}`,
             searchResultsMessage: `..You already have all books on!`
           })
         } else {
@@ -94,7 +92,7 @@ class SearchBooks extends Component {
           const booksSearch = formatData(newBooksAPIdata);
           this.setState({
             booksSearch: booksSearch,
-            searchResultsTitle: `${this.state.query} (${booksSearch.length})`,
+            searchResultsTitle: `${query} (${booksSearch.length})`,
             searchResultsMessage: ''
           });
         }
