@@ -35,29 +35,10 @@ class SearchBooks extends Component {
   }
 
   searchForBooks(query){
+    console.log('searchForBooks:', query);
 
     // console.log('--in searchForBooks..');
     const myBooks = this.props.booksInDB;  // convenience
-
-    const titleCaps = function(title){
-      title = title.toLowerCase();
-      if (title === 'ios'){
-        title = 'iOS'
-      }
-      else {
-        title = title.split(' ').map(word => {(
-          word.replace(word[0], word[0].toUpperCase()).join(' ')
-        )}
-      )}
-      return title;
-    }
-
-    const stripQueryStr = function(query){
-      // based on SEARCH_TERMS.md, only alphabetical letters are accepted
-      return query.split(' ').map((word) => {(
-        word.replace(/[^a-z]+/ig, '').join(' ');
-      )});
-    }
 
     BooksAPI.search(query).then((searchResults) => {
 
@@ -104,16 +85,46 @@ class SearchBooks extends Component {
     console.log('state.booksSearch', this.state.booksSearch);
   }
 
+  toTitleCaps(title){
+    title = title.toLowerCase();
+    if (title === 'ios'){
+      title = 'iOS'
+    }
+    else {
+      title = title
+        .split(' ')
+        .map((word) => word.replace(word[0], word[0].toUpperCase()))
+        .join(' ');
+    }
+    return title;
+  }
+
+  stripQueryStr(query){
+    // based on SEARCH_TERMS.md, only alphabetical letters & space are accepted
+    return query
+      .split(' ')
+      .map((word) => (word.replace(/[^a-z\s]+/ig, '')))
+      .join(' ')
+    ;
+    // TODO: BUG after a space, *sometimes* non-alpha chars get through ?!!??
+    //  not critical, this is just a "helper" so user is *more likely* to enter
+    //  only valid search terms.
+  }
+
   updateQuery(e, query) {
-    // TODO: remove non alpha chars from query. Curated SEARCH_TERMS.md are alpha.
-    this.setState( {query: query.trim()} );
+    query = this.toTitleCaps(this.stripQueryStr(query));
+    this.setState({ query: query.trim() });
   }
 
   clearQuery() {
     console.log('in clearQuery..');
-    console.log('resetting query to ""');
+    // console.log('resetting this.state.query to ""');
     this.setState( {query: ''} );
-    console.log('query: ', this.state.query);
+    console.assert((this.state.query === ''),
+      '"' + this.state.query + '"',
+      'is not equal to "" : in clearQuery()' );
+    // weird.. assert message displays, even though search bar was cleared
+    // ..also string substituion doesn't. & object literal notation unsupported
   }
 
   onSubmitHandler(e, query){
