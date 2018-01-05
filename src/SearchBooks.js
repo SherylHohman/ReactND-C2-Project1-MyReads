@@ -83,7 +83,7 @@ class SearchBooks extends Component {
           this.setState({
             booksSearch: [],
             searchResultsTitle: `${query}`,
-            searchResultsMessage: `..You already have all books on!`
+            searchResultsMessage: `..You already have all books on ${query} !`
           })
         } else {
           // We have some books to show !
@@ -117,6 +117,7 @@ class SearchBooks extends Component {
   onSubmitHandler(e, query){
     e.preventDefault();
     this.searchForBooks(query);
+    this.clearQuery();
   }
 
   render() {
