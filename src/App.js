@@ -7,9 +7,16 @@ import formatData from './utils/FormatData';
 import './App.css';
 
 class BooksApp extends React.Component {
+
   state = {
     books : []//,
   }
+
+  bookshelves = [
+    {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
+    {shelf: "wantToRead",       shelfTitle: "Want To Read"},
+    {shelf: "read",             shelfTitle: "Did Read"}
+  ];
 
   componentDidMount() {
     // fetch all books from Database
@@ -138,8 +145,8 @@ class BooksApp extends React.Component {
           <ListBooks
             books={this.state.books}
             onChangeBookshelf={ (aBook, newShelf) => {
-              this.changeBookshelf(aBook, newShelf)}
-            }
+              this.changeBookshelf(aBook, newShelf)} }
+            bookshelves={this.bookshelves}
           />
         )} />
 

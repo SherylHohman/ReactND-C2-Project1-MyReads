@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const Bookshelf = function(props){
 
-  const { books, shelfTitle, shelf } = props;
+  const { books, shelfTitle, shelf, bookshelves } = props;
 
 
   return (
@@ -21,7 +21,7 @@ const Bookshelf = function(props){
                     <Book
                       book={book}
                       onChangeBookshelf={props.onChangeBookshelf}
-                      bookshelves={props.bookshelves}
+                      bookshelves={bookshelves}
                   /></li>
           ))}
 

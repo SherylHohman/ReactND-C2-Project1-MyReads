@@ -5,11 +5,7 @@ import PropTypes from 'prop-types';
 
 const ListBooks = function(props){
 
-const bookshelves = [
-  {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
-  {shelf: "wantToRead",       shelfTitle: "Want To Read"},
-  {shelf: "read",             shelfTitle: "Did Read"}
-];
+  const bookshelves = props.bookshelves;
 
   return (
 
@@ -45,7 +41,8 @@ const bookshelves = [
 
 ListBooks.propTypes = {
   books: PropTypes.array.isRequired,
-  onChangeBookshelf: PropTypes.func.isRequired
+  onChangeBookshelf: PropTypes.func.isRequired,
+  bookshelves: PropTypes.array.isRequired
 }
 
   // onChangeBookshelf is passed in, only to be passed down the line to
