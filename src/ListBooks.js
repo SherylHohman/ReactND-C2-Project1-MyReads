@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Bookshelf from './Bookshelf';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const ListBooks = function(props){
 
@@ -44,8 +44,8 @@ const bookshelves = [
 };
 
 ListBooks.propTypes = {
-  books: propTypes.array.isRequired,
-  onChangeBookshelf: propTypes.func.isRequired
+  books: PropTypes.array.isRequired,
+  onChangeBookshelf: PropTypes.func.isRequired
 }
 
   // onChangeBookshelf is passed in, only to be passed down the line to
