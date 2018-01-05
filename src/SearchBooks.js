@@ -15,7 +15,17 @@ class SearchBooks extends Component {
 
   state = {
     query: '',
-    booksSearch: []  // not named books, to avoid confusion in ReactDevTools
+    booksSearch: [] , // not named books, to avoid confusion in ReactDevTools
+    searchResultsTitle:  'Making Space on Your Shelves',
+    searchResultsMessage: 'Let\'s find more books!',
+    prevSearchTerm: '',
+
+    // alternate var names for booksSearch -- too Awkward, and *STILL* can't seem to make it "stick" - must keep looking it up. Therefore it's a terrible variable name.
+    books: [],
+    availBooks: [],
+    browsingBooks: [],
+    booksBrowsing: [],
+    queriedBooks: []
   }
 
   componentDidMount(){
@@ -25,26 +35,72 @@ class SearchBooks extends Component {
   }
 
   searchForBooks(){
+
+    const titleCaps = function(title){
+      if (title.toLowerCase === 'ios'){
+        title = 'iOS'
+      }
+      else {
+        title = title.split(' ').map(word => (
+          word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
+        )
+      }
+      return title;
+    }
+
+    const stripNonAlphaChars = function(query){
+      return query.split(' ').map((word) => {
+        word.replace(/\W/g, '').join(' ');
+      })
+    }
+
     console.log('--in searchForBooks..');
     const myBooks = this.props.booksInDB;  // convenience
 
     // TODO: use search query, instead of hard-coded "React" query
     console.log('about to Search DB for React..');
     BooksAPI.search('React').then((searchResults) => {
-      console.log('fetched React: (allAPIdata): ', searchResults);
 
-      // remove books that are already in our DB
-      const newBooksAPIdata = searchResults.filter((searchResult) => {
-        return myBooks.every((myBook) => {
-          return (myBook.id !== searchResult.id);
+      console.log('fetched React: (allAPIdata): ', searchResults, searchResults);
+
+      // No books found
+      if (searchResults === []){
+        this.setState({
+          booksSearch: [],
+          searchResultsTitle: `${this.state.query}`,
+          searchResultsMessage: `..Sorry, No Books Found. Let's try something else.`
+        })
+
+      } else {
+      // Yea: valid search Term
+        // remove books that are already in our DB
+        const newBooksAPIdata = searchResults.filter((searchResult) => {
+            return myBooks.every((myBook) => {
+              return (myBook.id !== searchResult.id);
+            });
         });
-      });
 
-      // thin and reformat data before storing the remaining books into state
-      const booksSearch = formatData(newBooksAPIdata)
-        this.setState({ booksSearch });
-      });
+        // All books on this topic are already on shelves
+        if (newBooksAPIdata === []) {
+          this.setState({
+            booksSearch: [],
+            searchResultsTitle: `${this.state.query}`,
+            searchResultsMessage: `..You already have all books on!`
+          })
+        } else {
+          // We have some books to show !
 
+          // thin and reformat data before storing the remaining books into state
+          const booksSearch = formatData(newBooksAPIdata);
+          this.setState({
+            booksSearch: booksSearch,
+            searchResultsTitle: `${this.state.query} (${booksSearch.length})`,
+            searchResultsMessage: ''
+          });
+        }
+      }
+
+    });
     console.log('state.booksSearch', this.state.booksSearch);
   }
 
@@ -101,7 +157,7 @@ class SearchBooks extends Component {
             <ol className="books-grid">
                 <Bookshelf
                   books={this.state.booksSearch}
-                  shelfTitle={this.state.query}
+                  shelfTitle={this.state.searchResultsTitle}
                   shelf={'none'}
                   onChangeBookshelf={this.props.onChangeBookshelf}
                   bookshelves={tempBookshelvesDUPLICATED}/>
