@@ -55,11 +55,11 @@ class SearchBooks extends Component {
           searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
           searchResultsMessage: `..Sorry, No Books Found. Let's try something else.`
         })
-        console.assert((this.state.booksSearch===[]),
-          'BUG: No Books Found, state SHOULD HAVE BEEN updated:',
-            ', booksSearch:', this.state.booksSearch,
-            ', title:', this.state.searchResultsTitle,
-            ', message:', this.state.searchResultsMessage);
+        // console.assert((this.state.booksSearch===[]),
+        //   'BUG: No Books Found, state SHOULD HAVE BEEN updated:',
+        //     ', booksSearch:', this.state.booksSearch,
+        //     ', title:', this.state.searchResultsTitle,
+        //     ', message:', this.state.searchResultsMessage);
 
       } else {
       // Yea: valid search Term
@@ -79,11 +79,11 @@ class SearchBooks extends Component {
             searchResultsTitle: `${query}`,
             searchResultsMessage: `..You already have all books on ${query} !`
           })
-          console.assert((this.state.booksSearch===[]),
-            'BUG: All Books on Shelves, state SHOULD HAVE BEEN updated:',
-            ', booksSearch:', this.state.booksSearch,
-            ', title:', this.state.searchResultsTitle,
-            ', message:', this.state.searchResultsMessage);
+          // console.assert((this.state.booksSearch===[]),
+          //   'BUG: All Books on Shelves, state SHOULD HAVE BEEN updated:',
+          //   ', booksSearch:', this.state.booksSearch,
+          //   ', title:', this.state.searchResultsTitle,
+          //   ', message:', this.state.searchResultsMessage);
 
         } else {
           // We have some books to show !
@@ -143,9 +143,9 @@ class SearchBooks extends Component {
     console.log('in clearQuery..');
     // console.log('resetting this.state.query to ""');
     this.setState( {query: ''} );
-    console.assert((this.state.query === ''),
-      '"' + this.state.query + '"',
-      'is not equal to "" : in clearQuery()' );
+    // console.assert((this.state.query === ''),
+    //   '"' + this.state.query + '"',
+    //   'is not equal to "" : in clearQuery()' );
     // weird.. assert message displays, even though search bar was cleared
     // ..also string substituion doesn't. & object literal notation unsupported
   }
