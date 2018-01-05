@@ -9,8 +9,8 @@ class SearchBooks extends Component {
 
   static propTypes = {
     booksInDB: PropTypes.array.isRequired,
-    onChangeBookshelf: PropTypes.func.isRequired
-    // bookshelves: PropTypes.array.isRequired
+    onChangeBookshelf: PropTypes.func.isRequired,
+    bookshelves: PropTypes.array.isRequired
   }
 
   state = {
@@ -47,6 +47,7 @@ class SearchBooks extends Component {
 
       // No books found
       if (searchResults === []){
+        console.log('searchResults === []');
         this.setState({
           booksSearch: [],
           searchResultsTitle: `${query}`,
@@ -153,14 +154,6 @@ class SearchBooks extends Component {
   }
 
   render() {
-
-    // from ListBooks. TODO move to App.js or a FormatData or util file
-    const tempBookshelvesDUPLICATED = [
-      {shelf: "currentlyReading", shelfTitle: "Currently Reading"},
-      {shelf: "wantToRead",       shelfTitle: "Want To Read"},
-      {shelf: "read",             shelfTitle: "Did Read"}
-    ];
-
     return (
       <div className="search-books">
 
@@ -192,7 +185,7 @@ class SearchBooks extends Component {
                   shelfTitle={this.state.searchResultsTitle}
                   shelf={'none'}
                   onChangeBookshelf={this.props.onChangeBookshelf}
-                  bookshelves={tempBookshelvesDUPLICATED}/>
+                  bookshelves={this.props.bookshelves}/>
             </ol>
           </div> /* search-books-results */
 

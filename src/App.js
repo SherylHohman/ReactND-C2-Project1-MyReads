@@ -137,6 +137,7 @@ class BooksApp extends React.Component {
           <SearchBooks
             onChangeBookshelf={ (aBook, newShelf) => {
               this.addToBookshelf(aBook, newShelf)}}
+            bookshelves={this.bookshelves}
             booksInDB={this.state.books}
             />
         )} />
