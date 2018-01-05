@@ -91,6 +91,7 @@ class SearchBooks extends Component {
 
           // thin and reformat data before storing the remaining books into state
           const booksSearch = formatData(newBooksAPIdata);
+          console.log('after formatData:', booksSearch);
           this.setState({
             booksSearch: booksSearch,
             searchResultsTitle: `${query} (${booksSearch.length})`,

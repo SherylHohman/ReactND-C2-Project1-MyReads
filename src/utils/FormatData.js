@@ -6,15 +6,24 @@ const formatData = function(booksAPIdata){
     //  reside on a shelf.  They have no "shelf" property - it must be added.
     //  (on the other hand, they have a "categories" property that getAll books don't.)
 
-    const booksData = booksAPIdata.map((bookAPIdata) => ({
-      id: bookAPIdata.id,
-      title: bookAPIdata.title,
+    console.log('does "Thrun" or "Design" make it INTO formatData?');
+    for (let i=0; i<booksAPIdata.length; i++) {
+      console.log(`${i}   id: ${booksAPIdata[i].id} title:   ${booksAPIdata[i].title}`);
+    }
+
+    const booksData = booksAPIdata.map((bookAPIdata) => {
+      // ({
+      console.log(bookAPIdata.id, 'bookAPIdata.title', bookAPIdata.title);
+      return {
+      id: bookAPIdata.id || '',
+      title: bookAPIdata.title || '',
       // books from search API: must add `shelf` property, and default it to 'none'
       shelf: bookAPIdata.shelf || 'none',
-      authors: bookAPIdata.authors,
-      bookCoverURL: bookAPIdata.imageLinks.thumbnail
-    }));
-    // console.log('formatted:', booksData);
+      authors: bookAPIdata.authors || [],
+      bookCoverURL: bookAPIdata.imageLinks.thumbnail || ''
+    }});
+    // }));
+    console.log('formatted:', booksData);
 
     // lets go ahead and alphatize books by title. Easier to inspect in console.
     const sortedBooks = booksData.sort((a, b) => {
