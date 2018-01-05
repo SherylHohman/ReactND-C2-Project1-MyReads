@@ -40,21 +40,23 @@ class SearchBooks extends Component {
     const myBooks = this.props.booksInDB;  // convenience
 
     const titleCaps = function(title){
-      if (title.toLowerCase === 'ios'){
+      title = title.toLowerCase();
+      if (title === 'ios'){
         title = 'iOS'
       }
       else {
-        title = title.split(' ').map(word => (
-          word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ')
-        )
-      }
+        title = title.split(' ').map(word => {(
+          word.replace(word[0], word[0].toUpperCase()).join(' ')
+        )}
+      )}
       return title;
     }
 
-    const stripNonAlphaChars = function(query){
-      return query.split(' ').map((word) => {
-        word.replace(/\W/g, '').join(' ');
-      })
+    const stripQueryStr = function(query){
+      // based on SEARCH_TERMS.md, only alphabetical letters are accepted
+      return query.split(' ').map((word) => {(
+        word.replace(/[^a-z]+/ig, '').join(' ');
+      )});
     }
 
     BooksAPI.search(query).then((searchResults) => {
