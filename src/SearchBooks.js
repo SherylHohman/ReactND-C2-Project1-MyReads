@@ -20,7 +20,9 @@ class SearchBooks extends Component {
     searchResultsMessage: 'Let\'s find more books!',
     curSearchTerm: '',
 
-    // alternate var names for booksSearch -- too Awkward, and *STILL* can't seem to make it "stick" - must keep looking it up. Therefore it's a terrible variable name.
+    // alternate var names for booksSearch -- too Awkward, and *STILL*
+         // can't seem to make it "stick" - must keep looking it up.
+         // Therefore it's a terrible variable name (for me).
       // books: [],
       // availBooks: [],
       // browsingBooks: [],
@@ -29,16 +31,12 @@ class SearchBooks extends Component {
   }
 
   componentDidMount(){
-     // if (this.state.query) {
-      // this.getSearchResults();
-      this.searchForBooks();
-    // }
+    this.searchForBooks();
   }
 
   searchForBooks(query){
     console.log('searchForBooks:', query);
 
-    // console.log('--in searchForBooks..');
     const myBooks = this.props.booksInDB;  // convenience
 
     BooksAPI.search(query).then((searchResults) => {
@@ -47,23 +45,17 @@ class SearchBooks extends Component {
 
       // No books found
       if (searchResults.error){
-        // technically should THEN check if the error is "empty query" as
-        //   "error" prop doesn't exist on successful result
+        // "error" prop doesn't exist on successful result
+        // technically should also THEN verity the error is: "empty query".
         console.log('searchResults === []', 'No Books Found for:', query);
         this.setState({
           booksSearch: [],
           searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
           searchResultsMessage: `..Sorry, No Books Found. Let's try something else.`
         })
-        // console.assert((this.state.booksSearch===[]),
-        //   'BUG: No Books Found, state SHOULD HAVE BEEN updated:',
-        //     ', booksSearch:', this.state.booksSearch,
-        //     ', title:', this.state.searchResultsTitle,
-        //     ', message:', this.state.searchResultsMessage);
 
       } else {
       // Yea: valid search Term
-        console.log('got some results, now see what\'s NOT already on shelves');
         // remove books that are already in our DB
         const newBooksAPIdata = searchResults.filter((searchResult) => {
             return myBooks.every((myBook) => {
@@ -79,17 +71,12 @@ class SearchBooks extends Component {
             searchResultsTitle: `${query}`,
             searchResultsMessage: `..You already have all books on ${query} !`
           })
-          // console.assert((this.state.booksSearch===[]),
-          //   'BUG: All Books on Shelves, state SHOULD HAVE BEEN updated:',
-          //   ', booksSearch:', this.state.booksSearch,
-          //   ', title:', this.state.searchResultsTitle,
-          //   ', message:', this.state.searchResultsMessage);
 
         } else {
           // We have some books to show !
           console.log('we still have these books:', newBooksAPIdata);
 
-          // thin and reformat data before storing the remaining books into state
+          // thin and reformat data before storing in state
           const booksSearch = formatData(newBooksAPIdata);
           console.log('after formatData:', booksSearch);
           this.setState({
@@ -141,14 +128,7 @@ class SearchBooks extends Component {
   }
 
   clearQuery() {
-    console.log('in clearQuery..');
-    // console.log('resetting this.state.query to ""');
     this.setState( {query: ''} );
-    // console.assert((this.state.query === ''),
-    //   '"' + this.state.query + '"',
-    //   'is not equal to "" : in clearQuery()' );
-    // weird.. assert message displays, even though search bar was cleared
-    // ..also string substituion doesn't. & object literal notation unsupported
   }
 
   clearBooksSearch(){
@@ -159,7 +139,7 @@ class SearchBooks extends Component {
     e.preventDefault();
     this.setState({
       searchResultsTitle:  'Making Space on Your Shelves',
-      searchResultsMessage: 'Let\'s find more books!',
+      searchResultsMessage: '..Let\'s find more books!',
      });
     this.searchForBooks(query);
     this.clearQuery();
@@ -212,13 +192,12 @@ class SearchBooks extends Component {
 
 export default SearchBooks;
 
-/*
-  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-  You can find these search terms here:
-  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+/*  NOTES: The search from BooksAPI is limited to a particular set of search terms.
+    You can find these search terms here:
+    https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
-  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-  you don't find a specific author or title. Every search is limited by search terms.
+    However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
+    you don't find a specific author or title. Every search is limited by search terms.
 */
 
 // TODO: Warning in console on SearchBooks Results, when click changeBookshelf
@@ -237,34 +216,9 @@ export default SearchBooks;
       for thebooks in this page. Such as Description, etc.
 */
 
-// TODO: tempBookshelvesDUPLICATED
- // REM Update and Remove
-    //  copy of const "bookshelves" from ListBooks.
-    //    SearchBooks and Bookshelf only need "bookshelves so it can be passed"
-    //    down to changeBookshelves Component.
-    //  ListBooks currently owns this data, and passes it down to Bookshelf,
-    //    but it cannot pass it down to (here) SearchBooks
-
-    //  Therefore, either BooksApp needs to own this data, so it can be passed
-    //    both here, and to ListBooks, to be used and/or passed on down the line.
-    //  Or, can move this const into utils folder. It *is* kind of realated to
-    //    data and info that's stored on the server..
-
-    //  Or can consider restructuring the app all together.
-    //  FOR NOW, in order to see what BROWSING BOOKS looks like,
-    //    get it MVP complete, see what it looks like, decide on layout, design
-    //    and functionality of this component, I'll use this DUPLICATED ver.
-
   // TODO: - Search Bar:
     //  either remove its "controlled aspect" (not required)
     // as it stands, search box does not need to be a controlled component
     // or advanced TODO: only update state if query (partial) matches a valid
     //    SEARCH_TERM.md
     // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
-
-// BUGS !! :
-  // - 1) Title and Books shown DO NOT CLEAR on empty results - they
-  //  continue to hold values from the previous successful search
-  // - 2) setState values Not Updated when setState is called!
-  // - 3) Books for search term "Thrun" are obtained, but NOT SHOWN!
-

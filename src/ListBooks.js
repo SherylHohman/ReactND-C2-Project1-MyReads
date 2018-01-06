@@ -8,7 +8,6 @@ const ListBooks = function(props){
   const bookshelves = props.bookshelves;
 
   return (
-
           <div className="list-books">
 
             <div className="list-books-title">
@@ -35,7 +34,6 @@ const ListBooks = function(props){
             </div>
 
           </div> /* list-books */
-
   );
 };
 
@@ -44,7 +42,6 @@ ListBooks.propTypes = {
   onChangeBookshelf: PropTypes.func.isRequired,
   bookshelves: PropTypes.array.isRequired
 }
-
   // onChangeBookshelf is passed in, only to be passed down the line to
   //   <BookshelfChanger/>.
 

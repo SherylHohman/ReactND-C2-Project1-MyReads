@@ -9,7 +9,7 @@ import './App.css';
 class BooksApp extends React.Component {
 
   state = {
-    books : []//,
+    books : []
   }
 
   bookshelves = [
@@ -31,36 +31,38 @@ class BooksApp extends React.Component {
 
   // checks all shelves in response to see if "deleted"/"none" book remains
   isInDB(id, response) {
-    console.log('in isInDB..', 'id:', id, response);
+    // console.log('in isInDB..', 'id:', id, response);
     let foundBook = false;
     for (let shelf in response){
-      console.log('shelf:, shelf');
+      // console.log('shelf:, shelf');
       if (shelf.indexOf(id) !== -1 ) {
         foundBook = true;
-        console.log(id, 'found on sheld: ', shelf);
+        // console.log(id, 'found on sheld: ', shelf);
       }
     }
-    console.log('foundbook: ', foundBook, id);
+    // console.log('foundbook: ', foundBook, id);
     return foundBook;
   }
 
   deleteBook(book, response) {
+    // console.log('in deleteBook, bookid:', book.id, 'book', book, 'response', response);
+
     // verify book has been removed from DB before removing from state
-    console.log('in deleteBook, bookid:', book.id, 'book', book, 'response', response);
     if (! this.isInDB(book.id, response)) {
-      console.log('..not found, updating state');
+      // console.log('..not found, updating state');
       this.setState((prevState) => (
         {books: prevState.books
           .filter((myBook) => (myBook.id !== book.id))
         }
       ));
-      console.log('state is now: ');
+      // console.log('state is now: ');
     };
   }
 
   moveBook(book, newShelf, response){
     // console.log('in moveBook');
     // console.log((response[newShelf].indexOf(book.id) !== -1));
+
     // Verify book was updated to newShelf in DB, before updating our state
     if (response[newShelf].indexOf(book.id) !== -1) {
       book.shelf = newShelf;
@@ -74,33 +76,30 @@ class BooksApp extends React.Component {
           .concat([book])    // `concat[]` returns a new array, for chaining
         }
       ));
-      console.log('state exiting moveBook: ', this.state.books);
+      // console.log('state exiting moveBook: ', this.state.books);
     }
   }
 
   changeBookshelf(book, newShelf){
-    console.log("enter..", book.id, book);
+    // console.log("enter..", book.id, book);
 
-  // update database
+    // update database
     BooksAPI.update(book, newShelf)
       .then((response) => {
-        console.log('APIupdated: book: ', book, '\nnewShelf:', newShelf,
-                '\ndb response:', response);
+        // console.log('APIupdated: book: ', book, '\nnewShelf:', newShelf,'\ndb response:', response);
 
         // then update state
         if (newShelf === 'none') {
           this.deleteBook(book, response);
         } else {
-          console.log('book', book);
+          // console.log('book', book);
           this.moveBook(book, newShelf, response);
-          console.log('state after move..', this.state.books);
+          // console.log('state after move..', this.state.books);
         }
       })
   }
 
-
   addToBookshelf(book, shelf){
-
   // update database
     BooksAPI.update(book, shelf).then((res) => {
       console.log('..added:', book.id, 'to', shelf, ':\n  ', res);
@@ -110,6 +109,7 @@ class BooksApp extends React.Component {
                 ((res[shelf].indexOf(book.id) !== -1))
       );
 
+      // DB update was successful
       if (res[shelf].indexOf(book.id) !== -1) {
         console.log('shelf:', shelf, shelf!=='none');
         if (shelf !== 'none') {  // should not be the cose, check JIC
@@ -118,13 +118,12 @@ class BooksApp extends React.Component {
           book.shelf = shelf;
           this.setState((prevState) => (
             {books: prevState.books.concat(book)}
-          )); // update state
-          console.log('after adding book:', this.state.books);
-        }  // if none
-      } // if DB update successful
+          ));
+          // console.log('after adding book:', this.state.books);
+        }
+      }
 
     })// .then
-    console.log('..exiting added');
   }
 
 

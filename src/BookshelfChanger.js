@@ -17,9 +17,7 @@ class BookshelfChanger extends Component {
   changeShelf(newShelf){
 
     // turns <select> into a modal component:
-    //    not needed since this component closes upon <select>ion
-    // this.setState({ shelf: newShelf });
-    // console.log("changed local Shelf", this.state)
+    // TODO: not needed since this component closes upon <select>ion
     this.props.onChangeBookshelf(this.prop.book, newShelf);
   }
 
