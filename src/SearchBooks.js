@@ -32,6 +32,26 @@ class SearchBooks extends Component {
 
   componentDidMount(){
     this.searchForBooks();
+
+    //  Terrible place to put this code. Not sure where it *should* go.
+    //  Unless I move booksSearch to be on BooksApp's state
+    //  rather than SearchBooks'state.
+    // start here, then see where it leads.
+    //  Problem: when a book is MOVED from SEARCH results To a shelf,
+    //    the number of books showing in Search Component diminishes.
+    //    So far so good.  It diminishes because Bookshelf FILTERS results
+    //    displayed to the UI, based on its "shelf" value.
+    //    Since in't no longer 'none', book no longer shows.
+    // BUT, it's still in SearchBooks.state.booksSearch.
+    //    ok, no problem, *really*
+    //    Except, that the heading title shows How Many Books are in the array.
+    //    oops. that doesn't match user's expectations.
+    //    User should see this count go down, when it's no longer visible.
+    //    And really, said book has No Business hanging out in this array any longer.
+
+    //  Hack Fix, will be to sift through this array to remove any books that
+    //    aren't on the 'none' shelf.
+
   }
 
   searchForBooks(query){
@@ -94,6 +114,14 @@ class SearchBooks extends Component {
 
     });
     console.log('exiting..searchForBooks: state.booksSearch', this.state.booksSearch);
+  }
+
+  removeShelvedBook(shelvedBook){
+    this.setState((prevState) => (
+      { booksSearch: prevState.booksSearch
+                    .filter((book) => (book.id === shelvedBook.id))
+      }
+    ))
   }
 
   toTitleCaps(title){
@@ -178,7 +206,8 @@ class SearchBooks extends Component {
                   message={this.state.searchResultsMessage}
                   shelf={'none'}
                   onChangeBookshelf={this.props.onChangeBookshelf}
-                  bookshelves={this.props.bookshelves}/>
+                  bookshelves={this.props.bookshelves}
+                  onSaveBook={this.state.removeShelvedBook}/>
             </ol>
           </div> /* search-books-results */
 

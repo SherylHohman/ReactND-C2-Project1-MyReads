@@ -7,8 +7,19 @@ class BookshelfChanger extends Component {
   static propTypes = {
     book: PropTypes.object.isRequired,
     bookshelves: PropTypes.array.isRequired,
-    onChangeBookshelf: PropTypes.func.isRequired
+    onChangeBookshelf: PropTypes.func.isRequired,
+    onSaveBook: PropTypes.func
   }
+  //  prop.bookshelves is passed in, only to be passed down to
+  //    BookshelfChanger. re: it's <select> options will always match
+  //      the list Bookshelf Titles, defined in ListBooks, stored in bookshelves
+  //  likewise, onChanageBookshelf is also passed through.
+
+//  onSaveBook is passed down from SearchBooks only to be
+//    passed down to BookshelfChanger.
+//    It handles removing a book from SearchBooks.state.booksSearch, when it
+//      has been moved onto a shelf. aka "saved" by user. deleted from search
+
 
   state = {
     shelf: this.props.book.shelf
@@ -19,6 +30,13 @@ class BookshelfChanger extends Component {
     // turns <select> into a modal component:
     // TODO: not needed since this component closes upon <select>ion
     this.props.onChangeBookshelf(this.prop.book, newShelf);
+
+    if (this.props.onSaveBook){
+      // if coming from SearchBooks component, remove this book from its state
+      //  moving a book from 'none', to a shelf constitutes "adding" or "saving"
+      //  the book
+      this.props.onSaveBook(this.prop.book);
+    }
   }
 
 render() {
@@ -51,3 +69,17 @@ render() {
 }
 
 export default BookshelfChanger;
+
+/* BUG Notes. Breaking changes
+  onSaveBook: PropTypes.func
+};
+  //  prop.bookshelves is passed in, only to be passed down to
+  //    BookshelfChanger. re: it's <select> options will always match
+  //      the list Bookshelf Titles, defined in ListBooks, stored in bookshelves
+  //  likewise, onChanageBookshelf is also passed through.
+
+//  onSaveBook is passed down from SearchBooks only to be
+//    passed down to BookshelfChanger.
+//    It handles removing a book from SearchBooks.state.booksSearch, when it
+//      has been moved onto a shelf. aka "saved" by user. deleted from search
+*/

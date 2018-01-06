@@ -21,6 +21,7 @@ const Bookshelf = function(props){
                       book={book}
                       onChangeBookshelf={props.onChangeBookshelf}
                       bookshelves={bookshelves}
+                      onSaveBook={this.props.onSaveBook}
                   /></li>
           ))}
 
@@ -40,10 +41,15 @@ Bookshelf.propTypes = {
   message: PropTypes.string,
   shelf: PropTypes.string.isRequired,
   onChangeBookshelf: PropTypes.func.isRequired,
-  bookshelves: PropTypes.array.isRequired
+  bookshelves: PropTypes.array.isRequired,
+  onSaveBook: PropTypes.func
 };
-// prop.bookshelves and onChangeBookshelf are passed in, only to be
-//   passed down to <BookshelfChanger/>.
+//  prop.bookshelves and onChangeBookshelf are passed in, only to be
+//    passed down to <BookshelfChanger/>.
+//  onSaveBook is passed down from SearchBooks only to be
+//    passed down to BookshelfChanger.
+//    It handles removing a book from SearchBooks.state.booksSearch, when it
+//      has been moved onto a shelf. aka "saved" by user. deleted from search
 
 
 export default Bookshelf;
