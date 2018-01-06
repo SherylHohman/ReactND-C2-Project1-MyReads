@@ -51,7 +51,7 @@ class SearchBooks extends Component {
         this.setState({
           booksSearch: [],
           searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
-          searchResultsMessage: `..Sorry, No Books Found. Let's try something else.`
+          searchResultsMessage: `Got any other ideas?`
         })
 
       } else {
@@ -175,6 +175,7 @@ class SearchBooks extends Component {
                 <Bookshelf
                   books={this.state.booksSearch}
                   shelfTitle={this.state.searchResultsTitle}
+                  message={this.state.searchResultsMessage}
                   shelf={'none'}
                   onChangeBookshelf={this.props.onChangeBookshelf}
                   bookshelves={this.props.bookshelves}/>
