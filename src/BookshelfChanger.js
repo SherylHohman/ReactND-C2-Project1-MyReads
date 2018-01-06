@@ -27,20 +27,22 @@ class BookshelfChanger extends Component {
 
   changeShelf(newShelf){
 
+    console.log('Does BookshelfChanger.changeShelf ever get called? I don\'t see it anywhere !!  I think this may be a DEAD Useless Method!' );
     // turns <select> into a modal component:
     // TODO: not needed since this component closes upon <select>ion
     this.props.onChangeBookshelf(this.prop.book, newShelf);
 
 
-    // if ('onSaveBook' in this.props){
-    // // if (typeof this.props.onSaveBook === 'function'){
-    //   console.log('BookshelfChanger: has props.onSaveBook');
+    console.log('in BookshelfChanger.changeShelf. will it call SearchBooks.onSaveBook?');
+    if ('onSaveBook' in this.props){
+    // if (typeof this.props.onSaveBook === 'function'){
+      console.log('BookshelfChanger: has props.onSaveBook');
 
-    //   // if coming from SearchBooks component, remove this book from its state
-    //   //  moving a book from 'none', to a shelf constitutes "adding" or "saving"
-    //   //  the book
-    //   this.props.onSaveBook(this.props.book);
-    // }
+      // if coming from SearchBooks component, remove this book from its state
+      //  moving a book from 'none', to a shelf constitutes "adding" or "saving"
+      //  the book
+      this.props.onSaveBook(this.props.book);
+    }
 
   }
 

@@ -95,6 +95,24 @@ class BooksApp extends React.Component {
           // console.log('book', book);
           this.moveBook(book, newShelf, response);
           // console.log('state after move..', this.state.books);
+
+
+          // This Looks BAD! I should be calling this from somewhere ELSE !!
+            console.log('in BookshelfChanger.changeShelf. will it call SearchBooks.onSaveBook?');
+            if ('onSaveBook' in this.props){
+            // if (typeof this.props.onSaveBook === 'function'){
+              console.log('BookshelfChanger: has props.onSaveBook');
+
+              // if coming from SearchBooks component, remove this book from its state
+              //  moving a book from 'none', to a shelf constitutes "adding" or "saving"
+              //  the book
+
+              // this should be a Prop Passed DOWN! - shouldn't be on BooksApp!!
+              SearchBooks.onSaveBook(this.props.book);
+              // This Looks BAD! I should be calling this from somewhere ELSE !!
+            }
+
+
         }
       })
   }

@@ -7,11 +7,24 @@ const Bookshelf = function(props){
   const { books, shelfTitle, shelf, bookshelves } = props;
   const message = props.message ||  "Dusting off your books.. "
 
+  const removeSavedBookFromSearchResults = function() {
+    /*  // HACK !! */
+    if (shelf === 'none') {
+      books.forEach((book) => {
+        if (book.shelf !== 'none'){
+          props.onSaveBook(book)
+        }
+    })}
+  };
+
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{shelfTitle}</h2>
       <div className="bookshelf-books">
         <ol className="books-grid">
+
+          {/*  // HACK !! */}
+          {removeSavedBookFromSearchResults}
 
           {/* show books */}
           {books.filter((book) => (book.shelf === shelf))

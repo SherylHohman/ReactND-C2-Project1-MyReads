@@ -31,7 +31,10 @@ class SearchBooks extends Component {
   }
 
   componentDidMount(){
+    console.log('*****I\'m in SearchBooks.componentDidMount**********');
+
     this.searchForBooks();
+    this.removeSavedBooksFromSearchResults();
   }
 
   searchForBooks(query){
@@ -66,6 +69,10 @@ class SearchBooks extends Component {
         // All books on this topic are already on shelves
         if (newBooksAPIdata === []) {
           console.log('newBooksAPIdata===[]: already have all books');
+          //  TODO Bug: *THIS* set of messages aren't showing up!! BugFix?
+          //  example: add all books from React to my bookshelf.
+          //  happens: "React (0)", "Let's find more books"
+          //  expect : "React"    , "..You already have..", see below)
           this.setState({
             booksSearch: [],
             searchResultsTitle: `${query}`,
@@ -97,12 +104,23 @@ class SearchBooks extends Component {
   }
 
   removeBookFromSearchResults(shelvedBook){
-    // this.setState((prevState) => (
-    //   { booksSearch: prevState.booksSearch
-    //                 .filter((book) => (book.id === shelvedBook.id))
-    //   }
-    // ))
+    this.setState((prevState) => (
+      { booksSearch: prevState.booksSearch
+                    .filter((book) => (book.id === shelvedBook.id))
+      }
+    ))
     console.log('I\'m in SearchBooks.removeBookFromSearchResults:', shelvedBook.id, shelvedBook.title);
+  }
+
+  removeSavedBooksFromSearchResults(){
+    console.log('I\'m in SearchBooks.removeSavedBooksFromSearchResults:');
+    // any books that have been moved from 'none' to a shelf
+    // need to be removed from searchResults - books that are NOT on shelves
+    this.setState((prevState) => (
+      { booksSearch: prevState.booksSearch
+                    .filter((book) => (book.shelf === 'none'))
+      }
+    ))
   }
 
   toTitleCaps(title){
@@ -189,7 +207,10 @@ class SearchBooks extends Component {
                   onChangeBookshelf={this.props.onChangeBookshelf}
                   bookshelves={this.props.bookshelves}
                   onSaveBook={this.removeBookFromSearchResults}/>
-                  {/* maybe this should be renamed onMoveBook? */}
+                  {/* maybe this should be renamed onMoveBook?
+                      removeSavedBooksFromSearchResults
+                      removeBookFromSearchResults
+                  */}
             </ol>
           </div> /* search-books-results */
 
