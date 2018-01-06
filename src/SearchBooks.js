@@ -32,26 +32,6 @@ class SearchBooks extends Component {
 
   componentDidMount(){
     this.searchForBooks();
-
-    //  Terrible place to put this code. Not sure where it *should* go.
-    //  Unless I move booksSearch to be on BooksApp's state
-    //  rather than SearchBooks'state.
-    // start here, then see where it leads.
-    //  Problem: when a book is MOVED from SEARCH results To a shelf,
-    //    the number of books showing in Search Component diminishes.
-    //    So far so good.  It diminishes because Bookshelf FILTERS results
-    //    displayed to the UI, based on its "shelf" value.
-    //    Since in't no longer 'none', book no longer shows.
-    // BUT, it's still in SearchBooks.state.booksSearch.
-    //    ok, no problem, *really*
-    //    Except, that the heading title shows How Many Books are in the array.
-    //    oops. that doesn't match user's expectations.
-    //    User should see this count go down, when it's no longer visible.
-    //    And really, said book has No Business hanging out in this array any longer.
-
-    //  Hack Fix, will be to sift through this array to remove any books that
-    //    aren't on the 'none' shelf.
-
   }
 
   searchForBooks(query){
@@ -122,6 +102,7 @@ class SearchBooks extends Component {
     //                 .filter((book) => (book.id === shelvedBook.id))
     //   }
     // ))
+    console.log('I\'m in SearchBooks.removeBookFromSearchResults:', shelvedBook.id, shelvedBook.title);
   }
 
   toTitleCaps(title){
@@ -207,7 +188,8 @@ class SearchBooks extends Component {
                   shelf={'none'}
                   onChangeBookshelf={this.props.onChangeBookshelf}
                   bookshelves={this.props.bookshelves}
-                  onSaveBook={this.state.removeBookFromSearchResults}/>
+                  onSaveBook={this.removeBookFromSearchResults}/>
+                  {/* maybe this should be renamed onMoveBook? */}
             </ol>
           </div> /* search-books-results */
 
@@ -252,3 +234,26 @@ export default SearchBooks;
     // or advanced TODO: only update state if query (partial) matches a valid
     //    SEARCH_TERM.md
     // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
+
+
+//  BUG/FEATURE: remove book Added to Bookshelf from searchResults
+    // Not sure where it *should* go.
+      //  Unless I move booksSearch to be on BooksApp's state
+      //  rather than SearchBooks'state.
+      // start here, then see where it leads.
+      //  Problem: when a book is MOVED from SEARCH results To a shelf,
+      //    the number of books showing in Search Component diminishes.
+      //    So far so good.  It diminishes because Bookshelf FILTERS results
+      //    displayed to the UI, based on its "shelf" value.
+      //    Since in't no longer 'none', book no longer shows.
+      // BUT, it's still in SearchBooks.state.booksSearch.
+      //    ok, no problem, *really*
+      //    Except, that the heading title shows How Many Books are in the array.
+      //    oops. that doesn't match user's expectations.
+      //    User should see this count go down, when it's no longer visible.
+      //    And really, said book has No Business hanging out in this array any longer.
+
+      //  Hack Fix, will be to sift through this array to remove any books that
+      //    aren't on the 'none' shelf.
+
+

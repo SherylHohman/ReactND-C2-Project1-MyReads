@@ -18,7 +18,7 @@ const Book = function(props){
         </div>
         <BookshelfChanger
           book={props.book}
-          onSaveBook={this.props.onSaveBook}
+          onSaveBook={props.onSaveBook}
           onChangeBookshelf={props.onChangeBookshelf}
           bookshelves={props.bookshelves}/>
       </div>
@@ -32,7 +32,7 @@ Book.propTypes = {
   book: PropTypes.object.isRequired,
   onChangeBookshelf: PropTypes.func.isRequired,
   bookshelves: PropTypes.array.isRequired,
-  onSaveBook: PropTypes.function  // only required if coming from SearchBooks
+  onSaveBook: PropTypes.func  // only required if coming from SearchBooks
 };
   //  prop.bookshelves is passed in, only to be passed down to
   //    BookshelfChanger. re: it's <select> options will always match

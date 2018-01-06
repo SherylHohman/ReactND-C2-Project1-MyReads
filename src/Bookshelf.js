@@ -21,7 +21,7 @@ const Bookshelf = function(props){
                       book={book}
                       onChangeBookshelf={props.onChangeBookshelf}
                       bookshelves={bookshelves}
-                      onSaveBook={this.props.onSaveBook}
+                      onSaveBook={props.onSaveBook}
                   /></li>
           ))}
 
