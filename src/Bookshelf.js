@@ -42,7 +42,7 @@ Bookshelf.propTypes = {
   shelf: PropTypes.string.isRequired,
   onChangeBookshelf: PropTypes.func.isRequired,
   bookshelves: PropTypes.array.isRequired,
-  onSaveBook: PropTypes.func
+  onSaveBook: PropTypes.func  // only required if coming from SearchBooks
 };
 //  prop.bookshelves and onChangeBookshelf are passed in, only to be
 //    passed down to <BookshelfChanger/>.

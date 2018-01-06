@@ -116,12 +116,12 @@ class SearchBooks extends Component {
     console.log('exiting..searchForBooks: state.booksSearch', this.state.booksSearch);
   }
 
-  removeShelvedBook(shelvedBook){
-    this.setState((prevState) => (
-      { booksSearch: prevState.booksSearch
-                    .filter((book) => (book.id === shelvedBook.id))
-      }
-    ))
+  removeBookFromSearchResults(shelvedBook){
+    // this.setState((prevState) => (
+    //   { booksSearch: prevState.booksSearch
+    //                 .filter((book) => (book.id === shelvedBook.id))
+    //   }
+    // ))
   }
 
   toTitleCaps(title){
@@ -207,7 +207,7 @@ class SearchBooks extends Component {
                   shelf={'none'}
                   onChangeBookshelf={this.props.onChangeBookshelf}
                   bookshelves={this.props.bookshelves}
-                  onSaveBook={this.state.removeShelvedBook}/>
+                  onSaveBook={this.state.removeBookFromSearchResults}/>
             </ol>
           </div> /* search-books-results */
 

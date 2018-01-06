@@ -8,7 +8,7 @@ class BookshelfChanger extends Component {
     book: PropTypes.object.isRequired,
     bookshelves: PropTypes.array.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired,
-    onSaveBook: PropTypes.func
+    onSaveBook: PropTypes.func  // only required if coming from SearchBooks
   }
   //  prop.bookshelves is passed in, only to be passed down to
   //    BookshelfChanger. re: it's <select> options will always match
@@ -31,12 +31,17 @@ class BookshelfChanger extends Component {
     // TODO: not needed since this component closes upon <select>ion
     this.props.onChangeBookshelf(this.prop.book, newShelf);
 
-    if (this.props.onSaveBook){
-      // if coming from SearchBooks component, remove this book from its state
-      //  moving a book from 'none', to a shelf constitutes "adding" or "saving"
-      //  the book
-      this.props.onSaveBook(this.prop.book);
-    }
+
+    // if ('onSaveBook' in this.props){
+    // // if (typeof this.props.onSaveBook === 'function'){
+    //   console.log('BookshelfChanger: has props.onSaveBook');
+
+    //   // if coming from SearchBooks component, remove this book from its state
+    //   //  moving a book from 'none', to a shelf constitutes "adding" or "saving"
+    //   //  the book
+    //   this.props.onSaveBook(this.props.book);
+    // }
+
   }
 
 render() {
