@@ -18,7 +18,27 @@ class SearchBooks extends Component {
     booksSearch: [] , // not named books, to avoid confusion in ReactDevTools
     searchResultsTitle:  'Making Space on Your Shelves',
     searchResultsMessage: 'Let\'s find more books!',
-    curSearchTerm: '',
+    curSearchTerm: ''    // TODO: am I using this? if no then delete
+    // countAvailBooks: 0
+
+    // DECIDED searcResults should be the name for "booksSearch"
+    // the term isn't quite perfect, as HOPEFULLY, I'll eventurally
+    // get moved/saved books Removed from this array, as they get saved.
+    // Also, previously saved books are already removed form this array
+    // before arriving to this component.  However, it's accurate in
+    // terms of what's displayed on the page.
+    // And it's NATURAL.  Flows in mind. Obvious what it's referring to.
+    //  rolls off the tongue easy.  It's Clear, Intuitive, Easy.
+    //  anyway, the only thing we *do* search for is BOOKS, so no confusion
+    // on ?what? search results? !! LOL. Must have been trying too hard to
+    // get this variable to match some convention, or class name, or component
+    // name.  kept trying to do somwhting with "books".  That just didn't work.
+    // the only one that *would* work is BOOKS itself.
+    // Which *is* a great choice.  It's natural. It parallels BookApp's page
+    // which stores its books in 'books'.  It's probably a better choice.
+    // BUT for debugging, and clarity, (and in the off change I had to move
+    //   searchResults to BooksApp), I jsut didn't want to use the same
+    // var name.  I doubt that I would find confusion. Yet, it'd be more likely to happen.
 
     // alternate var names for booksSearch -- too Awkward, and *STILL*
          // can't seem to make it "stick" - must keep looking it up.
@@ -88,7 +108,8 @@ class SearchBooks extends Component {
           console.log('after formatData:', booksSearch);
           this.setState({
             booksSearch: booksSearch,
-            searchResultsTitle: `${query} (${booksSearch.length})`,
+            searchResultsTitle: `${query} (${this.countAvailBooks()})`,
+            // searchResultsTitle: `${query} (${booksSearch.length})`,
             searchResultsMessage: ''
           });
           console.log('Books found!',
@@ -104,13 +125,25 @@ class SearchBooks extends Component {
   }
 
   removeBookFromSearchResults(shelvedBook){
+    console.log('___I\'m in SearchBooks.removeBookFromSearchResults:\n__',
+                 shelvedBook.id, shelvedBook.title, shelvedBook);
+    // console.log('______A: booksSearch.length:', this.state.booksSearch.length);
+    console.log('______A:', this.state.booksSearch);
+    console.log('__ does printing state get stuck?');
+
+    console.log('Maybe Race Condition, Then ReRender from Updating Shelf EATS up the rest of this function..?? So execution stops BEFORE it can be deleted??');
+
+
     this.setState((prevState) => (
       { booksSearch: prevState.booksSearch
                     .filter((book) => (book.id === shelvedBook.id))
       }
     ))
-    console.log('I\'m in SearchBooks.removeBookFromSearchResults:', shelvedBook.id, shelvedBook.title);
-  }
+
+
+    console.log('______P: booksSearch.length:', this.state.booksSearch.length);
+    console.log('______P:', this.state.booksSearch);
+}
 
   removeSavedBooksFromSearchResults(){
     console.log('I\'m in SearchBooks.removeSavedBooksFromSearchResults:');
@@ -121,6 +154,25 @@ class SearchBooks extends Component {
                     .filter((book) => (book.shelf === 'none'))
       }
     ))
+  }
+
+  countAvailBooks(){
+    let count = 0;
+    console.log('_____length', this.state.booksSearch.length);
+    console.log('_____count:', count);
+    this.state.booksSearch.reduce((count, book) => {
+      if (book.shelf === 'none') {
+        console.log('--increasing count from', count);
+        count++;
+        console.log('--to count: ', count);
+      }
+      else {
+        console.log('--removing book from searchResults:', book);
+      }
+      console.log('________', count);
+      return count;
+    }, 0);
+    return count;
   }
 
   toTitleCaps(title){
