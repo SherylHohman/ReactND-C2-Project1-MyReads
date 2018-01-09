@@ -4,6 +4,8 @@ import Bookshelf from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import formatData from './utils/FormatData';
 import PropTypes from 'prop-types';
+// import { Debounce } from 'react-throttle';
+import { DebounceInput } from 'react-debounce-input';
 
 class SearchBooks extends Component {
 
@@ -125,6 +127,10 @@ class SearchBooks extends Component {
   updateQuery(e, query) {
     query = this.toTitleCaps(this.stripQueryStr(query));
     this.setState({ query: query.trim() });
+
+    // turns <input> into an "incremental search bar": auto-submits as user
+    // types, as opposed to waiting for an "enter" key to trigger the onSubmit
+    this.onSubmitHandler(e, this.state.query);
   }
 
   clearQuery() {
@@ -155,16 +161,19 @@ class SearchBooks extends Component {
           </Link>
 
           <div className="search-books-input-wrapper">
-            <form onSubmit={(e) => {this.onSubmitHandler(e, this.state.query)}}>
-              <input
-                type="text"
-                placeholder="Search by title or author"
-                value={this.state.query}
-                onChange={ (event) => {this.updateQuery(event, event.target.value)} }
-              />
-              <button type="submit" hidden>Search for Books</button>
+            {/*<form onSubmit={(e) => {this.onSubmitHandler(e, this.state.query)}}>*/}
 
-            </form>
+                <DebounceInput
+                  type="text"
+                  placeholder="Search by title or author"
+                  value={this.state.query}
+                  onChange={ (event) => {this.updateQuery(event, event.target.value)} }
+                  debounceTimeout={400}
+                  minLength={1}
+                />
+              {/*<button type="submit" hidden>Search for Books</button>*/}
+
+            {/*</form>*/}
 
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
