@@ -41,6 +41,9 @@ class SearchBooks extends Component {
 
     const myBooks = this.props.booksInDB;  // convenience
 
+    // exit early without searching if empty string
+    if (!query) {return;}
+
     BooksAPI.search(query).then((searchResults) => {
 
       console.log('fetched (allAPIdata): ', query, searchResults);
