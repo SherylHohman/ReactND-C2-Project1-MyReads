@@ -140,20 +140,19 @@ class SearchBooks extends Component {
   }
 
   submitQuery(e, query){
-    // called at debounce
+    // automatically searches for books as user types, called at debounce
     this.setState({
       searchResultsTitle:  'Making Space on Your Shelves',
       searchResultsMessage: '..Let\'s find more books!',
      });
     this.searchForBooks(query);
-    // this.clearQuery();
+    // query is cleared *only* if user presses "enter", hence calling onSubmit
   }
 
   onSubmitHandler(e, query){
-    // called when "enter is pressed" on query
+    // called only if "enter is pressed" - clears search bar
     e.preventDefault();
     this.submitQuery(e, query);
-    // clears search bar
     this.clearQuery();
   }
 
