@@ -3,13 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const BookshelfChanger = function(props) {
-
-  const changeShelf = function(newShelf){
-    // turns <select> into a modal component:
-    // TODO: not needed since this component closes upon <select>ion
-    props.onChangeBookshelf(props.book, newShelf);
-  }
-
   return (
     <div className="book-shelf-changer">
       <select
@@ -25,12 +18,11 @@ const BookshelfChanger = function(props) {
             {bookshelf.shelfTitle}
           </option>))}
 
-        {/* none option removes book from bookshelf */}
+        {/* none option removes book from bookshelf and deletes it from DB */}
         <option value="none">None</option>
       </select>
     </div>
   );
-
 }
 
 BookshelfChanger.propTypes = {
