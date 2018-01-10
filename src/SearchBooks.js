@@ -171,8 +171,7 @@ class SearchBooks extends Component {
           </Link>
 
           <div className="search-books-input-wrapper">
-            {/*<form onSubmit={(e) => {this.onSubmitHandler(e, this.state.query)}}>*/}
-
+            <form onSubmit={(e) => {this.onSubmitHandler(e, this.state.query)}}>
                 <DebounceInput
                   type="text"
                   placeholder="Search by title or author"
@@ -181,9 +180,8 @@ class SearchBooks extends Component {
                   debounceTimeout={400}
                   minLength={1}
                 />
-              {/*<button type="submit" hidden>Search for Books</button>*/}
-
-            {/*</form>*/}
+              <button type="submit" hidden>Search for Books</button>
+            </form>
 
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
