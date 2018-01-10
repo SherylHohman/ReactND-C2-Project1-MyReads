@@ -1,53 +1,34 @@
 /*jshint esnext: true */
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-class BookshelfChanger extends Component {
+const BookshelfChanger = function(props) {
+  return (
+    <div className="book-shelf-changer">
+      <select
+        value={props.book.shelf}
+        onChange={(e) => props.onChangeBookshelf(
+          props.book, e.target.value)
+      }>
+        <option value="none" disabled>Move to...</option>
 
-  static propTypes = {
-    book: PropTypes.object.isRequired,
-    bookshelves: PropTypes.array.isRequired,
-    onChangeBookshelf: PropTypes.func.isRequired
-  }
+        {/* bookshelves are the options */}
+        {props.bookshelves.map( (bookshelf) => (
+          <option key={bookshelf.shelf} value={bookshelf.shelf}>
+            {bookshelf.shelfTitle}
+          </option>))}
 
-  state = {
-    shelf: this.props.book.shelf
-  }
+        {/* none option removes book from bookshelf and deletes it from DB */}
+        <option value="none">None</option>
+      </select>
+    </div>
+  );
+}
 
-  changeShelf(newShelf){
-
-    // turns <select> into a modal component:
-    // TODO: not needed since this component closes upon <select>ion
-    this.props.onChangeBookshelf(this.prop.book, newShelf);
-  }
-
-render() {
-    return (
-
-      <div className="book-shelf-changer">
-
-        <select
-          value={this.state.shelf}
-          onChange={(e) => this.props.onChangeBookshelf(
-            this.props.book, e.target.value)
-        }>
-          <option value="none" disabled>Move to...</option>
-
-          {/* bookshelves are the options */}
-          {this.props.bookshelves.map( (bookshelf) => (
-            <option key={bookshelf.shelf} value={bookshelf.shelf}>
-              {bookshelf.shelfTitle}
-            </option>))}
-
-          {/* none option removes book from bookshelf */}
-          <option value="none">None</option>
-
-        </select>
-      </div>
-
-    );
-  }
-
+BookshelfChanger.propTypes = {
+  book: PropTypes.object.isRequired,
+  bookshelves: PropTypes.array.isRequired,
+  onChangeBookshelf: PropTypes.func.isRequired
 }
 
 export default BookshelfChanger;
