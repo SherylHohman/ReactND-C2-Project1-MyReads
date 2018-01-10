@@ -106,32 +106,33 @@ class SearchBooks extends Component {
     else {
       title = title
         .split(' ')
-        .map((word) => word.replace(word[0], word[0].toUpperCase()))
+        .map((word) => {
+          return (word  // error check: empty string has no elements
+            ? word.replace(word[0], word[0].toUpperCase())
+            : word
+          )})
         .join(' ');
     }
     return title;
   }
 
   stripQueryStr(query){
-    // based on SEARCH_TERMS.md, only alphabetical letters & space are accepted
+    // limit valid keystrokes for query, based on SEARCH_TERMS.md:
     return query
       .split(' ')
+      // keep only alphabet, space, newline, return
       .map((word) => (word.replace(/[^a-z\s]+/ig, '')))
       .join(' ')
-    ;
-    // TODO: BUG after a space, *sometimes* non-alpha chars get through ?!!??
-    //  not critical, this is just a "helper" so user is *more likely* to enter
-    //  only valid search terms.
-  }
+      // trim multiple spaces to a single space
+      .replace(/[\s]+/ig, ' ');
+    }
 
   updateQuery(e, query) {
     query = this.toTitleCaps(this.stripQueryStr(query));
-    this.setState({ query: query.trim() });
+    this.setState({ query });
 
     // turns <input> into an "incremental search bar": auto-submits as user
     // types, as opposed to waiting for an "enter" key to trigger the onSubmit
-
-    // this.onSubmitHandler(e, this.state.query);
     this.submitQuery(e, this.state.query);
   }
 
@@ -146,11 +147,11 @@ class SearchBooks extends Component {
       searchResultsMessage: '..Let\'s find more books!',
      });
     this.searchForBooks(query);
-    // query is cleared *only* if user presses "enter", hence calling onSubmit
+    // query now cleared *only* if user presses "enter", (see onSubmitHandler())
   }
 
   onSubmitHandler(e, query){
-    // called only if "enter is pressed" - clears search bar
+    // called only if "enter is pressed" - clears search bar after searching
     e.preventDefault();
     this.submitQuery(e, query);
     this.clearQuery();
@@ -233,9 +234,3 @@ export default SearchBooks;
       for thebooks in this page. Such as Description, etc.
 */
 
-  // TODO: - Search Bar:
-    //  either remove its "controlled aspect" (not required)
-    // as it stands, search box does not need to be a controlled component
-    // or advanced TODO: only update state if query (partial) matches a valid
-    //    SEARCH_TERM.md
-    // Corollary: only call API if query matches (exactly) a valid SEARCH_TERM
