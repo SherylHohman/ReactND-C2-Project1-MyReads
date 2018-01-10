@@ -17,19 +17,10 @@ class SearchBooks extends Component {
 
   state = {
     query: '',
-    booksSearch: [] , // not named books, to avoid confusion in ReactDevTools
+    searchResults: [] , // not named books, to avoid confusion in ReactDevTools
     searchResultsTitle:  'Making Space on Your Shelves',
     searchResultsMessage: 'Let\'s find more books!',
     curSearchTerm: '',
-
-    // alternate var names for booksSearch -- too Awkward, and *STILL*
-         // can't seem to make it "stick" - must keep looking it up.
-         // Therefore it's a terrible variable name (for me).
-      // books: [],
-      // availBooks: [],
-      // browsingBooks: [],
-      // booksBrowsing: [],
-      // queriedBooks: []
   }
 
   componentDidMount(){
@@ -54,7 +45,7 @@ class SearchBooks extends Component {
         // technically should also THEN verity the error is: "empty query".
         console.log('searchResults === []', 'No Books Found for:', query);
         this.setState({
-          booksSearch: [],
+          searchResults: [],
           searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
           searchResultsMessage: `Got any other ideas?`
         })
@@ -72,7 +63,7 @@ class SearchBooks extends Component {
         if (newBooksAPIdata === []) {
           console.log('newBooksAPIdata===[]: already have all books');
           this.setState({
-            booksSearch: [],
+            searchResults: [],
             searchResultsTitle: `${query}`,
             searchResultsMessage: `..You already have all books on ${query} !`
           })
@@ -82,23 +73,23 @@ class SearchBooks extends Component {
           console.log('we still have these books:', newBooksAPIdata);
 
           // thin and reformat data before storing in state
-          const booksSearch = formatData(newBooksAPIdata);
-          console.log('after formatData:', booksSearch);
+          const searchResults = formatData(newBooksAPIdata);
+          console.log('after formatData:', searchResults);
           this.setState({
-            booksSearch: booksSearch,
-            searchResultsTitle: `${query} (${booksSearch.length})`,
+            searchResults: searchResults,
+            searchResultsTitle: `${query} (${searchResults.length})`,
             searchResultsMessage: ''
           });
           console.log('Books found!',
             ', title:', this.state.searchResultsTitle,
             ', message:', this.state.searchResultsMessage,
-            ', booksSearch: ', this.state.booksSearch
+            ', searchResults: ', this.state.searchResults
             );
         }
       }
 
     });
-    console.log('exiting..searchForBooks: state.booksSearch', this.state.booksSearch);
+    console.log('exiting..searchForBooks: state.searchResults', this.state.searchResults);
   }
 
   toTitleCaps(title){
@@ -160,8 +151,8 @@ class SearchBooks extends Component {
     this.clearQuery();
   }
 
-  clearBooksSearch(){
-    this.setState({booksSearch: []});
+  clearSearchResults(){
+    this.setState({searchResults: []});
   }
 
   render() {
@@ -189,11 +180,11 @@ class SearchBooks extends Component {
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
 
-        {this.state.booksSearch!==[] ? (
+        {this.state.searchResults!==[] ? (
           <div className="search-books-results">
             <ol className="books-grid">
                 <Bookshelf
-                  books={this.state.booksSearch}
+                  books={this.state.searchResults}
                   shelfTitle={this.state.searchResultsTitle}
                   message={this.state.searchResultsMessage}
                   shelf={'none'}
