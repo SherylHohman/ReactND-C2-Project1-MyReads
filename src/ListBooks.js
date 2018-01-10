@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import Bookshelf from './Bookshelf';
 import PropTypes from 'prop-types';
 
@@ -27,11 +27,14 @@ const ListBooks = function(props){
               ))}
             </div>
 
-            <div className="open-search">
-              <Link to="/search">
-                 Add a book
-              </Link>
-            </div>
+            <Route exact path="/" render={() => (
+              <div className="open-search">
+                <Link to="/search">
+                   Add a book
+                </Link>
+              </div>
+              )}
+            />
 
           </div> /* list-books */
   );
