@@ -31,70 +31,52 @@ class BooksApp extends React.Component {
 
   // checks all shelves in response to see if "deleted"/"none" book remains
   isInDB(id, response) {
-    // console.log('in isInDB..', 'id:', id, response);
     let foundBook = false;
     for (let shelf in response){
-      // console.log('shelf:, shelf');
       if (shelf.indexOf(id) !== -1 ) {
         foundBook = true;
-        // console.log(id, 'found on sheld: ', shelf);
       }
     }
-    // console.log('foundbook: ', foundBook, id);
     return foundBook;
   }
 
   deleteBook(book, response) {
-    // console.log('in deleteBook, bookid:', book.id, 'book', book, 'response', response);
-
     // verify book has been removed from DB before removing from state
     if (! this.isInDB(book.id, response)) {
-      // console.log('..not found, updating state');
       this.setState((prevState) => (
         {books: prevState.books
           .filter((myBook) => (myBook.id !== book.id))
         }
       ));
-      // console.log('state is now: ');
     };
   }
 
   moveBook(book, newShelf, response){
-    // console.log('in moveBook');
-    // console.log((response[newShelf].indexOf(book.id) !== -1));
-
     // Verify book was updated to newShelf in DB, before updating our state
     if (response[newShelf].indexOf(book.id) !== -1) {
       book.shelf = newShelf;
-      // console.log(book.shelf, newShelf);
 
       // remove book, then add it back to array, with its new shelf value
       this.setState((prevState) => (
         {
           books: prevState.books
           .filter((aBook) => (aBook.id !== book.id))
-          .concat([book])    // `concat[]` returns a new array, for chaining
+          .concat([book])    // `concat([]) returns a new array, for chaining
         }
       ));
-      // console.log('state exiting moveBook: ', this.state.books);
     }
   }
 
   changeBookshelf(book, newShelf){
-    // console.log("enter..", book.id, book);
-
     // update database
     BooksAPI.update(book, newShelf)
       .then((response) => {
-        // console.log('APIupdated: book: ', book, '\nnewShelf:', newShelf,'\ndb response:', response);
 
         // then update state
         if (newShelf === 'none') {
           this.deleteBook(book, response);
         } else {
-          // console.log('book', book);
           this.moveBook(book, newShelf, response);
-          // console.log('state after move..', this.state.books);
         }
       })
   }
@@ -119,7 +101,6 @@ class BooksApp extends React.Component {
           this.setState((prevState) => (
             {books: prevState.books.concat(book)}
           ));
-          // console.log('after adding book:', this.state.books);
         }
       }
 
