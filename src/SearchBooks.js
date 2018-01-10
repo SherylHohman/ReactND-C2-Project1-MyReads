@@ -1,6 +1,7 @@
 import React, {Component } from 'react';
 import { Link } from 'react-router-dom';
 import Bookshelf from './Bookshelf';
+import ListBooks from './ListBooks';
 import * as BooksAPI from './BooksAPI';
 import formatData from './utils/FormatData';
 import PropTypes from 'prop-types';
@@ -12,7 +13,8 @@ class SearchBooks extends Component {
   static propTypes = {
     booksInDB: PropTypes.array.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired,
-    bookshelves: PropTypes.array.isRequired
+    bookshelves: PropTypes.array.isRequired,
+
   }
 
   state = {
@@ -54,7 +56,7 @@ class SearchBooks extends Component {
         const searchResults = formatData(searchResultsAllData, booksInDB);
         this.setState({
           searchResults: searchResults,
-          searchResultsTitle: `${query} (${searchResults.length})`,
+          searchResultsTitle: `Books I do Not Have`,
           searchResultsMessage: ''
         });
       }
@@ -133,7 +135,6 @@ class SearchBooks extends Component {
           <Link to="/" className="close-search">
             Close
           </Link>
-
           <div className="search-books-input-wrapper">
             <form onSubmit={(e) => {this.onSubmitHandler(e, this.state.query)}}>
                 <DebounceInput
@@ -150,8 +151,10 @@ class SearchBooks extends Component {
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
 
-        {this.state.searchResults!==[] ? (
-          <div className="search-books-results">
+        <div className="search-books-results">
+
+          {/*books that aren't in DB*/}
+          {this.state.searchResults!==[] ? (
             <ol className="books-grid">
                 <Bookshelf
                   books={this.state.searchResults}
@@ -161,13 +164,22 @@ class SearchBooks extends Component {
                   onChangeBookshelf={this.props.onChangeBookshelf}
                   bookshelves={this.props.bookshelves}/>
             </ol>
-          </div> /* search-books-results */
 
-        ) : (
-          <p>Let's add some new books !</p>
-        )}
+          ) : (
+            <p>Let's add some new books !</p>
+          )}
 
-        </div> /* search-books */
+          {/*books that are in DB*/}
+          <ListBooks
+            books={this.state.searchResults}
+            onChangeBookshelf={ (aBook, newShelf) => {
+              this.changeBookshelf(aBook, newShelf)} }
+            bookshelves={this.props.bookshelves}
+          />
+          {/**/}
+
+        </div> {/* search-books-results */}
+      </div> /* search-books */
     );
   }
 };
