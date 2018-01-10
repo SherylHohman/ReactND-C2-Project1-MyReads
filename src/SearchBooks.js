@@ -28,68 +28,38 @@ class SearchBooks extends Component {
   }
 
   searchForBooks(query){
-    console.log('searchForBooks:', query);
-
-    const myBooks = this.props.booksInDB;  // convenience
-
-    // exit early without searching if empty string
+    // exit early without searching if query is empty string or undefined
     if (!query) {return;}
+    console.log('searchForBooks query:', query);
 
-    BooksAPI.search(query).then((searchResults) => {
+    const booksInDB = this.props.booksInDB;  // convenience
 
-      console.log('fetched (allAPIdata): ', query, searchResults);
+    BooksAPI.search(query).then((searchResultsAllData) => {
+
+      console.log('fetched (allAPIdata): ', query, searchResultsAllData);
 
       // No books found
-      if (searchResults.error){
-        // "error" prop doesn't exist on successful result
-        // technically should also THEN verity the error is: "empty query".
-        console.log('searchResults === []', 'No Books Found for:', query);
+      if (searchResultsAllData.error){
+        // "error" prop doesn't exist if the API was able to return books
+        // Technically, should also THEN verity the error is: "empty query".
+        // console.log('searchResults === []', 'No Books Found for:', query);
         this.setState({
           searchResults: [],
           searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
           searchResultsMessage: `Got any other ideas?`
         })
 
-      } else {
-      // Yea: valid search Term
-        // remove books that are already in our DB
-        const newBooksAPIdata = searchResults.filter((searchResult) => {
-            return myBooks.every((myBook) => {
-              return (myBook.id !== searchResult.id);
-            });
+      } else { // We have some books to show !
+        // thin and reformat data before storing in state
+        const searchResults = formatData(searchResultsAllData, booksInDB);
+        this.setState({
+          searchResults: searchResults,
+          searchResultsTitle: `${query} (${searchResults.length})`,
+          searchResultsMessage: ''
         });
-
-        // All books on this topic are already on shelves
-        if (newBooksAPIdata === []) {
-          console.log('newBooksAPIdata===[]: already have all books');
-          this.setState({
-            searchResults: [],
-            searchResultsTitle: `${query}`,
-            searchResultsMessage: `..You already have all books on ${query} !`
-          })
-
-        } else {
-          // We have some books to show !
-          console.log('we still have these books:', newBooksAPIdata);
-
-          // thin and reformat data before storing in state
-          const searchResults = formatData(newBooksAPIdata);
-          console.log('after formatData:', searchResults);
-          this.setState({
-            searchResults: searchResults,
-            searchResultsTitle: `${query} (${searchResults.length})`,
-            searchResultsMessage: ''
-          });
-          console.log('Books found!',
-            ', title:', this.state.searchResultsTitle,
-            ', message:', this.state.searchResultsMessage,
-            ', searchResults: ', this.state.searchResults
-            );
-        }
       }
 
     });
-    console.log('exiting..searchForBooks: state.searchResults', this.state.searchResults);
   }
 
   toTitleCaps(title){

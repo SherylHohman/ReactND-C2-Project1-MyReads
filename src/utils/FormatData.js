@@ -1,14 +1,12 @@
-const formatData = function(booksAPIdata){
-    // pull only the data I need into state.books, and
-    //   reformat into easy to access "variables"/properties
+const formatData = function(booksAPIdata, booksInDB=null){
+    // booksInDB will only be passed in if the data was from the "search" API
 
-    // console.log('does "Thrun" or "Design" make it INTO formatData?');
-    // for (let i=0; i<booksAPIdata.length; i++) {
-    //   console.log(`${i}   id: ${booksAPIdata[i].id} title:   ${booksAPIdata[i].title}`);
-    // }
+    // keep only the data DB needs from the API response, and
+    //   reformat it into easy to access "variables"/properties for DB
 
+    // Set Default values for any required DB properties,
+    //  that are "missing" from API's response
     let booksData = booksAPIdata.map((bookAPIdata) => {
-      // console.log(bookAPIdata.id, 'bookAPIdata.title', bookAPIdata.title);
 
       const id = (bookAPIdata.id)
         ? bookAPIdata.id
@@ -18,12 +16,6 @@ const formatData = function(booksAPIdata){
         ? bookAPIdata.title
         : '(title unavailable)';
 
-      // books from search API dies NOT have a `shelf` property.
-      // 'none' indicates its not in our database, or on user's bookshelves
-      const shelf = (bookAPIdata.shelf)
-        ? bookAPIdata.shelf
-        : 'none';
-
       const authors = (bookAPIdata.authors)
         ? bookAPIdata.authors
         : [];
@@ -31,6 +23,28 @@ const formatData = function(booksAPIdata){
       const bookCoverURL = (bookAPIdata.imageLinks)
         ? (bookAPIdata.imageLinks['thumbnail'] || '')
         : '';
+
+      // APIdata from search API does NOT include a `shelf` property.
+      // 'none' indicates its not in our database, or on user's bookshelves
+      let shelf = (bookAPIdata.shelf)
+        ? bookAPIdata.shelf
+        : 'none';
+
+      // Now, if this data was from searchAPI, check our DB
+      //  (which is synched with BooksApp.state.books, and less expensive)
+      //  to see if this book *is* in the DB. Override that default
+      //  shelf setting, to the "actual" `shelf` value.
+      if (booksInDB) {
+        shelf = booksInDB.reduce((shelfInDB, bookInDB) => {
+          if (bookInDB.id === bookAPIdata.id) {
+            return bookInDB.shelf;
+          }
+          else {
+            return shelfInDB;
+          }
+          // default 'none' indicates its not in the DB, or on user's bookshelves
+        }, 'none');
+      }
 
       return {
         id: id,
