@@ -130,25 +130,35 @@ class SearchBooks extends Component {
 
     // turns <input> into an "incremental search bar": auto-submits as user
     // types, as opposed to waiting for an "enter" key to trigger the onSubmit
-    this.onSubmitHandler(e, this.state.query);
+
+    // this.onSubmitHandler(e, this.state.query);
+    this.submitQuery(e, this.state.query);
   }
 
   clearQuery() {
     this.setState( {query: ''} );
   }
 
-  clearBooksSearch(){
-    this.setState({booksSearch: []});
-  }
-
-  onSubmitHandler(e, query){
-    e.preventDefault();
+  submitQuery(e, query){
+    // called at debounce
     this.setState({
       searchResultsTitle:  'Making Space on Your Shelves',
       searchResultsMessage: '..Let\'s find more books!',
      });
     this.searchForBooks(query);
+    // this.clearQuery();
+  }
+
+  onSubmitHandler(e, query){
+    // called when "enter is pressed" on query
+    e.preventDefault();
+    this.submitQuery(e, query);
+    // clears search bar
     this.clearQuery();
+  }
+
+  clearBooksSearch(){
+    this.setState({booksSearch: []});
   }
 
   render() {
