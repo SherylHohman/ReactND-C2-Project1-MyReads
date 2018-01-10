@@ -10,10 +10,6 @@ class BookshelfChanger extends Component {
     onChangeBookshelf: PropTypes.func.isRequired
   }
 
-  state = {
-    shelf: this.props.book.shelf
-  }
-
   changeShelf(newShelf){
 
     // turns <select> into a modal component:
@@ -27,7 +23,7 @@ render() {
       <div className="book-shelf-changer">
 
         <select
-          value={this.state.shelf}
+          value={this.props.book.shelf}
           onChange={(e) => this.props.onChangeBookshelf(
             this.props.book, e.target.value)
         }>
