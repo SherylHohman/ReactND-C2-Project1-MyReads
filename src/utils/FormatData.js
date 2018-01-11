@@ -62,8 +62,6 @@ const formatData = function(booksAPIdata, booksInDB=null){
       return book.id !== 'invalidID'
     });
 
-    console.log('formatted:', booksData);
-
     // lets go ahead and alphatize books by title. Easier to inspect in console.
     const sortedBooks = booksData.sort((a, b) => {
       const titleA = a.title.toUpperCase();
@@ -72,7 +70,6 @@ const formatData = function(booksAPIdata, booksInDB=null){
       if (titleA > titleB) {return  1;}
       return 0;
     });
-    console.log('sorted:', sortedBooks)
 
     //temp sort by book id for debugging ease
     const sortByID = booksData.sort((a,b) => {

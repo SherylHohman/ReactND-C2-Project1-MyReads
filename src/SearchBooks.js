@@ -25,30 +25,22 @@ class SearchBooks extends Component {
 
   componentDidMount(){
 
-    console.log('1  - props.booksInDB',
-      '\n searchBooks componentDidMount; \n..query:', this.state.query,
-      '\n..props.booksInDB:', this.props.booksInDB, this.props.booksInDB.length,
-      );
-
-    // on search page reloads, booksInDB starts out empty.
+    // when search page reloads, booksInDB starts out empty.
     if (this.props.booksInDB.length === 0) {
       this.props.fetchBooksFromDB();
     }
 
-      console.log('** searchBooks componentDidMount..calling searchForBooks');
-      this.searchForBooks();
+    this.searchForBooks();
 
   }
 
   searchForBooks(query){
     // exit early without searching if query is empty string or undefined
     if (!query) {return;}
-    console.log('searchForBooks query:', query);
 
     const booksInDB = this.props.booksInDB;  // convenience
 
     BooksAPI.search(query).then((searchResultsAllData) => {
-      console.log('fetched (allAPIdata): ', query, searchResultsAllData);
 
       // No books found
       if (searchResultsAllData.error){
@@ -218,14 +210,3 @@ export default SearchBooks;
   //  [Violation] Added non-passive event listener to a scroll-blocking 'mousewheel'
   //    event. Consider marking event handler as 'passive' to make the page more
   //    responsive. See https://www.chromestatus.com/feature/5745543795965952
-
-/* TODO:
-    bookSearch Bookshelf
-    - this code could be a component that gets sent in an "bookshelf array".
-      It's the same code that gets mapped over in Bookshelf.
-      Here, it could then map over (browsingShelf, above);
-      and there, map over bookshelves.  Satisify the requirements for both.
-    - On the other hand, I may want to include additional information
-      for thebooks in this page. Such as Description, etc.
-*/
-

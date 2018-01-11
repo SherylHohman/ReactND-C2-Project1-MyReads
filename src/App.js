@@ -20,7 +20,6 @@ class BooksApp extends React.Component {
 
   fetchBooksFromDB() {
     BooksAPI.getAll().then((booksAPIData) => {
-      console.log('fetched', booksAPIData);
 
       // sift and reformat data before storing it into state
       const books = formatData(booksAPIData)
