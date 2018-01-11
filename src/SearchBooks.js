@@ -1,104 +1,77 @@
 import React, {Component } from 'react';
 import { Link } from 'react-router-dom';
 import Bookshelf from './Bookshelf';
+import ListBooks from './ListBooks';
 import * as BooksAPI from './BooksAPI';
 import formatData from './utils/FormatData';
 import PropTypes from 'prop-types';
-// import { Debounce } from 'react-throttle';
 import { DebounceInput } from 'react-debounce-input';
 
 class SearchBooks extends Component {
 
   static propTypes = {
     booksInDB: PropTypes.array.isRequired,
+    fetchBooksFromDB: PropTypes.func.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired,
-    bookshelves: PropTypes.array.isRequired
+    bookshelves: PropTypes.array.isRequired,
   }
 
   state = {
     query: '',
-    booksSearch: [] , // not named books, to avoid confusion in ReactDevTools
+    searchResults: [],
     searchResultsTitle:  'Making Space on Your Shelves',
     searchResultsMessage: 'Let\'s find more books!',
-    curSearchTerm: '',
-
-    // alternate var names for booksSearch -- too Awkward, and *STILL*
-         // can't seem to make it "stick" - must keep looking it up.
-         // Therefore it's a terrible variable name (for me).
-      // books: [],
-      // availBooks: [],
-      // browsingBooks: [],
-      // booksBrowsing: [],
-      // queriedBooks: []
   }
 
   componentDidMount(){
-    this.searchForBooks();
+
+    console.log('1  - props.booksInDB',
+      '\n searchBooks componentDidMount; \n..query:', this.state.query,
+      '\n..props.booksInDB:', this.props.booksInDB, this.props.booksInDB.length,
+      );
+
+    // on search page reloads, booksInDB starts out empty.
+    if (this.props.booksInDB.length === 0) {
+      this.props.fetchBooksFromDB();
+    }
+
+      console.log('** searchBooks componentDidMount..calling searchForBooks');
+      this.searchForBooks();
+
   }
 
   searchForBooks(query){
-    console.log('searchForBooks:', query);
-
-    const myBooks = this.props.booksInDB;  // convenience
-
-    // exit early without searching if empty string
+    // exit early without searching if query is empty string or undefined
     if (!query) {return;}
+    console.log('searchForBooks query:', query);
 
-    BooksAPI.search(query).then((searchResults) => {
+    const booksInDB = this.props.booksInDB;  // convenience
 
-      console.log('fetched (allAPIdata): ', query, searchResults);
+    BooksAPI.search(query).then((searchResultsAllData) => {
+      console.log('fetched (allAPIdata): ', query, searchResultsAllData);
 
       // No books found
-      if (searchResults.error){
-        // "error" prop doesn't exist on successful result
-        // technically should also THEN verity the error is: "empty query".
-        console.log('searchResults === []', 'No Books Found for:', query);
+      if (searchResultsAllData.error){
+        // "error" prop doesn't exist if the API was able to return books
+        // Technically, should also THEN verify the error is: "empty query".
+
         this.setState({
-          booksSearch: [],
+          searchResults: [],
           searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
           searchResultsMessage: `Got any other ideas?`
         })
 
-      } else {
-      // Yea: valid search Term
-        // remove books that are already in our DB
-        const newBooksAPIdata = searchResults.filter((searchResult) => {
-            return myBooks.every((myBook) => {
-              return (myBook.id !== searchResult.id);
-            });
+      } else { // We have some books to show !
+        // thin and reformat data before storing in state
+        const searchResults = formatData(searchResultsAllData, booksInDB);
+        this.setState({
+          searchResults: searchResults,
+          searchResultsTitle: `Books I do Not Have`,
+          searchResultsMessage: ''
         });
-
-        // All books on this topic are already on shelves
-        if (newBooksAPIdata === []) {
-          console.log('newBooksAPIdata===[]: already have all books');
-          this.setState({
-            booksSearch: [],
-            searchResultsTitle: `${query}`,
-            searchResultsMessage: `..You already have all books on ${query} !`
-          })
-
-        } else {
-          // We have some books to show !
-          console.log('we still have these books:', newBooksAPIdata);
-
-          // thin and reformat data before storing in state
-          const booksSearch = formatData(newBooksAPIdata);
-          console.log('after formatData:', booksSearch);
-          this.setState({
-            booksSearch: booksSearch,
-            searchResultsTitle: `${query} (${booksSearch.length})`,
-            searchResultsMessage: ''
-          });
-          console.log('Books found!',
-            ', title:', this.state.searchResultsTitle,
-            ', message:', this.state.searchResultsMessage,
-            ', booksSearch: ', this.state.booksSearch
-            );
-        }
       }
 
     });
-    console.log('exiting..searchForBooks: state.booksSearch', this.state.booksSearch);
   }
 
   toTitleCaps(title){
@@ -134,9 +107,13 @@ class SearchBooks extends Component {
     query = this.toTitleCaps(this.stripQueryStr(query));
     this.setState({ query });
 
-    // turns <input> into an "incremental search bar": auto-submits as user
-    // types, as opposed to waiting for an "enter" key to trigger the onSubmit
+    // turns <input> into an "incremental search bar": auto-submits on debounce,
+    //   as opposed to waiting for an "enter" key to trigger the onSubmit
     this.submitQuery(e, this.state.query);
+
+    // TODO: debounce is set to be a minimum of 1 character. Good, except:
+    //  BUG: if user backspaces to an "empty query string", UI does not update
+    //  clearing the prev searchResults.  Also if prev query was only 1 char.
   }
 
   clearQuery() {
@@ -160,11 +137,17 @@ class SearchBooks extends Component {
     this.clearQuery();
   }
 
-  clearBooksSearch(){
-    this.setState({booksSearch: []});
+  clearSearchResults(){
+    this.setState({searchResults: []});
   }
 
   render() {
+
+    // show all books in DB, if search is empty, for Better UX :-)
+    const booksShelfSource = (this.state.searchResults.length === 0)
+      ? this.props.booksInDB
+      : this.state.searchResults
+
     return (
       <div className="search-books">
 
@@ -172,7 +155,6 @@ class SearchBooks extends Component {
           <Link to="/" className="close-search">
             Close
           </Link>
-
           <div className="search-books-input-wrapper">
             <form onSubmit={(e) => {this.onSubmitHandler(e, this.state.query)}}>
                 <DebounceInput
@@ -189,24 +171,34 @@ class SearchBooks extends Component {
           </div> {/* search-books-input-wrapper */}
         </div> {/* search-books-bar */}
 
-        {this.state.booksSearch!==[] ? (
-          <div className="search-books-results">
+        <div className="search-books-results">
+
+          {/*books that aren't in DB*/}
+          {this.state.searchResults!==[] ? (
             <ol className="books-grid">
                 <Bookshelf
-                  books={this.state.booksSearch}
+                  books={this.state.searchResults}
                   shelfTitle={this.state.searchResultsTitle}
                   message={this.state.searchResultsMessage}
                   shelf={'none'}
                   onChangeBookshelf={this.props.onChangeBookshelf}
                   bookshelves={this.props.bookshelves}/>
             </ol>
-          </div> /* search-books-results */
 
-        ) : (
-          <p>Let's add some new books !</p>
-        )}
+          ) : (
+            <p>Let's add some new books !</p>
+          )}
 
-        </div> /* search-books */
+          {/*books that are in DB*/}
+          <ListBooks
+            books={booksShelfSource}
+            onChangeBookshelf={ (thisBook, newShelf) => {
+              this.props.onChangeBookshelf(thisBook, newShelf)} }
+            bookshelves={this.props.bookshelves}
+          />
+
+        </div> {/* search-books-results */}
+      </div> /* search-books */
     );
   }
 };

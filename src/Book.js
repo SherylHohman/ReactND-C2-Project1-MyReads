@@ -35,8 +35,7 @@ Book.propTypes = {
   // prop.bookshelves is passed in, only to be passed down to
   //   BookshelfChanger. re: it's <select> options will always match
   //   the list Bookshelf Titles, defined in ListBooks, stored in bookshelves
-  // likewise, onChanageBookshelf is also passed through.
-
+  // likewise, onChanageBookshelf is also just passing through.
 
 
 export default Book;
