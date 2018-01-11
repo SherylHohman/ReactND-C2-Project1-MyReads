@@ -32,7 +32,7 @@ class BooksApp extends React.Component {
       this.fetchBooksFromDB();
   }
 
-  // checks all shelves in response to see if "deleted"/"none" book remains
+  // checks all shelves in APIresponse to see if "deleted"/"none" book remains
   isInDB(id, response) {
     let foundBook = false;
     for (let shelf in response){
@@ -118,11 +118,11 @@ class BooksApp extends React.Component {
 
         <Route path="/search" render={() => (
           <SearchBooks
-            fetchBooksFromDB={this.fetchBooksFromDB}
             onChangeBookshelf={ (aBook, newShelf) => {
               this.addToBookshelf(aBook, newShelf)}}
             bookshelves={this.bookshelves}
             booksInDB={this.state.books}
+            fetchBooksFromDB={this.fetchBooksFromDB}
             />
         )} />
 

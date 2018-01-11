@@ -21,15 +21,13 @@ class SearchBooks extends Component {
     searchResults: [],
     searchResultsTitle:  'Making Space on Your Shelves',
     searchResultsMessage: 'Let\'s find more books!',
-    curSearchTerm: '',
   }
 
   componentDidMount(){
 
-    console.log('1 - setState booksInDB - props.booksInDB',
+    console.log('1  - props.booksInDB',
       '\n searchBooks componentDidMount; \n..query:', this.state.query,
       '\n..props.booksInDB:', this.props.booksInDB, this.props.booksInDB.length,
-      '\n..state.booksInDB:', this.props.booksInDB, this.props.booksInDB.length,
       );
 
     // on page reloads, booksInDB will be empty.
@@ -50,14 +48,12 @@ class SearchBooks extends Component {
     const booksInDB = this.props.booksInDB;  // convenience
 
     BooksAPI.search(query).then((searchResultsAllData) => {
-
       console.log('fetched (allAPIdata): ', query, searchResultsAllData);
 
       // No books found
       if (searchResultsAllData.error){
         // "error" prop doesn't exist if the API was able to return books
-        // Technically, should also THEN verity the error is: "empty query".
-        // console.log('searchResults === []', 'No Books Found for:', query);
+        // Technically, should also THEN verify the error is: "empty query".
 
         this.setState({
           searchResults: [],
@@ -111,9 +107,13 @@ class SearchBooks extends Component {
     query = this.toTitleCaps(this.stripQueryStr(query));
     this.setState({ query });
 
-    // turns <input> into an "incremental search bar": auto-submits as user
-    // types, as opposed to waiting for an "enter" key to trigger the onSubmit
+    // turns <input> into an "incremental search bar": auto-submits on debounce,
+    //   as opposed to waiting for an "enter" key to trigger the onSubmit
     this.submitQuery(e, this.state.query);
+
+    // TODO: debounce is set to be a minimum of 1 character. Good, except:
+    //  BUG: if user backspaces to an "empty query string", UI does not update
+    //  clearing the prev searchResults.  Also if prev query was only 1 char.
   }
 
   clearQuery() {
