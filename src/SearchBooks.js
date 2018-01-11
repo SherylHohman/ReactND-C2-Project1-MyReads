@@ -12,6 +12,7 @@ class SearchBooks extends Component {
   static propTypes = {
     booksInDB: PropTypes.array.isRequired,
     fetchBooksFromDB: PropTypes.func.isRequired,
+    onAddToBookshelf: PropTypes.func.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired,
     bookshelves: PropTypes.array.isRequired,
   }
@@ -181,7 +182,7 @@ class SearchBooks extends Component {
                   shelfTitle={this.state.searchResultsTitle}
                   message={this.state.searchResultsMessage}
                   shelf={'none'}
-                  onChangeBookshelf={this.props.onChangeBookshelf}
+                  onChangeBookshelf={this.props.onAddToBookshelf}
                   bookshelves={this.props.bookshelves}/>
             </ol>
 
@@ -193,7 +194,7 @@ class SearchBooks extends Component {
           <ListBooks
             books={booksShelfSource}
             onChangeBookshelf={ (thisBook, newShelf) => {
-              this.props.changeBookshelf(thisBook, newShelf)} }
+              this.props.onChangeBookshelf(thisBook, newShelf)} }
             bookshelves={this.props.bookshelves}
           />
 
