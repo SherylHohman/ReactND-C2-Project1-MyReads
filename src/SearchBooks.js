@@ -48,29 +48,22 @@ class SearchBooks extends Component {
     //  first page loaded. I want books currently in DB to show up.
     //  prettier and more useful than a blank page.
 
-    // if (this.state.booksInDB.length === 0) {
-    //   console.log('--fetching books..');
-    //   // fetch all books from Database
-    //   BooksAPI.getAll().then((booksAPIData) => {
-    //     console.log('--fetched DB from searchBooks', booksAPIData);
+    if (this.state.booksInDB.length === 0) {
+      console.log('--fetching books..');
+      // fetch all books from Database
+      BooksAPI.getAll().then((booksAPIData) => {
+        console.log('--fetched DB from searchBooks', booksAPIData);
 
-    //     // filter out and reformat data before storing it into state
-    //     const booksInDB = formatData(booksAPIData)
-    //     this.setState({ booksInDB });
-    //     console.log('--this.state.booksInDB', this.state.booksInDB);
-    //   })
-    // }
+        // filter out and reformat data before storing it into state
+        const booksInDB = formatData(booksAPIData)
+        this.setState({ booksInDB });
+        this.setState({ searchResults: booksInDB });
+        console.log('--this.state.booksInDB', this.state.booksInDB);
+      })
+    }
 
-    // if (this.state.firstPageLoad !== 'whack'){
       console.log('** searchBooks componentDidMount..calling searchForBooks');
       this.searchForBooks();
-    // }
-
-    // show all books in DB when Search Page first loads
-    // this.setState({ searchResults: this.state.booksInDB });
-
-    // this.setState({ firstPageLoad: 'gibberish' });
-    // console.log('firstPageLoad at exit componentDidMount:', this.state.firstPageLoad);
 
   }
 
