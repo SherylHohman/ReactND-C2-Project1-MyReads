@@ -90,11 +90,14 @@ class SearchBooks extends Component {
         // "error" prop doesn't exist if the API was able to return books
         // Technically, should also THEN verity the error is: "empty query".
         // console.log('searchResults === []', 'No Books Found for:', query);
-        this.setState({
-          searchResults: [],
+
+        this.setState((prevState) => ({
+          // so shelves can show all user's books
+          searchResults: prevState.booksInDB,
+
           searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
           searchResultsMessage: `Got any other ideas?`
-        })
+        }))
 
       } else { // We have some books to show !
         // thin and reformat data before storing in state
