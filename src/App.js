@@ -20,7 +20,6 @@ class BooksApp extends React.Component {
 
   fetchBooksFromDB() {
     BooksAPI.getAll().then((booksAPIData) => {
-      console.log('fetched', booksAPIData);
 
       // sift and reformat data before storing it into state
       const books = formatData(booksAPIData)
@@ -56,7 +55,8 @@ class BooksApp extends React.Component {
   }
 
   moveBook(book, newShelf, response){
-    // handles adding a book to DB, as well as moving shelves of existing book
+    // handles adding a book to DB,
+    //  as well as moving existing book to different shelf
 
     // Verify book was updated to newShelf in DB, before updating our state
     if (response[newShelf].indexOf(book.id) !== -1) {
