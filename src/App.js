@@ -18,15 +18,18 @@ class BooksApp extends React.Component {
     {shelf: "read",             shelfTitle: "Did Read"}
   ];
 
-  componentDidMount() {
-    // fetch all books from Database
+  fetchBooksFromDB() {
     BooksAPI.getAll().then((booksAPIData) => {
       console.log('fetched', booksAPIData);
 
-      // filter out and reformat data before storing it into state
+      // sift and reformat data before storing it into state
       const books = formatData(booksAPIData)
       this.setState({ books });
     })
+  }
+
+  componentDidMount() {
+      this.fetchBooksFromDB();
   }
 
   // checks all shelves in response to see if "deleted"/"none" book remains
@@ -115,6 +118,7 @@ class BooksApp extends React.Component {
 
         <Route path="/search" render={() => (
           <SearchBooks
+            fetchBooksFromDB={this.fetchBooksFromDB}
             onChangeBookshelf={ (aBook, newShelf) => {
               this.addToBookshelf(aBook, newShelf)}}
             bookshelves={this.bookshelves}

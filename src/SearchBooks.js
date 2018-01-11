@@ -11,6 +11,7 @@ class SearchBooks extends Component {
 
   static propTypes = {
     booksInDB: PropTypes.array.isRequired,
+    fetchBooksFromDB: PropTypes.func.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired,
     bookshelves: PropTypes.array.isRequired,
   }
@@ -21,9 +22,6 @@ class SearchBooks extends Component {
     searchResultsTitle:  'Making Space on Your Shelves',
     searchResultsMessage: 'Let\'s find more books!',
     curSearchTerm: '',
-
-    // this value will change if user moves bookshelves. Therefore state.
-    booksInDB: this.props.booksInDB,
   }
 
   componentDidMount(){
@@ -31,27 +29,12 @@ class SearchBooks extends Component {
     console.log('1 - setState booksInDB - props.booksInDB',
       '\n searchBooks componentDidMount; \n..query:', this.state.query,
       '\n..props.booksInDB:', this.props.booksInDB, this.props.booksInDB.length,
-      '\n..state.booksInDB:', this.state.booksInDB, this.state.booksInDB.length,
+      '\n..state.booksInDB:', this.props.booksInDB, this.props.booksInDB.length,
       );
 
-    // if page reloads, booksInDB will be empty. Fetch data from DB, just as
-    //  do in BooksApp.  This is because user could type in URl and this would be
-    //  first page loaded. I want books currently in DB to show up.
-    //  prettier and more useful than a blank page.
-    // TODO: make this a function call passed in from BooksApp
-
-    if (this.state.booksInDB.length === 0) {
-      console.log('--fetching books..');
-      // fetch all books from Database
-      BooksAPI.getAll().then((booksAPIData) => {
-        console.log('--fetched DB from searchBooks', booksAPIData);
-
-        // filter out and reformat data before storing it into state
-        const booksInDB = formatData(booksAPIData)
-        this.setState({ booksInDB });
-
-        console.log('--this.state.booksInDB', this.state.booksInDB);
-      })
+    // on page reloads, booksInDB will be empty.
+    if (this.props.booksInDB.length === 0) {
+      this.props.fetchBooksFromDB();
     }
 
       console.log('** searchBooks componentDidMount..calling searchForBooks');
@@ -162,7 +145,7 @@ class SearchBooks extends Component {
 
     // show all books in DB, if search is empty, for Better UX :-)
     const booksShelfSource = (this.state.searchResults.length === 0)
-      ? this.state.booksInDB
+      ? this.props.booksInDB
       : this.state.searchResults
 
     return (
