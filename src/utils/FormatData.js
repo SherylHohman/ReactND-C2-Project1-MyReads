@@ -31,9 +31,10 @@ const formatData = function(booksAPIdata, booksInDB=null){
         : 'none';
 
       // Now, if this data was from searchAPI, check our DB
-      //  (which is synched with BooksApp.state.books, and less expensive)
-      //  to see if this book *is* in the DB. Override that default
-      //  shelf setting, to the "actual" `shelf` value.
+      //  (which is synched with BooksApp.state.books, and less is expensive)
+      //  to see if this book *is* in the DB.
+      //  If so, Override that default 'none' shelf set above,
+      //  setting 'shelf' to the book's "actual" `shelf` value.
       if (booksInDB) {
         shelf = booksInDB.reduce((shelfInDB, bookInDB) => {
           if (bookInDB.id === bookAPIdata.id) {
