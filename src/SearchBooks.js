@@ -5,7 +5,6 @@ import ListBooks from './ListBooks';
 import * as BooksAPI from './BooksAPI';
 import formatData from './utils/FormatData';
 import PropTypes from 'prop-types';
-// import { Debounce } from 'react-throttle';
 import { DebounceInput } from 'react-debounce-input';
 
 class SearchBooks extends Component {
@@ -18,9 +17,7 @@ class SearchBooks extends Component {
 
   state = {
     query: '',
-    // when page first opens, want booksInDB to show rather than an "empty" page
-    searchResults: this.props.booksInDB,
-
+    searchResults: [],
     searchResultsTitle:  'Making Space on Your Shelves',
     searchResultsMessage: 'Let\'s find more books!',
     curSearchTerm: '',
@@ -31,22 +28,17 @@ class SearchBooks extends Component {
 
   componentDidMount(){
 
-    // console.log('0 searchBooks componentDidMount, setting state - booksInDB',
-    //   '\n--state', this.state.booksInDB, '\n--props', this.props.booksInDB);
-
-    // this.setState({ booksInDB: this.props.booksInDB });
-
     console.log('1 - setState booksInDB - props.booksInDB',
       '\n searchBooks componentDidMount; \n..query:', this.state.query,
       '\n..props.booksInDB:', this.props.booksInDB, this.props.booksInDB.length,
       '\n..state.booksInDB:', this.state.booksInDB, this.state.booksInDB.length,
-      // '\n..firstPageLoad:', this.state.firstPageLoad
       );
 
     // if page reloads, booksInDB will be empty. Fetch data from DB, just as
     //  do in BooksApp.  This is because user could type in URl and this would be
     //  first page loaded. I want books currently in DB to show up.
     //  prettier and more useful than a blank page.
+    // TODO: make this a function call passed in from BooksApp
 
     if (this.state.booksInDB.length === 0) {
       console.log('--fetching books..');
@@ -57,7 +49,7 @@ class SearchBooks extends Component {
         // filter out and reformat data before storing it into state
         const booksInDB = formatData(booksAPIData)
         this.setState({ booksInDB });
-        this.setState({ searchResults: booksInDB });
+
         console.log('--this.state.booksInDB', this.state.booksInDB);
       })
     }
@@ -84,13 +76,11 @@ class SearchBooks extends Component {
         // Technically, should also THEN verity the error is: "empty query".
         // console.log('searchResults === []', 'No Books Found for:', query);
 
-        this.setState((prevState) => ({
-          // so shelves can show all user's books
-          searchResults: prevState.booksInDB,
-
+        this.setState({
+          searchResults: [],
           searchResultsTitle: `..Sorry, No Books Found for: "${query}"..`,
           searchResultsMessage: `Got any other ideas?`
-        }))
+        })
 
       } else { // We have some books to show !
         // thin and reformat data before storing in state
@@ -169,6 +159,12 @@ class SearchBooks extends Component {
   }
 
   render() {
+
+    // show all books in DB, if search is empty, for Better UX :-)
+    const booksShelfSource = (this.state.searchResults.length === 0)
+      ? this.state.booksInDB
+      : this.state.searchResults
+
     return (
       <div className="search-books">
 
@@ -212,12 +208,11 @@ class SearchBooks extends Component {
 
           {/*books that are in DB*/}
           <ListBooks
-            books={this.state.searchResults}
+            books={booksShelfSource}
             onChangeBookshelf={ (thisBook, newShelf) => {
               this.props.changeBookshelf(thisBook, newShelf)} }
             bookshelves={this.props.bookshelves}
           />
-          {/**/}
 
         </div> {/* search-books-results */}
       </div> /* search-books */
