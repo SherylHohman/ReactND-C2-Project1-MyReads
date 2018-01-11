@@ -12,7 +12,6 @@ class SearchBooks extends Component {
   static propTypes = {
     booksInDB: PropTypes.array.isRequired,
     fetchBooksFromDB: PropTypes.func.isRequired,
-    onAddToBookshelf: PropTypes.func.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired,
     bookshelves: PropTypes.array.isRequired,
   }
@@ -31,7 +30,7 @@ class SearchBooks extends Component {
       '\n..props.booksInDB:', this.props.booksInDB, this.props.booksInDB.length,
       );
 
-    // on page reloads, booksInDB will be empty.
+    // on search page reloads, booksInDB starts out empty.
     if (this.props.booksInDB.length === 0) {
       this.props.fetchBooksFromDB();
     }
@@ -182,7 +181,7 @@ class SearchBooks extends Component {
                   shelfTitle={this.state.searchResultsTitle}
                   message={this.state.searchResultsMessage}
                   shelf={'none'}
-                  onChangeBookshelf={this.props.onAddToBookshelf}
+                  onChangeBookshelf={this.props.onChangeBookshelf}
                   bookshelves={this.props.bookshelves}/>
             </ol>
 

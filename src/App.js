@@ -32,7 +32,8 @@ class BooksApp extends React.Component {
       this.fetchBooksFromDB();
   }
 
-  // checks all shelves in APIresponse to see if "deleted"/"none" book remains
+  // checks all shelves from an API.update response to see if the "deleted"
+  //  book is (still in) the database, or was indeed successfullly deleted.
   isInDB(id, response) {
     let foundBook = false;
     for (let shelf in response){
@@ -55,6 +56,8 @@ class BooksApp extends React.Component {
   }
 
   moveBook(book, newShelf, response){
+    // handles adding a book to DB, as well as moving shelves of existing book
+
     // Verify book was updated to newShelf in DB, before updating our state
     if (response[newShelf].indexOf(book.id) !== -1) {
       book.shelf = newShelf;
@@ -84,33 +87,6 @@ class BooksApp extends React.Component {
       })
   }
 
-  addToBookshelf(book, shelf){
-  // update database
-    BooksAPI.update(book, shelf).then((res) => {
-      console.log('..added:', book.id, 'to', shelf, ':\n  ', res);
-
-      // Verify DB was updated, before adding to state
-      console.log(res[shelf].indexOf(book.id),
-                ((res[shelf].indexOf(book.id) !== -1))
-      );
-
-      // DB update was successful
-      if (res[shelf].indexOf(book.id) !== -1) {
-        console.log('shelf:', shelf, shelf!=='none');
-        if (shelf !== 'none') {  // should not be the cose, check JIC
-
-          // remove book, then add it back to array, but with new shelf value
-          book.shelf = shelf;
-          this.setState((prevState) => (
-            {books: prevState.books.concat(book)}
-          ));
-        }
-      }
-
-    })// .then
-  }
-
-
   render() {
     return (
 
@@ -118,8 +94,6 @@ class BooksApp extends React.Component {
 
         <Route path="/search" render={() => (
           <SearchBooks
-            onAddToBookshelf={ (aBook, newShelf) => {
-              this.addToBookshelf(aBook, newShelf)}}
             onChangeBookshelf={ (aBook, newShelf) => {
               this.changeBookshelf(aBook, newShelf)}}
             bookshelves={this.bookshelves}
